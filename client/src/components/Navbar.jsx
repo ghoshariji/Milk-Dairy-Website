@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-white shadow-md relative">
       {/* Logo */}
-      <h1 className="text-2xl font-bold text-green-600">DE·ON·DE</h1>
+      <h1 className="text-2xl font-bold text-[#40A1CB]">Hallo Dairy</h1>
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex space-x-6 text-gray-600">
