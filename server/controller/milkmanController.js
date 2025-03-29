@@ -83,6 +83,7 @@ exports.registerMilkman = async (req, res) => {
 exports.loginMilkman = async (req, res) => {
   const { enterCode, password } = req.body;
 
+  console.log(req.body)
   try {
     // Find milkman by enterCode
     const milkman = await Milkman.findOne({ enterCode });

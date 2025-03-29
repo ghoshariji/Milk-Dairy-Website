@@ -1,9 +1,9 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import { FaStore, FaTruck, FaTools } from "react-icons/fa";
 import Phone from "../image/Phone.jpeg";
 import PhoneImage from "../image/PhoneImage.png";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer/Footer";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
