@@ -166,7 +166,7 @@ const AdminNav = () => {
                     className="w-6 h-6 rounded-full"
                   />
                 </div>
-                <span className="ms-3">Add Customer</span>
+                <span className="ms-3">Add Customer/Seller</span>
               </NavLink>
             </li>
             <li>
