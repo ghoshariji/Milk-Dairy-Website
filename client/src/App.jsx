@@ -19,6 +19,16 @@ import MilkManSetRate from "./MilkMan/MilkManSetRate";
 import MilkManSubs from "./MilkMan/MilkManSubs";
 import MilkManUpdateMilk from "./MilkMan/MilkManUpdateMilk";
 import MilkmanWallet from "./MilkMan/MilkmanWallet";
+import SellerDash from "./Seller/SellerDash";
+import SellerMilkRecord from "./Seller/SellerMilkRecord";
+import SellerProducts from "./Seller/SellerProducts";
+import SellerWalltet from "./Seller/SellerWalltet";
+import SellerPaymentHistory from "./Seller/SellerPaymentHistory";
+import SellerProfile from "./Seller/SellerProfile";
+import SellerPayments from "./Seller/SellerPayments";
+import SellerMilkMan from "./Seller/SellerMilkMan";
+import SellerChangeMilkMan from "./Seller/SellerChangeMilkMan";
+import SellerHelp from "./Seller/SellerHelp";
 const App = () => {
   return (
     <Routes>
@@ -40,6 +50,37 @@ const App = () => {
       <Route path="/milkman-subscription" element={<MilkManSubs />} />
       <Route path="/milkman-update-milk" element={<MilkManUpdateMilk />} />
       <Route path="/milkman-walltet" element={<MilkmanWallet />} />
+
+
+
+
+
+
+      <Route path="/seller-dashboard" element={<SellerDash />} />
+      <Route path="/seller-milk-record" element={<SellerMilkRecord />} />
+      <Route path="/seller-products" element={<SellerProducts />} />
+      <Route path="/seller-wallet" element={<SellerWalltet />} />
+      <Route path="/seller-payment-history" element={<SellerPaymentHistory />} />
+      <Route path="/seller-profile" element={<SellerProfile />} />
+      <Route path="/seller-payments" element={<SellerPayments />} />
+      <Route path="/seller-milkman" element={<SellerMilkMan />} />
+      <Route path="/seller-change-milkman" element={<SellerChangeMilkMan />} />
+      <Route path="/seller-help" element={<SellerHelp />} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
