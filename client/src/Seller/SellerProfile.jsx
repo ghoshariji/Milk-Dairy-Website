@@ -1,136 +1,177 @@
-import React, { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import API from '../api';
 import SellerSideBar from '../components/SellerSidebar/SellerSidebar';
 
-const SellerProfile = () => {
+const ProfilePage = () => {
   const [profile, setProfile] = useState({
-    name: 'Narender',
-    email: 'example@12gmail.com',
-    mobile: '+91 95xxxxxx55',
-    image: '/images/user1.jpg',
+    name: '',
+    email: '',
+    phone: '',
+    profileImage: null, // blob URL for preview
   });
+  const [file, setFile] = useState(null); // actual image file for upload
+  const [editing, setEditing] = useState(false);
 
-  const [editField, setEditField] = useState(null); // 'name' | 'email' | 'mobile' | 'image'
-  const [editValue, setEditValue] = useState('');
 
-  const openEditModal = (field) => {
-    setEditField(field);
-    setEditValue(profile[field]);
+  // Convert binary image data to a browser blob URL
+  const createImageUrl = (imageData, contentType) => {
+    try {
+      const typedArray = new Uint8Array(imageData);
+      const blob = new Blob([typedArray], { type: contentType || 'image/jpeg' });
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error('Error creating image URL:', error);
+      return null;
+    }
   };
 
-  const handleSave = () => {
-    setProfile((prev) => ({ ...prev, [editField]: editValue }));
-    setEditField(null);
+  // Fetch profile on mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await API.get(`/api/auth/user/get-profile`);
+        const user = response.data;
+
+        let imageUrl = null;
+        if (user.profileImage?.data?.data && user.profileImage?.contentType) {
+          imageUrl = createImageUrl(user.profileImage.data.data, user.profileImage.contentType);
+        }
+
+        setProfile({
+          name: user.name || '',
+          email: user.email || '',
+          phone: user.phone || '',
+          profileImage: imageUrl,
+        });
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        alert('Failed to fetch profile.');
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setProfile({ ...profile, profileImage: URL.createObjectURL(selectedFile) });
+  };
+
+  const updateProfile = async () => {
+    const formData = new FormData();
+    formData.append('name', profile.name);
+    formData.append('email', profile.email);
+    formData.append('phone', profile.phone);
+
+    if (file) {
+      formData.append('updateProfile', file);
+    }
+
+    try {
+      await API.put(`/api/auth/user/update-profile`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      alert('Profile updated successfully!');
+      setEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile.');
+    }
   };
 
   return (
-    <div className="flex">
-      <SellerSideBar />
+    <>
+    <SellerSideBar />
+    <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
+      <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
 
-      <div className="lg:ml-64 w-full mt-16 p-4 flex justify-center items-start bg-gray-100 min-h-screen">
-        <div className="bg-white rounded-lg shadow border p-4 w-full max-w-md">
-          {/* Profile Card */}
-          <div className="space-y-4">
-            {/* Profile Image */}
-            <div className="flex items-center justify-between border border-dotted border-blue-500 p-2 rounded">
-              <div className="flex items-center gap-2">
-                <img
-                  src={profile.image}
-                  alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <p className="text-sm font-semibold">Profile Photo</p>
-                </div>
-              </div>
-              <Pencil
-                size={18}
-                className="text-blue-500 cursor-pointer"
-                onClick={() => openEditModal('image')}
-              />
-            </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium">Name</label>
+        <input
+          type="text"
+          name="name"
+          value={profile.name}
+          onChange={handleChange}
+          disabled={!editing}
+          className="w-full p-2 border rounded"
+        />
+      </div>
 
-            {/* Name */}
-            <div className="flex items-center justify-between border border-dotted border-blue-500 p-2 rounded">
-              <div className="flex items-center gap-2">
-                <span className="text-blue-500">👤</span>
-                <div>
-                  <p className="text-sm font-semibold">Name</p>
-                  <p className="text-xs text-gray-600">{profile.name}</p>
-                </div>
-              </div>
-              <Pencil
-                size={18}
-                className="text-blue-500 cursor-pointer"
-                onClick={() => openEditModal('name')}
-              />
-            </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={profile.email}
+          onChange={handleChange}
+          disabled={!editing}
+          className="w-full p-2 border rounded"
+        />
+      </div>
 
-            {/* Email */}
-            <div className="flex items-center justify-between border border-dotted border-blue-500 p-2 rounded">
-              <div className="flex items-center gap-2">
-                <span className="text-blue-500">📧</span>
-                <div>
-                  <p className="text-sm font-semibold">Email</p>
-                  <p className="text-xs text-gray-600">{profile.email}</p>
-                </div>
-              </div>
-              <Pencil
-                size={18}
-                className="text-blue-500 cursor-pointer"
-                onClick={() => openEditModal('email')}
-              />
-            </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium">Phone</label>
+        <input
+          type="text"
+          name="phone"
+          value={profile.phone}
+          onChange={handleChange}
+          disabled={!editing}
+          className="w-full p-2 border rounded"
+        />
+      </div>
 
-            {/* Mobile */}
-            <div className="flex items-center justify-between border border-dotted border-blue-500 p-2 rounded">
-              <div className="flex items-center gap-2">
-                <span className="text-blue-500">📞</span>
-                <div>
-                  <p className="text-sm font-semibold">Mobile No.</p>
-                  <p className="text-xs text-gray-600">{profile.mobile}</p>
-                </div>
-              </div>
-              <Pencil
-                size={18}
-                className="text-blue-500 cursor-pointer"
-                onClick={() => openEditModal('mobile')}
-              />
-            </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">Profile Image</label>
+        {profile.profileImage ? (
+          <img src={profile.profileImage} alt="Profile" className="h-32 w-32 object-cover rounded-full mb-2" />
+        ) : (
+          <div className="h-32 w-32 bg-gray-300 flex items-center justify-center rounded-full mb-2">
+            No Image Found
           </div>
-        </div>
+        )}
 
-        {/* Modal */}
-        {editField && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow w-full max-w-md">
-              <h2 className="text-lg font-semibold mb-4">Edit {editField.charAt(0).toUpperCase() + editField.slice(1)}</h2>
-              <input
-                type="text"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                className="w-full border p-2 rounded"
-              />
-              <div className="flex justify-end gap-3 mt-4">
-                <button
-                  onClick={() => setEditField(null)}
-                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
+        {editing && (
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+        )}
+      </div>
+
+      <div className="flex justify-between mt-4">
+        {!editing ? (
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            onClick={() => setEditing(true)}
+          >
+            Edit Profile
+          </button>
+        ) : (
+          <>
+            <button
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              onClick={updateProfile}
+            >
+              Save
+            </button>
+            <button
+              className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+              onClick={() => setEditing(false)}
+            >
+              Cancel
+            </button>
+          </>
         )}
       </div>
     </div>
+    </>
   );
 };
 
-export default SellerProfile;
+export default ProfilePage;

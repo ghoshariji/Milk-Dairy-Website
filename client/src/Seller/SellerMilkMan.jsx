@@ -1,26 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SellerSideBar from '../components/SellerSidebar/SellerSidebar';
 import { Mail, User, IndianRupee } from 'lucide-react';
+import API from '../api'; // make sure you are importing the correct axios instance
 
 const SellerMilkMan = () => {
-  const milkman = {
-    name: 'Rajeev Kumar',
-    email: 'rajeevmilkman@example.com',
-    upi: 'rajeev@ybl',
-  };
+  const [item, setMilkMen] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMilkMen = async () => {
+      try {
+        const response = await API.get('/api/auth/user/get-milkman-data-user');
+        console.log(response.data);
+        setMilkMen(response.data);
+      } catch (error) {
+        console.error('Error fetching milkmen:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMilkMen();
+  }, []);
 
   const handleConnect = () => {
-    alert(`Connection request sent to ${milkman.name}`);
+    alert(`Connection request sent to ${item.name || 'your milkman'}`);
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-gray-500 text-xl">Loading milkman data...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex min-h-screen  bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       <SellerSideBar />
 
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
           <h2 className="text-3xl font-semibold text-center text-blue-600 mb-8">
-            Connect with Your Milkman
+           Your Milkman
           </h2>
 
           <div className="space-y-6">
@@ -28,7 +50,7 @@ const SellerMilkMan = () => {
               <User className="text-blue-500" size={28} />
               <div>
                 <p className="text-sm text-gray-500">Name</p>
-                <p className="text-lg font-medium">{milkman.name}</p>
+                <p className="text-lg font-medium">{item.name || 'N/A'}</p>
               </div>
             </div>
 
@@ -36,25 +58,19 @@ const SellerMilkMan = () => {
               <Mail className="text-blue-500" size={28} />
               <div>
                 <p className="text-sm text-gray-500">Email</p>
-                <p className="text-lg font-medium">{milkman.email}</p>
+                <p className="text-lg font-medium">{item.email || 'N/A'}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 border-b pb-4">
               <IndianRupee className="text-blue-500" size={28} />
               <div>
                 <p className="text-sm text-gray-500">UPI ID</p>
-                <p className="text-lg font-medium">{milkman.upi}</p>
+                <p className="text-lg font-medium">{item.upiId || 'N/A'}</p>
               </div>
             </div>
-          </div>
 
-          <button
-            onClick={handleConnect}
-            className="mt-8 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition font-semibold"
-          >
-            Connect
-          </button>
+          </div>
         </div>
       </div>
     </div>

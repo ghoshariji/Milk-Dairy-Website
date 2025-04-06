@@ -1,38 +1,37 @@
-import React from 'react';
-import SellerSideBar from '../components/SellerSidebar/SellerSidebar';
-
-const products = [
-  {
-    id: 1,
-    name: 'Kachi Ghaani Khal',
-    brand: 'Kesar Bhog',
-    price: '1800/-',
-    image: '/images/product1.jpg',
-  },
-  {
-    id: 2,
-    name: 'Kachi Ghaani Khal',
-    brand: 'Kesar Bhog',
-    price: '1800/-',
-    image: '/images/product2.jpg',
-  },
-  {
-    id: 3,
-    name: 'Kachi Ghaani Khal',
-    brand: 'Kesar Bhog',
-    price: '1800/-',
-    image: '/images/product3.jpg',
-  },
-  {
-    id: 4,
-    name: 'Kachi Ghaani Khal',
-    brand: 'Kesar Bhog',
-    price: '1800/-',
-    image: '/images/product4.jpg',
-  },
-];
+import React, { useEffect, useState } from "react";
+import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
+import API from "../api";
 
 const SellerProducts = () => {
+  const [allProducts, setAllProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await API.get("/api/milkman/product/getCustomerProduct");
+      setAllProducts(res.data.products || []);
+      console.log(res.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error.message);
+    }
+  };
+
+  const createImageUrl = (imageData, contentType) => {
+    try {
+      // Convert normal array to Uint8Array
+      const typedArray = new Uint8Array(imageData);
+      const blob = new Blob([typedArray], { type: contentType || 'image/jpeg' });
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error('Error creating image URL:', error);
+      return null;
+    }
+  };
+  
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div className="flex">
       <SellerSideBar />
@@ -41,23 +40,44 @@ const SellerProducts = () => {
         <h2 className="text-xl font-semibold mb-4">Your Products</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-lg shadow hover:shadow-md transition duration-200"
-            >
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-cover rounded-t-lg"
-              />
-              <div className="p-3">
-                <h3 className="text-sm font-medium">{product.name}</h3>
-                <p className="text-sm text-gray-700">{product.price}</p>
-                <p className="text-xs text-gray-500">{product.brand}</p>
+          {allProducts.length > 0 ? (
+            allProducts.map((product, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow hover:shadow-md transition duration-200 overflow-hidden"
+              >
+                <img
+                  src={
+                    product.image?.data?.data                      ? createImageUrl(
+                          product.image.data.data,
+                          product.image.contentType
+                        )
+                      : "No Image Found" // 👈 Make sure this image exists in your public/images folder
+                  }
+                  alt={product.name || "No image"}
+                  className="w-full h-48 object-cover"
+                />
+
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold">{product.name}</h3>
+                  <p className="text-sm text-gray-600">{product.description}</p>
+                  <p className="text-sm mt-1 text-gray-800">
+                    Category:{" "}
+                    <span className="font-medium">{product.category}</span>
+                  </p>
+                  <p className="text-green-700 font-semibold">
+                    {product.isAvailable === "true"
+                      ? "Available"
+                      : "Not Available"}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-gray-500 col-span-full text-center">
+              No products found.
+            </p>
+          )}
         </div>
       </div>
     </div>
