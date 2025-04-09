@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import { MapPin, Phone } from "lucide-react";
 import API from "../api";
+import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 
-const SellerChangeMilkMan = () => {
+const CustomerChangeMilkMan = () => {
   const [milkmanList, setMilkmanList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,10 +80,9 @@ const SellerChangeMilkMan = () => {
       alert("Failed to assign milkman.");
     }
   };
-
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SellerSideBar />
+      <CustomerSidebar />
 
       <div className="flex-1 p-6 mt-20 lg:ml-64">
         <div className="max-w-3xl mx-auto">
@@ -132,7 +131,7 @@ const SellerChangeMilkMan = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SellerChangeMilkMan;
+export default CustomerChangeMilkMan

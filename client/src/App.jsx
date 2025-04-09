@@ -29,6 +29,17 @@ import SellerPayments from "./Seller/SellerPayments";
 import SellerMilkMan from "./Seller/SellerMilkMan";
 import SellerChangeMilkMan from "./Seller/SellerChangeMilkMan";
 import SellerHelp from "./Seller/SellerHelp";
+import CustomerDash from "./Customer/CustomerDash";
+import CustomerMilkRecord from "./Customer/CustomerMilkRecord";
+import CustomerProducts from "./Customer/CustomerProducts";
+import CustomerWallet from "./Customer/CustomerWallet";
+import CustomerPaymentHistory from "./Customer/CustomerPaymentHistory";
+import CustomerProfile from "./Customer/CustomerProfile";
+import CustomerPayments from "./Customer/CustomerPayments";
+import CustomerMilkman from "./Customer/CustomerMilkman";
+import CustomerChangeMilkMan from "./Customer/CustomerChangeMilkMan";
+import CustomerHelp from "./Customer/CustomerHelp";
+import CustomerAdvanceBook from "./Customer/CustomerAdvanceBook";
 const App = () => {
   return (
     <Routes>
@@ -66,6 +77,26 @@ const App = () => {
       <Route path="/seller-milkman" element={<SellerMilkMan />} />
       <Route path="/seller-change-milkman" element={<SellerChangeMilkMan />} />
       <Route path="/seller-help" element={<SellerHelp />} />
+
+
+
+
+
+
+      <Route path="/customer-dashboard" element={<CustomerDash />} />
+      <Route path="/customer-milk-record" element={<CustomerMilkRecord />} />
+      <Route path="/customer-products" element={<CustomerProducts />} />
+      <Route path="/customer-wallet" element={<CustomerWallet />} />
+      <Route path="/customer-payment-history" element={<CustomerPaymentHistory />} />
+      <Route path="/customer-profile" element={<CustomerProfile />} />
+      <Route path="/customer-payments" element={<CustomerPayments />} />
+      <Route path="/customer-milkman" element={<CustomerMilkman />} />
+      <Route path="/customer-change-milkman" element={<CustomerChangeMilkMan />} />
+      <Route path="/customer-help" element={<CustomerHelp />} />
+      <Route path="/customer-advance-book" element={<CustomerAdvanceBook />} />
+
+
+      
 
 
 
