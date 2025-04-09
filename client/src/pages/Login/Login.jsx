@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import login12 from "../../pages/images/login.png"; // Ensure the path is correct
 import smalllogo from "../../pages/images/login.png";
 import Loader from "../../components/Loader/Loader";
@@ -69,20 +69,22 @@ const Login = () => {
         </div>
       )}
       <div className="flex flex-col md:flex-row h-screen justify-center items-center">
-        <div className="flex-1 flex justify-center items-center hidden sm:block ml-10">
+        <div className="flex-1 flex justify-center items-center hidden sm:block ml-20">
           <img
-            className="hidden sm:block w-full max-w-md h-auto object-contain"
+            className="hidden sm:block w-full max-w-sm h-auto object-contain"
             src={login12}
             alt="Logo"
           />
         </div>
+
         <div className="sm:hidden w-full flex justify-center items-center mt-14">
           <img
-            className="w-full max-w-xs h-auto object-contain"
+            className="w-full max-w-xs h-[90%] object-contain"
             src={smalllogo}
             alt="Logo"
           />
         </div>
+
         <div className="flex-1 flex flex-col justify-start items-center sm:items-start px-6 sm:px-12 md:px-16 py-8 bg-white">
           <div className="w-full max-w-md mt-8 sm:mt-0">
             <form onSubmit={login}>
@@ -181,6 +183,11 @@ const Login = () => {
               </button>
             </form>
           </div>
+          <Link to="/register">
+            <p className="text-sm font-medium text-[#40A1CB] hover:underline hover:text-[#40A1CB] cursor-pointer transition duration-200">
+              Don't have an account? Register
+            </p>
+          </Link>
         </div>
       </div>
     </>

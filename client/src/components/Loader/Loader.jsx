@@ -1,8 +1,15 @@
 import React from 'react';
+import './Loader.css'; // Make sure this file contains the CSS below
 
 const Loader = () => {
   return (
-    <div className="animate-spin border-t-4 border-b-4 border-green-500 border-solid w-16 h-16 rounded-full"></div>
+    <div className="loader-overlay">
+      <div className="loader">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <span key={i} style={{ '--i': i }}></span>
+        ))}
+      </div>
+    </div>
   );
 };
 

@@ -250,7 +250,7 @@ const AdminNav = () => {
                     className="w-6 h-6 rounded-full"
                   />
                 </div>
-                <span className="ms-3">Notofication</span>
+                <span className="ms-3">Notification</span>
               </NavLink>
             </li>
             <li>

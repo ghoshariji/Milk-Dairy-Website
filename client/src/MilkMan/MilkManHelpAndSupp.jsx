@@ -4,7 +4,6 @@ import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 
-
 const MilkManHelpAndSupp = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -34,53 +33,64 @@ const MilkManHelpAndSupp = () => {
 
   return (
     <>
-    <AdminNav />
-    <ToastContainer />
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        {message && <p className="text-green-600 mb-2">{message}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-md"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Phone</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-md"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Feedback</label>
-            <textarea
-              name="feedback"
-              value={formData.feedback}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-md"
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-[#40A1CB] text-white py-2 rounded-md hover:bg-[#40A1CB] "
-          >
+      <AdminNav />
+      <ToastContainer />
+      <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 px-4 ">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-bold text-center text-[#40A1CB] mb-6">
             Submit Feedback
-          </button>
-        </form>
+          </h2>
+
+          {message && (
+            <p className="text-green-600 mb-4 text-center">{message}</p>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Phone</label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Feedback</label>
+              <textarea
+                name="feedback"
+                value={formData.feedback}
+                onChange={handleChange}
+                required
+                rows={4}
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#40A1CB] text-white py-2 rounded-md hover:bg-[#3495bc] transition"
+            >
+              Submit Feedback
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
     </>
   );
 };

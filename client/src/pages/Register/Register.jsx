@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import {  useNavigate, Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast,ToastContainer } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 
 const Register = () => {
-  const { type } = useParams();
   const navigate = useNavigate();
   const [role, setRole] = useState("customer");
 
@@ -25,7 +27,6 @@ const Register = () => {
   const [searchText, setSearchText] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -49,8 +50,8 @@ const Register = () => {
             }/api/auth/milkman/get-all/${latitude}/${longitude}`
           );
           const data = await res.json();
-          setMilkmen(data.milkmen);
-          setFilteredMilkmen(data.milkmen);
+          setMilkmen(data.milkmen || []);
+          setFilteredMilkmen(data.milkmen || []);
         } catch (err) {
           setError("Failed to fetch milkmen.");
         }
@@ -65,7 +66,7 @@ const Register = () => {
         reject(new Error("Geolocation is not supported."));
         return;
       }
-  
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude, accuracy } = position.coords;
@@ -78,12 +79,10 @@ const Register = () => {
       );
     });
   };
-  
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setToast("");
     setLoading(true);
     const location = await getCurrentLocation();
     const updatedForm = {
@@ -91,26 +90,24 @@ const Register = () => {
       location, // Add the location object containing latitude and longitude
     };
     const apiUrl =
-      role === 'milkman'
+      role === "milkman"
         ? `${import.meta.env.VITE_SERVER}/api/auth/milkman/register`
         : `${import.meta.env.VITE_SERVER}/api/auth/user/register`;
     try {
-      const res = await fetch(
-        apiUrl,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedForm),
-        }
-      );
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedForm),
+      });
 
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Registration failed");
 
-      setToast("Registration successful!");
+      toast.success("Registration successful!")
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
-        console.log("Error" + error)
+      toast.error(err.message)
+      console.log("Error" + error);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -120,6 +117,11 @@ const Register = () => {
   useEffect(() => {
     getLocationAndFetch();
   }, []);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     const filtered = milkmen.filter((milkman) =>
@@ -129,140 +131,250 @@ const Register = () => {
   }, [searchText]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 space-y-4">
-        <h2 className="text-2xl font-bold">Register as {type}</h2>
+    <>
+      <ToastContainer />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
 
-        {error && <div className="text-red-500">{error}</div>}
-        {toast && <div className="text-green-500">{toast}</div>}
+      <div className="flex-1 flex justify-center items-center w-full px-4 sm:px-8 md:px-12">
+        <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
+          <h2 className="text-2xl font-semibold mb-6 text-center">Welcome</h2>
+          <form onSubmit={handleSubmit} className="space-y-4 ">
+            <div className="mb-4">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter Name*
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your Name*"
+                required
+              />
+            </div>
 
-        <form
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          onSubmit={handleSubmit}
-        >
-          <input
-            className="input"
-            name="name"
-            placeholder="Name"
-            value={form.name}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="phone"
-            placeholder="Phone"
-            value={form.phone}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="upiId"
-            placeholder="UPI ID"
-            value={form.upiId}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="village"
-            placeholder="Village"
-            value={form.village}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="enterCode"
-            placeholder="Referral Code"
-            value={form.enterCode}
-            onChange={handleChange}
-          />
-          <input
-            className="input"
-            name="subcriptionCode"
-            placeholder="Subscription Code"
-            value={form.subcriptionCode}
-            onChange={handleChange}
-          />
+            <div className="mb-4">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter Phone*
+              </label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your Phone*"
+                required
+              />
+            </div>
 
-          {role !== "milkman" && (
-            <div className="col-span-1 md:col-span-2">
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter Email*
+              </label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your Email*"
+                required
+              />
+            </div>
+
+            <div className="mb-6 relative">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password*
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="••••••••"
+                required
+              />
               <button
                 type="button"
-                onClick={() => setModalOpen(true)}
-                className="bg-blue-500 text-white w-full py-2 rounded-lg hover:bg-blue-600"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               >
-                {form.milkman
-                  ? `Selected: ${form.milkman.name}`
-                  : "Select Milkman"}
+                {showPassword ? (
+                  <FaEyeSlash className="w-5 h-5" />
+                ) : (
+                  <FaEye className="w-5 h-5" />
+                )}
               </button>
             </div>
-          )}
 
-          <div className="col-span-1 md:col-span-2">
+            <div className="mb-4">
+              <label
+                htmlFor="upiId"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter UPI ID*
+              </label>
+              <input
+                type="text"
+                id="upiId"
+                name="upiId"
+                value={form.upiId}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your UPI ID*"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="Village"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter Village*
+              </label>
+              <input
+                type="text"
+                id="Village"
+                name="village"
+                value={form.village}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your Village*"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="enterCode"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter Code(unique, eg:123)*
+              </label>
+              <input
+                type="text"
+                id="enterCode"
+                name="enterCode"
+                value={form.enterCode}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your Code(unique, eg:123)*"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="subcriptionCode"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Enter subcriptionCode
+              </label>
+              <input
+                type="text"
+                id="subcriptionCode"
+                name="subcriptionCode"
+                value={form.subcriptionCode}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter your subcriptionCode"
+              />
+            </div>
+            <div className="mb-4">
+              {role !== "milkman" && (
+                <div className="col-span-1 md:col-span-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(true)}
+                    className="bg-[#40A1CB] text-white w-full py-2 rounded-lg hover:bg-[#40A1CB]"
+                  >
+                    {form.milkman
+                      ? `Selected: ${form.milkman.name}`
+                      : "Select Milkman"}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="mb-4 flex flex-col space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Select Role:
+              </label>
+              <div className="flex space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="customer"
+                    checked={role === "customer"}
+                    onChange={() => setRole("customer")}
+                    className="mr-2"
+                  />
+                  Customer
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="seller"
+                    checked={role === "seller"}
+                    onChange={() => setRole("seller")}
+                    className="mr-2"
+                  />
+                  Seller
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="milkman"
+                    checked={role === "milkman"}
+                    onChange={() => setRole("milkman")}
+                    className="mr-2"
+                  />
+                  Milkman
+                </label>
+              </div>
+            </div>
             <button
               type="submit"
-              className="bg-green-600 text-white w-full py-2 rounded-lg hover:bg-green-700"
-              disabled={loading}
+              className="w-full py-2 px-4 bg-[#40A1CB] text-white rounded-md hover:bg-[#40A1CB]"
             >
               {loading ? "Submitting..." : "Register"}
             </button>
-          </div>
-        </form>
-      </div>
-      <div className="mb-4 flex flex-col space-y-2">
-        <label className="text-sm font-medium text-gray-700">
-          Select Role:
-        </label>
-        <div className="flex space-x-4">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="role"
-              value="customer"
-              checked={role === "customer"}
-              onChange={() => setRole("customer")}
-              className="mr-2"
-            />
-            Customer
-          </label>
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="role"
-              value="seller"
-              checked={role === "seller"}
-              onChange={() => setRole("seller")}
-              className="mr-2"
-            />
-            Seller
-          </label>
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="role"
-              value="milkman"
-              checked={role === "milkman"}
-              onChange={() => setRole("milkman")}
-              className="mr-2"
-            />
-            Milkman
-          </label>
+            <Link to="/login">
+              <p className="text-sm font-medium text-[#40A1CB] hover:underline hover:text-[#40A1CB] cursor-pointer transition duration-200">
+                Already have an account? Login
+              </p>
+            </Link>
+          </form>
         </div>
       </div>
+
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -276,18 +388,20 @@ const Register = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
             <div className="max-h-60 overflow-y-auto space-y-2">
-              {filteredMilkmen.map((m) => (
-                <div
-                  key={m._id}
-                  className="border p-2 rounded cursor-pointer hover:bg-gray-200"
-                  onClick={() => {
-                    setForm((prev) => ({ ...prev, milkman: m }));
-                    setModalOpen(false);
-                  }}
-                >
-                  {m.name}
-                </div>
-              ))}
+              {filteredMilkmen.length > 0
+                ? filteredMilkmen.map((m) => (
+                    <div
+                      key={m._id}
+                      className="border p-2 rounded cursor-pointer hover:bg-gray-200"
+                      onClick={() => {
+                        setForm((prev) => ({ ...prev, milkman: m }));
+                        setModalOpen(false);
+                      }}
+                    >
+                      {m.name}
+                    </div>
+                  ))
+                : "No Milkman found 30km raduis"}
             </div>
             <button
               onClick={() => setModalOpen(false)}
@@ -298,7 +412,7 @@ const Register = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -17,10 +17,11 @@ const MilkManProfile = () => {
   }, []);
   const createImageUrl = (imageData, contentType) => {
     try {
-      const blob = new Blob([imageData], { type: contentType || "image/jpeg" });
+      const typedArray = new Uint8Array(imageData);
+      const blob = new Blob([typedArray], { type: contentType || 'image/jpeg' });
       return URL.createObjectURL(blob);
     } catch (error) {
-      console.error("Error creating image URL:", error);
+      console.error('Error creating image URL:', error);
       return null;
     }
   };
@@ -28,12 +29,18 @@ const MilkManProfile = () => {
     try {
       setLoading(true);
       const { data } = await API.get("/api/auth/user/get-milkman");
+      console.log(data)
       setLoading(false);
       if (data && data.milkman) {
         setName(data.milkman.name);
         setEmail(data.milkman.email);
         setMobileNo(data.milkman.phone);
-        setProfilePhoto(createImageUrl(data.milkman.profileImage.data.data,data.milkman.profileImage.contentType));
+        setProfilePhoto(
+          createImageUrl(
+            data.milkman.profileImage.data.data,
+            data.milkman.profileImage.contentType
+          )
+        );
       }
     } catch (error) {
       setLoading(false);
@@ -74,24 +81,39 @@ const MilkManProfile = () => {
     setLoading(false);
     setModalVisible(false);
   };
-
+  if (loading) {
+    return (
+      <div className="lg:ml-64 mt-20 p-6 min-h-screen flex items-center justify-center bg-gray-100">
+        <p className="text-lg text-gray-600">Loading profile...</p>
+      </div>
+    );
+  }
   return (
     <>
       <AdminNav />
       <ToastContainer />
       <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-[#40A1CB]">Milkman Profile</h3>
+          <h3 className="text-lg font-semibold text-[#40A1CB]">
+            Milkman Profile
+          </h3>
           <div className="flex items-center mt-4">
             <img
-              src={profilePhoto}
+              src={profilePhoto ? profilePhoto :"Loading"}
               alt="Profile"
               className="w-24 h-24 rounded-full border"
             />
+            
             <div className="ml-4">
-              <p className="text-gray-700"><strong>Name:</strong> {name}</p>
-              <p className="text-gray-700"><strong>Email:</strong> {email}</p>
-              <p className="text-gray-700"><strong>Phone:</strong> {mobileNo}</p>
+              <p className="text-gray-700">
+                <strong>Name:</strong> {name}
+              </p>
+              <p className="text-gray-700">
+                <strong>Email:</strong> {email}
+              </p>
+              <p className="text-gray-700">
+                <strong>Phone:</strong> {mobileNo}
+              </p>
               <button
                 className="mt-2 bg-[#40A1CB] text-white px-4 py-2 rounded"
                 onClick={() => setModalVisible(true)}
@@ -104,45 +126,60 @@ const MilkManProfile = () => {
       </div>
 
       {isModalVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h3 className="text-lg font-semibold mb-4">Edit Profile</h3>
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full mb-2 p-2 border rounded"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full mb-2 p-2 border rounded"
-            />
-            <input
-              type="text"
-              placeholder="Phone"
-              value={mobileNo}
-              onChange={(e) => setMobileNo(e.target.value)}
-              className="w-full mb-2 p-2 border rounded"
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full mb-2 p-2 border rounded"
-            />
-            <div className="flex justify-end">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md">
+            <h3 className="text-2xl font-semibold text-center mb-6">
+              Edit Profile
+            </h3>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+              />
+
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+              />
+
+              <input
+                type="text"
+                placeholder="Phone"
+                value={mobileNo}
+                onChange={(e) => setMobileNo(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+              />
+
+              {/* Image Upload */}
+              <label className="block">
+                <span className="block mb-1 text-sm font-medium text-gray-700">
+                  Profile Picture
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full text-sm text-gray-700 border border-gray-300 rounded-md cursor-pointer file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-[#40A1CB] file:text-white hover:file:bg-[#368bb0]"
+                />
+              </label>
+            </div>
+
+            <div className="flex justify-end mt-6 space-x-3">
               <button
-                className="bg-gray-400 text-white px-4 py-2 rounded mr-2"
+                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition"
                 onClick={() => setModalVisible(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="bg-[#40A1CB] hover:bg-[#368bb0] text-white px-4 py-2 rounded-md transition"
                 onClick={handleSave}
               >
                 Save Changes

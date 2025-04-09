@@ -6,7 +6,14 @@ import { toast, ToastContainer } from "react-toastify";
 const MilkManProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState({ name: "", price: "", category: "", description: "" });
+  const [categories, setCategories] = useState([]);
+
+  const [currentProduct, setCurrentProduct] = useState({
+    name: "",
+    price: "",
+    category: "",
+    description: "",
+  });
   const [isEditMode, setIsEditMode] = useState(false);
   const [imageUri, setImageUri] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,11 +27,24 @@ const MilkManProducts = () => {
       setLoading(true);
       const { data } = await API.get("/api/milkman/product");
       setAllProducts(data.products);
-      console.log(data.products)
+      console.log(data.products);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.error("Error fetching products:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await API.get("/api/auth/milkman/category/all");
+      setCategories(res.data.categories);
+    } catch (error) {
+      console.error("Error fetching categories", error);
     }
   };
 
@@ -70,7 +90,7 @@ const MilkManProducts = () => {
       return null;
     }
   };
-  
+
   const handleDeleteProduct = async (id) => {
     try {
       setLoading(true);
@@ -90,10 +110,15 @@ const MilkManProducts = () => {
       <ToastContainer />
       <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-[#40A1CB]">Milkman Products</h3>
-          <button 
+          <h3 className="text-lg font-semibold text-[#40A1CB]">
+            Milkman Products
+          </h3>
+          <button
             className="bg-[#40A1CB] text-white px-4 py-2 rounded mt-4"
-            onClick={() => { setIsEditMode(false); setIsModalOpen(true); }}
+            onClick={() => {
+              setIsEditMode(false);
+              setIsModalOpen(true);
+            }}
           >
             Add Product
           </button>
@@ -114,24 +139,31 @@ const MilkManProducts = () => {
                   <td className="px-4 py-2">{product.name}</td>
                   <td className="px-4 py-2">{product.price}</td>
                   <td className="px-4 py-2">{product.category}</td>
-                  <td className="px-4 py-2"> {product.image ? (
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-16 h-16 object-cover rounded"
-            />
-          ) : (
-            "No Image"
-          )}</td>
+                  <td className="px-4 py-2">
+                    {" "}
+                    {product.image ? (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
                   <td className="px-4 py-2">
                     <button
-                      className="bg-green-500 text-white px-3 py-1 rounded mr-2"
-                      onClick={() => { setCurrentProduct(product); setIsEditMode(true); setIsModalOpen(true); }}
+                      className="bg-[#40A1CB] text-white px-3 py-1 rounded mr-2"
+                      onClick={() => {
+                        setCurrentProduct(product);
+                        setIsEditMode(true);
+                        setIsModalOpen(true);
+                      }}
                     >
                       Edit
                     </button>
                     <button
-                      className="bg-red-500 text-white px-3 py-1 rounded"
+                      className="bg-black text-white px-3 py-1 rounded"
                       onClick={() => handleDeleteProduct(product._id)}
                     >
                       Delete
@@ -147,15 +179,73 @@ const MilkManProducts = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h3 className="text-lg font-semibold mb-4">{isEditMode ? "Edit Product" : "Add Product"}</h3>
-            <input type="text" placeholder="Name" value={currentProduct.name} onChange={(e) => setCurrentProduct({ ...currentProduct, name: e.target.value })} className="w-full mb-2 p-2 border rounded" />
-            <input type="number" placeholder="Price" value={currentProduct.price} onChange={(e) => setCurrentProduct({ ...currentProduct, price: e.target.value })} className="w-full mb-2 p-2 border rounded" />
-            <input type="text" placeholder="Category" value={currentProduct.category} onChange={(e) => setCurrentProduct({ ...currentProduct, category: e.target.value })} className="w-full mb-2 p-2 border rounded" />
-            <textarea placeholder="Description" value={currentProduct.description} onChange={(e) => setCurrentProduct({ ...currentProduct, description: e.target.value })} className="w-full mb-2 p-2 border rounded"></textarea>
-            <input type="file" onChange={(e) => setImageUri(e.target.files[0])} className="w-full mb-2" />
+            <h3 className="text-lg font-semibold mb-4">
+              {isEditMode ? "Edit Product" : "Add Product"}
+            </h3>
+            <input
+              type="text"
+              placeholder="Name"
+              value={currentProduct.name}
+              onChange={(e) =>
+                setCurrentProduct({ ...currentProduct, name: e.target.value })
+              }
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <input
+              type="number"
+              placeholder="Price"
+              value={currentProduct.price}
+              onChange={(e) =>
+                setCurrentProduct({ ...currentProduct, price: e.target.value })
+              }
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <select
+              value={currentProduct.category}
+              onChange={(e) =>
+                setCurrentProduct({
+                  ...currentProduct,
+                  category: e.target.value,
+                })
+              }
+              className="w-full mb-2 p-2 border rounded"
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat, idx) => (
+                <option key={idx} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+            <textarea
+              placeholder="Description"
+              value={currentProduct.description}
+              onChange={(e) =>
+                setCurrentProduct({
+                  ...currentProduct,
+                  description: e.target.value,
+                })
+              }
+              className="w-full mb-2 p-2 border rounded"
+            ></textarea>
+            <input
+              type="file"
+              onChange={(e) => setImageUri(e.target.files[0])}
+              className="w-full mb-2"
+            />
             <div className="flex justify-end">
-              <button className="bg-gray-400 text-white px-4 py-2 rounded mr-2" onClick={() => setIsModalOpen(false)}>Cancel</button>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleAddEditProduct}>{isEditMode ? "Update" : "Add"}</button>
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded mr-2"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-[#40A1CB] text-white px-4 py-2 rounded"
+                onClick={handleAddEditProduct}
+              >
+                {isEditMode ? "Update" : "Add"}
+              </button>
             </div>
           </div>
         </div>
