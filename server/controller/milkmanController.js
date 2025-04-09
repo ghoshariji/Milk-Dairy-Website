@@ -19,6 +19,7 @@ exports.registerMilkman = async (req, res) => {
     location,
   } = req.body;
 
+console.log(req.body)
   try {
     // Validate location data
     if (

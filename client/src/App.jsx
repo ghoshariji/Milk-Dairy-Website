@@ -40,13 +40,14 @@ import CustomerMilkman from "./Customer/CustomerMilkman";
 import CustomerChangeMilkMan from "./Customer/CustomerChangeMilkMan";
 import CustomerHelp from "./Customer/CustomerHelp";
 import CustomerAdvanceBook from "./Customer/CustomerAdvanceBook";
+import Register from "./pages/Register/Register";
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<Test />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Test />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/milkman-dashboard" element={<MilkManDashboard />} />
       <Route path="/milkman-add-category" element={<MilkManAddCategory />} />
       <Route path="/milkman-add-customer" element={<MilkManAddCustomer />} />
