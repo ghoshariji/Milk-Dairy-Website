@@ -96,45 +96,45 @@ const CustomerCartPage = () => {
     <>
       <div className="p-4">
         <Toaster position="top-right" reverseOrder={false} />
-  
+
         {/* Header Row */}
-{/* Header Row */}
-<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-  {/* Back + Title */}
-  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
-    {/* Back Button */}
-    <button
-      type="button"
-      onClick={() => navigate("/customer-products")}
-      className="inline-flex items-center justify-center bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded w-fit"
-    >
-      ← Back
-    </button>
+        {/* Header Row */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          {/* Back + Title */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
+            {/* Back Button */}
+            <button
+              type="button"
+              onClick={() => navigate("/customer-products")}
+              className="inline-flex items-center justify-center bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded w-fit"
+            >
+              ← Back
+            </button>
 
-    {/* Title */}
-    <h2 className="text-2xl font-semibold text-center sm:text-left mt-2 sm:mt-0">
-      Your Cart
-    </h2>
-  </div>
+            {/* Title */}
+            <h2 className="text-2xl font-semibold text-center sm:text-left mt-2 sm:mt-0">
+              Your Cart
+            </h2>
+          </div>
 
-  {/* Checkout Summary */}
-  {cartItems.length > 0 ? (
-    <div className="bg-white shadow rounded p-3 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-      <p className="text-lg font-bold">Total: ₹{getTotalPrice().toFixed(2)}</p>
-      <button
-        onClick={() => navigate("/customer-checkout")}
-        className="bg-[#40A1CB] text-white px-4 py-2 rounded w-full sm:w-auto"
-      >
-        Checkout
-      </button>
-    </div>
-  ) : (
-    <div className="w-full sm:w-[180px]"></div>
-  )}
-</div>
+          {/* Checkout Summary */}
+          {cartItems.length > 0 ? (
+            <div className="bg-white shadow rounded p-3 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+              <p className="text-lg font-bold">
+                Total: ₹{getTotalPrice().toFixed(2)}
+              </p>
+              <button
+                onClick={() => navigate("/customer-checkout")}
+                className="bg-[#40A1CB] text-white px-4 py-2 rounded w-full sm:w-auto"
+              >
+                Checkout
+              </button>
+            </div>
+          ) : (
+            <div className="w-full sm:w-[180px]"></div>
+          )}
+        </div>
 
-
-  
         {/* Cart Items */}
         {cartItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -157,7 +157,7 @@ const CustomerCartPage = () => {
                     No Image
                   </div>
                 )}
-  
+
                 <h3 className="text-lg font-bold">{item.name}</h3>
                 <p className="text-sm text-gray-600">{item.description}</p>
                 <p className="text-sm text-gray-500 mb-2">
@@ -166,7 +166,7 @@ const CustomerCartPage = () => {
                 <p className="text-[#40A1CB] font-semibold mb-2">
                   Price: ₹{item.price?.toFixed(2) || "0.00"}
                 </p>
-  
+
                 {/* Quantity & Remove */}
                 <div className="flex justify-between items-center mt-auto pt-3 border-t">
                   <div className="flex items-center gap-2">
@@ -206,36 +206,34 @@ const CustomerCartPage = () => {
           </div>
         )}
       </div>
-  
+
       {/* Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
-          <h3 className="text-lg font-semibold mb-4">Confirm Removal</h3>
-          <p className="text-gray-600 mb-6">
-            Are you sure you want to remove this item from your cart?
-          </p>
-          <div className="flex justify-center gap-4">
-            <button
-              className="bg-[#40A1CB] text-white px-4 py-2 rounded"
-              onClick={handleRemoveConfirmed}
-            >
-              Yes, Remove
-            </button>
-            <button
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
-              onClick={() => setShowConfirmModal(false)}
-            >
-              Cancel
-            </button>
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+            <h3 className="text-lg font-semibold mb-4">Confirm Removal</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to remove this item from your cart?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                className="bg-[#40A1CB] text-white px-4 py-2 rounded"
+                onClick={handleRemoveConfirmed}
+              >
+                Yes, Remove
+              </button>
+              <button
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      
       )}
     </>
   );
-  
 };
 
 export default CustomerCartPage;
