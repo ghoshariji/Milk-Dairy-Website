@@ -41,6 +41,9 @@ import CustomerChangeMilkMan from "./Customer/CustomerChangeMilkMan";
 import CustomerHelp from "./Customer/CustomerHelp";
 import CustomerAdvanceBook from "./Customer/CustomerAdvanceBook";
 import Register from "./pages/Register/Register";
+import CustomerCartPage from "./Customer/CustomerCartPage";
+import CustomerCheckoutPage from "./Customer/CustomerCheckoutPage";
+import CustomerSuccessPage from "./Customer/CustomerSuccessPage";
 const App = () => {
   return (
     <Routes>
@@ -68,11 +71,15 @@ const App = () => {
 
 
 
+
       <Route path="/seller-dashboard" element={<SellerDash />} />
       <Route path="/seller-milk-record" element={<SellerMilkRecord />} />
       <Route path="/seller-products" element={<SellerProducts />} />
       <Route path="/seller-wallet" element={<SellerWalltet />} />
-      <Route path="/seller-payment-history" element={<SellerPaymentHistory />} />
+      <Route
+        path="/seller-payment-history"
+        element={<SellerPaymentHistory />}
+      />
       <Route path="/seller-profile" element={<SellerProfile />} />
       <Route path="/seller-payments" element={<SellerPayments />} />
       <Route path="/seller-milkman" element={<SellerMilkMan />} />
@@ -84,34 +91,27 @@ const App = () => {
 
 
 
+      
       <Route path="/customer-dashboard" element={<CustomerDash />} />
       <Route path="/customer-milk-record" element={<CustomerMilkRecord />} />
       <Route path="/customer-products" element={<CustomerProducts />} />
       <Route path="/customer-wallet" element={<CustomerWallet />} />
-      <Route path="/customer-payment-history" element={<CustomerPaymentHistory />} />
+      <Route
+        path="/customer-payment-history"
+        element={<CustomerPaymentHistory />}
+      />
       <Route path="/customer-profile" element={<CustomerProfile />} />
       <Route path="/customer-payments" element={<CustomerPayments />} />
       <Route path="/customer-milkman" element={<CustomerMilkman />} />
-      <Route path="/customer-change-milkman" element={<CustomerChangeMilkMan />} />
+      <Route
+        path="/customer-change-milkman"
+        element={<CustomerChangeMilkMan />}
+      />
       <Route path="/customer-help" element={<CustomerHelp />} />
       <Route path="/customer-advance-book" element={<CustomerAdvanceBook />} />
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      <Route path="/customer-cart" element={<CustomerCartPage />} />
+      <Route path="/customer-checkout" element={<CustomerCheckoutPage />} />
+      <Route path="/customer-success" element={<CustomerSuccessPage />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
