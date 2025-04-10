@@ -72,14 +72,22 @@ const CustomerCartPage = () => {
     const itemToRemove = cartItems[index];
 
     try {
+      // Remove from DB
       await API.delete(`/api/milkman/cart/delete/${itemToRemove._id}`);
     } catch (error) {
       console.error("Failed to delete from DB", error);
     }
 
+    // Remove from local state
     const updated = cartItems.filter((_, i) => i !== index);
     setCartItems(updated);
+
+    // 🔥 Also update localStorage
+    localStorage.setItem("customerCart", JSON.stringify(updated));
+
     toast.success(`${itemToRemove.name} removed from cart!`);
+
+    // Cleanup modal state
     setShowConfirmModal(false);
     setItemToRemoveIndex(null);
   };
