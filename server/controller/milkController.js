@@ -55,6 +55,7 @@ exports.bulkUpdateMilk = async (req, res) => {
 // Manual Milk Update
 exports.manualUpdateMilk = async (req, res) => {
   const { userId, date, milkQuantity } = req.body;
+  console.log(date)
   const milkmanId = req.user.userId; // Get the milkmanId from the decoded JWT token
 
   try {
@@ -219,13 +220,14 @@ exports.deleteMilkRecord = async (req, res) => {
   try {
     const { userId, date } = req.body; // Extract userId and date from request body
 
-    console.log(req.body);
+    console.log(req.body.date +"delete date");
     // Convert the date to the same format used in your DB
     const todayDate = new Date();
     todayDate.setMinutes(
       todayDate.getMinutes() - todayDate.getTimezoneOffset()
     );
     const formattedDate = todayDate.toISOString().split("T")[0];
+    console.log(formattedDate)
     if (date !== formattedDate) {
       return res.status(400).json({
         message: "Date mismatch. Only today's records can be deleted.",

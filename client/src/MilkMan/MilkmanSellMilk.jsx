@@ -124,7 +124,7 @@ const MilkmanSellMilk = () => {
             className="w-full mb-2 p-2 border rounded"
           />
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-[#40A1CB] text-white px-4 py-2 rounded"
             onClick={handleMilkSubmit}
             disabled={loading}
           >
@@ -132,7 +132,7 @@ const MilkmanSellMilk = () => {
           </button>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+        {/* <div className="bg-white p-6 rounded-lg shadow-md mt-6">
           <h3 className="text-lg font-semibold text-[#40A1CB]">Add Product</h3>
           <input
             type="text"
@@ -210,13 +210,13 @@ const MilkmanSellMilk = () => {
             className="w-full mb-2 p-2 border rounded"
           />
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-[#40A1CB] text-white px-4 py-2 rounded"
             onClick={handleProductAdd}
             disabled={loading}
           >
             {loading ? "Saving..." : "Add Product"}
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
+import { toast, ToastContainer } from "react-toastify";
 
 const CustomerProfile = () => {
   const [profile, setProfile] = useState({
@@ -71,28 +72,30 @@ const CustomerProfile = () => {
     formData.append("name", profile.name);
     formData.append("email", profile.email);
     formData.append("phone", profile.phone);
-
+  
     if (file) {
       formData.append("updateProfile", file);
     }
-
+  
     try {
       await API.put(`/api/auth/user/update-profile`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      alert("Profile updated successfully!");
+  
+      toast.success("Profile updated successfully!");
       setEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile.");
+      toast.error("Failed to update profile.");
     }
   };
+  
   return (
     <>
       <CustomerSidebar />
+      <ToastContainer />
       <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
         <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
 
@@ -156,7 +159,7 @@ const CustomerProfile = () => {
         <div className="flex justify-between mt-4">
           {!editing ? (
             <button
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-[#40A1CB] text-white rounded "
               onClick={() => setEditing(true)}
             >
               Edit Profile
@@ -164,7 +167,7 @@ const CustomerProfile = () => {
           ) : (
             <>
               <button
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                className="px-4 py-2 bg-[#40A1CB] text-white rounded "
                 onClick={updateProfile}
               >
                 Save

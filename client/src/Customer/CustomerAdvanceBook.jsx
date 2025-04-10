@@ -126,7 +126,7 @@ const CustomerAdvanceBook = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+                className="w-full bg-[#40A1CB] text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
               >
                 {loading ? "Submitting..." : "Submit Booking"}
               </button>

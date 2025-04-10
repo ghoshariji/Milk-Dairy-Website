@@ -12,6 +12,11 @@ const CustomerChangeMilkMan = () => {
   // Get current location
   const getCurrentLocation = () => {
     return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject("Geolocation is not supported by this browser.");
+        return;
+      }
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           resolve({
@@ -19,7 +24,15 @@ const CustomerChangeMilkMan = () => {
             longitude: position.coords.longitude,
           });
         },
-        (error) => reject(error)
+        (error) => {
+          console.error("Error getting location: ", error);
+          reject("Failed to retrieve location.");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
       );
     });
   };
@@ -33,16 +46,17 @@ const CustomerChangeMilkMan = () => {
           `/api/auth/milkman/get-all/${latitude}/${longitude}`
         );
 
+        console.log(res);
         if (res.status === 200) {
           console.log(res.data.milkmen);
           setMilkmanList(res.data.milkmen);
           setFilteredList(res.data.milkmen);
         } else {
-          alert("Failed to fetch milkmen");
+          setMilkmanList([]);
+          setFilteredList([]);
         }
       } catch (err) {
         console.error(err);
-        alert("Location or fetch error");
       }
     };
 
@@ -97,41 +111,45 @@ const CustomerChangeMilkMan = () => {
 
           {/* List */}
           <div className="space-y-4">
-            {filteredList.map((milkman, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center bg-white rounded-lg shadow p-4 hover:shadow-md transition duration-300"
-              >
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">
-                    {milkman.name.charAt(0)}
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-semibold">{milkman.name}</h3>
-                    <div className="flex items-center text-gray-600 text-sm mt-1">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      Distance : {milkman.distance}
-                    </div>
+            {filteredList.length > 0
+              ? filteredList.map((milkman, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center bg-white rounded-lg shadow p-4 hover:shadow-md transition duration-300"
+                  >
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">
+                        {milkman.name.charAt(0)}
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-lg font-semibold">
+                          {milkman.name}
+                        </h3>
+                        <div className="flex items-center text-gray-600 text-sm mt-1">
+                          <MapPin className="w-4 h-4 mr-1" />
+                          Distance : {milkman.distance}
+                        </div>
 
-                    <div className="flex items-center text-gray-600 text-sm mt-1">
-                      <Phone className="w-4 h-4 mr-1" />
-                      {milkman.phone || "N/A"}
+                        <div className="flex items-center text-gray-600 text-sm mt-1">
+                          <Phone className="w-4 h-4 mr-1" />
+                          {milkman.phone || "N/A"}
+                        </div>
+                      </div>
                     </div>
+                    <button
+                      onClick={() => assignMilkman(milkman.name)}
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                    >
+                      Assign
+                    </button>
                   </div>
-                </div>
-                <button
-                  onClick={() => assignMilkman(milkman.name)}
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
-                >
-                  Assign
-                </button>
-              </div>
-            ))}
+                ))
+              : "No Milkman Found..."}
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerChangeMilkMan
+export default CustomerChangeMilkMan;

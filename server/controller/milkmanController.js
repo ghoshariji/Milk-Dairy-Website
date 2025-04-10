@@ -153,7 +153,7 @@ exports.getAllMilkmen = async (req, res) => {
       .filter(Boolean); // Remove null values
 
     if (!nearbyMilkmen.length) {
-      return res.status(404).json({
+      return res.status(204).json({
         success: false,
         message: "No milkmen found within a 30 km radius!",
       });

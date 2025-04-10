@@ -66,7 +66,7 @@ const CustomerHelp = () => {
     <div className="flex min-h-screen bg-gray-100">
     <CustomerSidebar />
 
-    <div className="flex-1 p-6 lg:ml-64 flex items-center justify-center">
+    <div className="flex-1 p-6 lg:ml-64 flex items-center justify-center mt-15">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-xl p-8 w-full max-w-xl"
@@ -123,7 +123,7 @@ const CustomerHelp = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+          className="w-full bg-[#40A1CB] text-white py-2 rounded-lg hover:bg-blue-600 transition"
         >
           Submit
         </button>

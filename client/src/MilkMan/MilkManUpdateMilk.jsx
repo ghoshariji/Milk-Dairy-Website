@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
+import { Trash2 } from "lucide-react"; // or "react-icons/fi" -> FiTrash2
 
 const MilkManUpdateMilk = () => {
   const [searchText, setSearchText] = useState("");
@@ -69,6 +70,36 @@ const MilkManUpdateMilk = () => {
     }
     setLoading(false);
   };
+  const deleteUser = async (userId) => {
+    try {
+      // Create a date object with local date (removing timezone offset)
+      const today = new Date();
+      today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+
+      // Format the date to YYYY-MM-DD
+      const formattedDate = today.toISOString().split("T")[0];
+
+      const response = await API.delete("/api/milk/delete", {
+        data: {
+          userId,
+          date: formattedDate,
+        },
+      });
+      console.log(response)
+
+      if (response.status === 200) {
+        // Remove the deleted user from both lists
+        setUpdatedUsers((prev) => prev.filter((user) => user._id !== userId));
+        setNotUpdatedUsers((prev) =>
+          prev.filter((user) => user._id !== userId)
+        );
+        fetchData(); // Refresh data
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // Optionally show an error toast or message
+    }
+  };
 
   return (
     <>
@@ -79,18 +110,18 @@ const MilkManUpdateMilk = () => {
           <h3 className="text-lg font-semibold text-[#40A1CB]">
             Milk Data Management
           </h3>
-          <input
+          {/* <input
             type="text"
             placeholder="Search Users"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="w-full mb-2 p-2 border rounded"
-          />
+          /> */}
           <div className="flex mb-4">
             <button
               className={
                 activeTab === "updated"
-                  ? "bg-blue-500 text-white px-4 py-2"
+                  ? "bg-[#40A1CB] text-white px-4 py-2"
                   : "px-4 py-2"
               }
               onClick={() => setActiveTab("updated")}
@@ -100,7 +131,7 @@ const MilkManUpdateMilk = () => {
             <button
               className={
                 activeTab === "notUpdated"
-                  ? "bg-blue-500 text-white px-4 py-2"
+                  ? "bg-[#40A1CB] text-white px-4 py-2"
                   : "px-4 py-2"
               }
               onClick={() => setActiveTab("notUpdated")}
@@ -108,53 +139,77 @@ const MilkManUpdateMilk = () => {
               Not Updated
             </button>
           </div>
-          <div className="overflow-y-auto h-96 border rounded p-4">
+          <div className="overflow-y-auto h-96 rounded p-4">
             {(activeTab === "updated" ? updatedUsers : notUpdatedUsers).map(
-              (user) => (
+              (user, index) => (
                 <div
                   key={user._id}
                   className="flex justify-between items-center border-b py-2"
                 >
-                  <div>
-                    <input
-                      type="checkbox"
-                      onChange={() =>
-                        setSelectedUsers((prev) =>
-                          prev.includes(user._id)
-                            ? prev.filter((id) => id !== user._id)
-                            : [...prev, user._id]
-                        )
-                      }
-                    />
-                    <span className="ml-2">
+                  <div className="flex items-center">
+                    <span className="mr-2 font-semibold">{index + 1}.</span>
+
+                    {/* Only show checkbox if it's NOT in the "updated" tab */}
+                    {activeTab !== "updated" && (
+                      <input
+                        type="checkbox"
+                        className="accent-[#40A1CB] w-4 h-4"
+                        onChange={() =>
+                          setSelectedUsers((prev) =>
+                            prev.includes(user._id)
+                              ? prev.filter((id) => id !== user._id)
+                              : [...prev, user._id]
+                          )
+                        }
+                      />
+                    )}
+
+                    <span
+                      className={`ml-2 ${
+                        activeTab !== "updated" ? "" : "ml-6"
+                      }`}
+                    >
                       {user.name} - {user.milkQuantity} Kg
                     </span>
                   </div>
-                  <button
-                    className="bg-green-500 text-white px-3 py-1 rounded"
-                    onClick={() => {
-                      setEditingUser(user);
-                      setNewMilkValue(user.milkQuantity);
-                      setModalVisible(true);
-                    }}
-                  >
-                    Edit
-                  </button>
+
+                  {activeTab === "updated" ? (
+                    <button
+                      className="bg-red-500 text-white px-3 py-1 rounded flex items-center gap-2"
+                      onClick={() => deleteUser(user._id)}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-[#40A1CB] text-white px-3 py-1 rounded"
+                      onClick={() => {
+                        setEditingUser(user);
+                        setNewMilkValue(user.milkQuantity);
+                        setModalVisible(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
                 </div>
               )
             )}
           </div>
-          <button
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={updateMilk}
-            disabled={loading}
-          >
-            {loading ? "Updating..." : "Bulk Update"}
-          </button>
+
+          {activeTab !== "updated" && (
+            <button
+              className="mt-4 bg-[#40A1CB] text-white px-4 py-2 rounded"
+              onClick={updateMilk}
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Bulk Update"}
+            </button>
+          )}
         </div>
       </div>
       {modalVisible && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-200 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg">
             <h3 className="text-lg font-semibold">Edit Milk Quantity</h3>
             <input
@@ -164,7 +219,7 @@ const MilkManUpdateMilk = () => {
               className="w-full mb-2 p-2 border rounded"
             />
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-[#40A1CB] text-white px-4 py-2 rounded"
               onClick={saveManualMilkUpdate}
               disabled={loading}
             >

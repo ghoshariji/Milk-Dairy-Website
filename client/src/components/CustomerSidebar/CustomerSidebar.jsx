@@ -85,7 +85,10 @@ const CustomerSidebar = () => {
                   />
                 </svg>
               </button>
-              <Link to="/milkman-dashboard" className="flex items-center ms-2 md:me-24">
+              <Link
+                to="/milkman-dashboard"
+                className="flex items-center ms-2 md:me-24"
+              >
                 <img
                   src={currentLogo}
                   alt="FoxTech Logo"
@@ -338,15 +341,9 @@ const CustomerSidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to="/customer-set-rate"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
+              <button
+                onClick={handleLogout} // Make sure you define this function to handle logout
+                className="flex w-full items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                   <img
@@ -356,9 +353,8 @@ const CustomerSidebar = () => {
                   />
                 </div>
                 <span className="ms-3">Log out</span>
-              </NavLink>
+              </button>
             </li>
-    
           </ul>
         </div>
       </aside>
