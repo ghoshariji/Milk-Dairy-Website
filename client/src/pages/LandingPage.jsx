@@ -4,7 +4,7 @@ import bg from "./assets/bg.png";
 import milkbg from "./assets/milkbg.png";
 import thought from "./assets/thought.png";
 import iphone from "./assets/iphone.png";
-import iphone14 from "./assets/iphone14.png";
+import iphone14 from "./assets/Iphone14.png";
 import line from "./assets/line.png";
 import dot from "./assets/dot.png";
 import phone12 from "./assets/mani.jpg";
