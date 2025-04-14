@@ -33,14 +33,16 @@ const userSchema = new mongoose.Schema({
     data: { type: Buffer, default: "" },
     contentType: { type: String, default: "" },
   },
-  milkQuantity:{
-    type:String,
-    default:5
+  milkQuantity: {
+    type: String,
+    default: 5,
   },
-  milkRate:{
-    type:Number,
-    default:0
-  }
+  milkRate: {
+    type: Number,
+    default: 0,
+  },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
 });
 
 const User = mongoose.model("User", userSchema);

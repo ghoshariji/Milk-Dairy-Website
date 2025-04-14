@@ -9,6 +9,12 @@ const Feedback = require("../modal/helpModal");
 const sellerMilkModal = require("../modal/sellMilkModalRecord");
 const sellMilkModalRecord = require("../modal/sellMilkModalRecord");
 const SECRET_KEY = process.env.JWT_SECRET;
+
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+
+const CLIENT_URL = "http://localhost:5173";
+
 exports.registerUser = async (req, res) => {
   const {
     name,
@@ -331,7 +337,6 @@ exports.getUserProfile = async (req, res) => {
       phone: user.phone,
       profileImage: user.profileImage,
     };
-
 
     res.json(userProfile);
   } catch (error) {
@@ -951,7 +956,7 @@ exports.superAdminDash = async (req, res) => {
   }
 };
 
-exports.getAllMilkManSuperAdmin = async(req,res) =>{
+exports.getAllMilkManSuperAdmin = async (req, res) => {
   try {
     const milkmen = await Milkman.find({}, "name email"); // Fetch only name & email
     res.status(200).json(milkmen);
@@ -959,8 +964,7 @@ exports.getAllMilkManSuperAdmin = async(req,res) =>{
     console.error("Error fetching milkmen:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
-
+};
 
 exports.getMonthDashboard = async (req, res) => {
   try {
@@ -1021,7 +1025,8 @@ exports.getMonthDashboard = async (req, res) => {
 
     // Calculate profit for each month
     Object.keys(monthData).forEach((month) => {
-      monthData[month].profit = monthData[month].sellMilk - monthData[month].buyMilk;
+      monthData[month].profit =
+        monthData[month].sellMilk - monthData[month].buyMilk;
     });
 
     // Convert object to array sorted by month (latest first)
@@ -1041,10 +1046,9 @@ exports.getMonthDashboard = async (req, res) => {
   }
 };
 
-
 exports.getMilkManDataUser = async (req, res) => {
   try {
-    console.log("Come")
+    console.log("Come");
     const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Authorization token missing" });
@@ -1060,7 +1064,9 @@ exports.getMilkManDataUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     // Find the milkman associated with the user
-    const milkManData = await Milkman.findById(user.milkman).select("-password -requests -products -location -categoryProduct -customer -seller -subcriptionCode -buyMilk -sellMilk -profileImage");
+    const milkManData = await Milkman.findById(user.milkman).select(
+      "-password -requests -products -location -categoryProduct -customer -seller -subcriptionCode -buyMilk -sellMilk -profileImage"
+    );
     if (!milkManData) {
       return res.status(404).json({ message: "Milkman not found" });
     }
@@ -1069,5 +1075,112 @@ exports.getMilkManDataUser = async (req, res) => {
   } catch (error) {
     console.error("Error fetching Milkman data:", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.forgotPassword = async (req, res) => {
+  const { enterCode } = req.body;
+
+  try {
+    const user = await User.findOne({ enterCode });
+
+    if (!user || !user.email) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+    user.resetToken = token;
+    user.resetTokenExpiry = expiresAt;
+    await user.save();
+
+    const resetLink = `${CLIENT_URL}/reset-password/${token}`;
+    // console.log(resetLink);
+
+    // Nodemailer setup
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "arijitghosh1203@gmail.com",
+        pass: "sbkz nlun jawd ykki",
+      },
+    });
+
+    const mailOptions = {
+      from: "no-reply@yourdomain.com",
+      to: user.email,
+      subject: "Reset Your Password - Halo Dairy",
+      html: `
+        <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
+          <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <img src="https://www.dairyfoods.com/ext/resources/DF/2024/Nov/GettyImages-2150650373.jpg?height=740&t=1734040205&width=auto" alt="Dairy Farm" style="width: 100%; height: auto;" />
+
+            <div style="padding: 30px;">
+              <h2 style="color: #333;">Hello ${
+                user.name
+              }, welcome to <strong>Halo Dairy</strong> 🐄</h2>
+
+              <p style="font-size: 16px; color: #555;">
+                We received a request to reset your password. Click the button below to create a new one:
+              </p>
+
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${resetLink}" style="display: inline-block; padding: 12px 25px; background-color: #40A1CB; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">
+                  Reset Password
+                </a>
+              </div>
+
+              <p style="font-size: 14px; color: #999;">
+                This link will expire in 15 minutes.<br />
+                If you didn’t request this, please ignore this email.
+              </p>
+
+              <p style="margin-top: 40px; font-size: 12px; color: #ccc; text-align: center;">
+                © ${new Date().getFullYear()} Halo Dairy. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res
+      .status(200)
+      .json({
+        message: "Reset link sent to your email. It will expire in 15 minutes.",
+      });
+  } catch (err) {
+    console.error("Error sending reset email:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiry: { $gt: new Date() }, // Ensure Date object is used
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful!" });
+  } catch (err) {
+    console.error("Error resetting password:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };

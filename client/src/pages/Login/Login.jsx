@@ -14,6 +14,9 @@ const Login = () => {
   const [role, setRole] = useState("customer");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [resetCode, setResetCode] = useState("");
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -57,6 +60,25 @@ const Login = () => {
         error.response?.data?.message ||
           "Something went wrong. Please try again."
       );
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!resetCode) return toast.error("Please enter your code");
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_SERVER}/api/auth/user/forgot-password`,
+        {
+          enterCode: resetCode,
+        }
+      );
+      toast.success(res.data.message);
+      setShowModal(false);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -188,8 +210,44 @@ const Login = () => {
               Don't have an account? Register
             </p>
           </Link>
+          <p
+            className="text-sm font-medium text-[#40A1CB] hover:underline cursor-pointer"
+            onClick={() => setShowModal(true)}
+          >
+            Forgot Password?
+          </p>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50">
+          <div className="bg-white rounded-2xl p-6 w-96 shadow-xl border border-gray-200">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">
+              Reset Password
+            </h2>
+            <input
+              type="text"
+              placeholder="Enter your code"
+              value={resetCode}
+              onChange={(e) => setResetCode(e.target.value)}
+              className="w-full px-3 py-2 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-[#40A1CB] text-white px-4 py-2 rounded hover:bg-[#3693b7] transition"
+                onClick={handleForgotPassword}
+              >
+                Send Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

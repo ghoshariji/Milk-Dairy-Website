@@ -44,6 +44,7 @@ import Register from "./pages/Register/Register";
 import CustomerCartPage from "./Customer/CustomerCartPage";
 import CustomerCheckoutPage from "./Customer/CustomerCheckoutPage";
 import CustomerSuccessPage from "./Customer/CustomerSuccessPage";
+import ResetPassword from "./pages/ResetPassword";
 const App = () => {
   return (
     <Routes>
@@ -51,6 +52,7 @@ const App = () => {
       <Route path="/test" element={<Test />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route path="/milkman-dashboard" element={<MilkManDashboard />} />
       <Route path="/milkman-add-category" element={<MilkManAddCategory />} />
       <Route path="/milkman-add-customer" element={<MilkManAddCustomer />} />
