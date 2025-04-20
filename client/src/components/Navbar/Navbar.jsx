@@ -17,21 +17,37 @@ const Navbar = () => {
       </ul>
 
       {/* Mobile Menu Button */}
-      <div className="md:hidden">
-        <button
-          className="text-gray-600 text-3xl focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>
-      </div>
+      <div className="block md:hidden">
+  <button
+    className="text-gray-600 text-3xl focus:outline-none"
+    onClick={() => setIsOpen(!isOpen)}
+  >
+    {isOpen ? <FiX /> : <FiMenu />}
+  </button>
+</div>
+
 
       {/* Mobile Menu */}
       {isOpen && (
         <ul className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col space-y-4 p-6 text-gray-600 md:hidden z-10">
-          <li onClick={() => setIsOpen(false)} className="hover:text-green-500 cursor-pointer">Home</li>
-          <li onClick={() => setIsOpen(false)} className="hover:text-green-500 cursor-pointer">About</li>
-          <li onClick={() => setIsOpen(false)} className="hover:text-green-500 cursor-pointer">Contact</li>
+          <li
+            onClick={() => setIsOpen(false)}
+            className="hover:text-green-500 cursor-pointer"
+          >
+            Home
+          </li>
+          <li
+            onClick={() => setIsOpen(false)}
+            className="hover:text-green-500 cursor-pointer"
+          >
+            About
+          </li>
+          <li
+            onClick={() => setIsOpen(false)}
+            className="hover:text-green-500 cursor-pointer"
+          >
+            Contact
+          </li>
         </ul>
       )}
     </nav>
