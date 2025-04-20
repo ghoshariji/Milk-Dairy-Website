@@ -78,9 +78,9 @@ const CustomerDash = () => {
   }, [selectedDate]);
 
   const graphData = [
-    { name: "Products", count: dashboardData.productsCount, link: "/products" },
+    { name: "Products", count: dashboardData.productsCount, link: "/customer-products" },
     { name: "Orders", count: dashboardData.ordersCount, link: "/orders" },
-    { name: "Milkmans", count: dashboardData.milkmanCount, link: "/milkmans" },
+    { name: "Milkmans", count: dashboardData.milkmanCount, link: "/customer-milk-record" },
   ];
 
   const lineChartData = [
