@@ -94,6 +94,7 @@ const CustomerChangeMilkMan = () => {
       alert("Failed to assign milkman.");
     }
   };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <CustomerSidebar />
@@ -110,42 +111,45 @@ const CustomerChangeMilkMan = () => {
           />
 
           {/* List */}
-          <div className="space-y-4">
-            {filteredList.length > 0
-              ? filteredList.map((milkman, index) => (
+            <div className="flex flex-col space-y-4">
+              {filteredList.length > 0 ? (
+                filteredList.map((milkman, idx) => (
                   <div
-                    key={index}
-                    className="flex justify-between items-center bg-white rounded-lg shadow p-4 hover:shadow-md transition duration-300"
+                    key={idx}
+                    className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white rounded-lg shadow p-4"
                   >
-                    <div className="flex items-center">
+                    {/* Avatar + Info */}
+                    <div className="flex items-start sm:items-center">
                       <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">
                         {milkman.name.charAt(0)}
                       </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold">
-                          {milkman.name}
-                        </h3>
-                        <div className="flex items-center text-gray-600 text-sm mt-1">
+                      <div className="ml-4 space-y-1">
+                        <h3 className="text-lg font-semibold">{milkman.name}</h3>
+                        <div className="flex items-center text-gray-600 text-sm">
                           <MapPin className="w-4 h-4 mr-1" />
-                          Distance : {milkman.distance}
+                          <span>Distance: {milkman.distance}</span>
                         </div>
-
-                        <div className="flex items-center text-gray-600 text-sm mt-1">
+                        <div className="flex items-center text-gray-600 text-sm">
                           <Phone className="w-4 h-4 mr-1" />
-                          {milkman.phone || "N/A"}
+                          <span>{milkman.phone || "N/A"}</span>
                         </div>
                       </div>
                     </div>
+
+                    {/* Assign button */}
                     <button
                       onClick={() => assignMilkman(milkman.name)}
-                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                      className="mt-4 sm:mt-0 bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition self-end sm:self-center"
                     >
                       Assign
                     </button>
                   </div>
                 ))
-              : "No Milkman Found..."}
-          </div>
+              ) : (
+                <p className="text-gray-500">No Milkman Found...</p>
+              )}
+            </div>
+
         </div>
       </div>
     </div>

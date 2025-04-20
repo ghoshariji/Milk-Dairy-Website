@@ -70,7 +70,7 @@ const CustomerDash = () => {
       <CustomerSidebar />
 
       {/* Main Content */}
-      <div className="p-6 w-full lg:ml-64 mt-20">
+      <div className="p-6 w-full lg:ml-64 mt-20 bg-white">
         <div className="flex-1 p-6 grid grid-cols-1 md:grid-cols-1 gap-6">
           {/* Box 1: Milk Weekly Data */}
           <div className="bg-white p-4 rounded-lg shadow-md relative">

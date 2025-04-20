@@ -3,139 +3,224 @@ import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import {
+  FaCartPlus,
+  FaTag,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaEye,
+} from "react-icons/fa";
 
 const CustomerProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
 
   const fetchProducts = async () => {
     try {
       const res = await API.get("/api/milkman/product/getCustomerProduct");
       setAllProducts(res.data.products || []);
-      console.log(res.data.products);
     } catch (error) {
       console.error("Error fetching products:", error.message);
     }
   };
 
-  const createImageUrl = (imageData, contentType) => {
+  const createImageUrl = (data, type) => {
     try {
-      // Convert normal array to Uint8Array
-      const typedArray = new Uint8Array(imageData);
-      const blob = new Blob([typedArray], {
-        type: contentType || "image/jpeg",
-      });
+      const arr = new Uint8Array(data);
+      const blob = new Blob([arr], { type: type || "image/jpeg" });
       return URL.createObjectURL(blob);
-    } catch (error) {
-      console.error("Error creating image URL:", error);
+    } catch {
       return null;
     }
   };
 
   useEffect(() => {
     fetchProducts();
-
-    const storedCart = localStorage.getItem("customerCart");
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
+    const stored = localStorage.getItem("customerCart");
+    if (stored) setCartItems(JSON.parse(stored));
   }, []);
 
   const handleAddToCart = (product) => {
-    // Check if the product is already in the cart
-    const alreadyInCart = cartItems.some((item) => item._id === product._id);
-    if (alreadyInCart) {
+    if (cartItems.some((i) => i._id === product._id)) {
       toast.error(`${product.name} is already in your cart!`);
       return;
     }
-
-    // Check if cart limit has been reached
     if (cartItems.length >= 20) {
-      toast.error("You can only add up to 20 products in the cart.");
+      toast.error("You can only add up to 20 items.");
       return;
     }
-
-    // Add product to cart
-    const updatedCart = [...cartItems, product];
-    setCartItems(updatedCart);
-    localStorage.setItem("customerCart", JSON.stringify(updatedCart));
+    const updated = [...cartItems, { ...product, quantity: 1 }];
+    setCartItems(updated);
+    localStorage.setItem("customerCart", JSON.stringify(updated));
     toast.success(`${product.name} added to cart!`);
   };
 
   return (
     <div className="flex">
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" />
       <CustomerSidebar />
 
-      <div className="lg:ml-64 w-full mt-20 p-4 bg-gray-100 min-h-screen">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Your Products</h2>
-          <div className="relative">
-            <button
-              className="bg-[#40A1CB] text-white text-xl font-semibold px-4 py-2 rounded-lg  transition duration-300"
-              onClick={() =>
-                navigate("/customer-cart", { state: { cartItems } })
-              }
-            >
-              Cart
-            </button>
+      <main className="lg:ml-64 w-full mt-20 p-6 bg-gray-50 min-h-screen">
+        <header className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Our Products</h1>
+          <button
+            onClick={() => navigate("/customer-cart", { state: { cartItems } })}
+            className="relative bg-[#40A1CB] hover:bg-[#3184A6] text-white px-5 py-2 rounded-lg flex items-center transition"
+          >
+            <FaCartPlus className="mr-2" /> Cart
             {cartItems.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 rounded-full">
                 {cartItems.length}
               </span>
             )}
-          </div>
-        </div>
+          </button>
+        </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {allProducts.length > 0 ? (
-            allProducts.map((product, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {allProducts.length ? (
+            allProducts.map((p) => (
               <div
-                key={index}
-                className="bg-white rounded-lg shadow hover:shadow-md transition duration-200 overflow-hidden"
+                key={p._id}
+                className="group relative bg-gradient-to-br from-cyan-100 via-cyan-200 to-cyan-300 rounded-xl shadow hover:shadow-2xl transform hover:scale-[1.02] transition"
               >
-                <img
-                  src={
-                    product.image?.data?.data
-                      ? createImageUrl(
-                          product.image.data.data,
-                          product.image.contentType
-                        )
-                      : "No Image Found" // 👈 Make sure this image exists in your public/images folder
-                  }
-                  alt={product.name || "No image"}
-                  className="w-full h-48 object-cover"
-                />
-
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="text-sm text-gray-600">{product.description}</p>
-                  <p className="text-sm mt-1 text-gray-800">
-                    Category:{" "}
-                    <span className="font-medium">{product.category}</span>
-                  </p>
-                  <p className="text-green-700 font-semibold">
-                    {product.isAvailable === "true"
-                      ? "Available"
-                      : "Not Available"}
-                  </p>
+                {/* Image + Overlay */}
+                <div className="relative h-48 overflow-hidden rounded-t-xl">
+                  <img
+                    src={
+                      p.image?.data?.data
+                        ? createImageUrl(p.image.data.data, p.image.contentType)
+                        : "/placeholder.png"
+                    }
+                    alt={p.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition" />
                   <button
-                    className="mt-2 bg-[#40A1CB] text-white px-3 py-1 rounded  transition duration-300"
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() => setSelectedProduct(p)}
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 text-white text-2xl"
+                    title="View Details"
                   >
-                    Add to Cart
+                    <FaEye />
                   </button>
+                </div>
+
+                {/* Body */}
+                <div className="p-4 space-y-2">
+                  <h2 className="text-lg font-semibold text-gray-800 line-clamp-2">
+                    {p.name}
+                  </h2>
+                  <p className="text-sm text-gray-600 overflow-hidden h-12">
+                    {p.description}
+                  </p>
+                  <div className="flex items-center text-sm text-gray-700">
+                    <FaTag className="mr-1" />{" "}
+                    <span className="font-medium">{p.category}</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    {p.isAvailable === "true" ? (
+                      <FaCheckCircle className="text-green-600 mr-1" />
+                    ) : (
+                      <FaTimesCircle className="text-red-600 mr-1" />
+                    )}{" "}
+                    {p.isAvailable === "true" ? "In Stock" : "Out of Stock"}
+                  </div>
+
+                  <div className="mt-3 flex justify-between items-center">
+                    <span className="text-xl font-bold text-[#40A1CB]">
+                      ₹{p.price.toFixed(2)}
+                    </span>
+                    <button
+                      disabled={p.isAvailable !== "true"}
+                      onClick={() => handleAddToCart(p)}
+                      className={`flex items-center px-3 py-1 rounded-lg text-white transition ${
+                        p.isAvailable === "true"
+                          ? "bg-[#40A1CB] hover:bg-[#3184A6]"
+                          : "bg-gray-400 cursor-not-allowed"
+                      }`}
+                    >
+                      <FaCartPlus className="mr-1" /> Add
+                    </button>
+                  </div>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-500 col-span-full text-center">
+            <p className="col-span-full text-center text-gray-500">
               No products found.
             </p>
           )}
         </div>
-      </div>
+
+        {/* Product Modal */}
+        {selectedProduct && (
+          <div
+            onClick={() => setSelectedProduct(null)}
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative"
+            >
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl"
+              >
+                &times;
+              </button>
+
+              <img
+                src={
+                  selectedProduct.image?.data?.data
+                    ? createImageUrl(
+                        selectedProduct.image.data.data,
+                        selectedProduct.image.contentType
+                      )
+                    : "/placeholder.png"
+                }
+                alt={selectedProduct.name}
+                className="w-full h-48 object-cover rounded-md mb-4"
+              />
+
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                {selectedProduct.name}
+              </h2>
+              <p className="text-gray-600 mb-2">{selectedProduct.description}</p>
+              <p className="text-gray-800 mb-1">
+                <strong>Category:</strong> {selectedProduct.category}
+              </p>
+              <p className="mb-1">
+                <strong>Status:</strong>{" "}
+                {selectedProduct.isAvailable === "true" ? (
+                  <span className="text-green-600">In Stock</span>
+                ) : (
+                  <span className="text-red-600">Out of Stock</span>
+                )}
+              </p>
+              <p className="text-xl font-bold text-[#40A1CB] mt-2">
+                ₹{selectedProduct.price.toFixed(2)}
+              </p>
+
+              <button
+                disabled={selectedProduct.isAvailable !== "true"}
+                onClick={() => {
+                  handleAddToCart(selectedProduct);
+                  setSelectedProduct(null);
+                }}
+                className={`mt-4 w-full py-2 rounded-lg text-white transition ${
+                  selectedProduct.isAvailable === "true"
+                    ? "bg-[#40A1CB] hover:bg-[#3184A6]"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+              >
+                <FaCartPlus className="inline mr-2" />
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 };

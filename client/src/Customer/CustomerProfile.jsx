@@ -96,7 +96,7 @@ const CustomerProfile = () => {
     <>
       <CustomerSidebar />
       <ToastContainer />
-      <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
+      <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
         <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
 
         <div className="mb-4">

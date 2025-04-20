@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
-import API from "../api"; // Adjust path if needed
+import { Trash2, Plus, Minus } from "lucide-react";
+import API from "../api"; // Adjust if needed
 
 const CustomerCartPage = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -47,47 +48,21 @@ const CustomerCartPage = () => {
     }
   };
 
-  const removeItem = async (index) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to remove this item?"
-    );
-
-    if (confirmed) {
-      const itemToRemove = cartItems[index];
-
-      try {
-        await API.delete(`/api/milkman/cart/delete/${itemToRemove._id}`);
-      } catch (error) {
-        console.error("Failed to delete from DB", error);
-      }
-
-      const updated = cartItems.filter((_, i) => i !== index);
-      setCartItems(updated);
-      toast.success(`${itemToRemove.name} removed from cart!`);
-    }
-  };
-
   const handleRemoveConfirmed = async () => {
     const index = itemToRemoveIndex;
     const itemToRemove = cartItems[index];
 
     try {
-      // Remove from DB
       await API.delete(`/api/milkman/cart/delete/${itemToRemove._id}`);
     } catch (error) {
       console.error("Failed to delete from DB", error);
     }
 
-    // Remove from local state
     const updated = cartItems.filter((_, i) => i !== index);
     setCartItems(updated);
-
-    // 🔥 Also update localStorage
     localStorage.setItem("customerCart", JSON.stringify(updated));
 
     toast.success(`${itemToRemove.name} removed from cart!`);
-
-    // Cleanup modal state
     setShowConfirmModal(false);
     setItemToRemoveIndex(null);
   };
@@ -102,38 +77,33 @@ const CustomerCartPage = () => {
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-6 bg-gray-50 min-h-screen">
         <Toaster position="top-right" reverseOrder={false} />
 
-        {/* Header Row */}
-        {/* Header Row */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          {/* Back + Title */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
-            {/* Back Button */}
             <button
               type="button"
               onClick={() => navigate("/customer-products")}
-              className="inline-flex items-center justify-center bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded w-fit"
+              className="inline-flex items-center justify-center bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded w-fit text-gray-800"
             >
               ← Back
             </button>
-
-            {/* Title */}
-            <h2 className="text-2xl font-semibold text-center sm:text-left mt-2 sm:mt-0">
+            <h2 className="text-3xl font-semibold text-gray-900 mt-2 sm:mt-0">
               Your Cart
             </h2>
           </div>
 
-          {/* Checkout Summary */}
+          {/* Total and Checkout */}
           {cartItems.length > 0 ? (
-            <div className="bg-white shadow rounded p-3 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-              <p className="text-lg font-bold">
+            <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+              <p className="text-xl font-bold text-gray-900">
                 Total: ₹{getTotalPrice().toFixed(2)}
               </p>
               <button
                 onClick={() => navigate("/customer-checkout")}
-                className="bg-[#40A1CB] text-white px-4 py-2 rounded w-full sm:w-auto"
+                className="bg-[#40A1CB] text-white px-6 py-3 rounded-lg text-lg w-full sm:w-auto"
               >
                 Checkout
               </button>
@@ -145,11 +115,11 @@ const CustomerCartPage = () => {
 
         {/* Cart Items */}
         {cartItems.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {cartItems.map((item, index) => (
               <div
                 key={index}
-                className="bg-white p-4 shadow rounded flex flex-col"
+                className="bg-gradient-to-br from-[#e0f7fa] to-[#4dd0e1] p-6 shadow-xl rounded-2xl transition-transform transform hover:scale-105"
               >
                 {item.image?.data?.data ? (
                   <img
@@ -158,49 +128,51 @@ const CustomerCartPage = () => {
                       item.image.contentType
                     )}
                     alt={item.name}
-                    className="w-full h-40 object-cover rounded mb-2"
+                    className="w-full h-48 object-cover rounded-lg mb-4 shadow-md"
                   />
                 ) : (
-                  <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 mb-2">
+                  <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500 rounded-lg mb-4">
                     No Image
                   </div>
                 )}
 
-                <h3 className="text-lg font-bold">{item.name}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
-                <p className="text-sm text-gray-500 mb-2">
+                <h3 className="text-xl font-bold text-gray-800">{item.name}</h3>
+                <p className="text-sm text-gray-700 mt-1">{item.description}</p>
+                <p className="text-sm text-gray-600 mb-2 mt-2">
                   Category: {item.category}
                 </p>
-                <p className="text-[#40A1CB] font-semibold mb-2">
-                  Price: ₹{item.price?.toFixed(2) || "0.00"}
+                <p className="text-[#007e99] font-semibold text-lg mb-3">
+                  ₹{item.price?.toFixed(2) || "0.00"}
                 </p>
 
                 {/* Quantity & Remove */}
-                <div className="flex justify-between items-center mt-auto pt-3 border-t">
+                <div className="flex justify-between items-center mt-4 border-t pt-4">
                   <div className="flex items-center gap-2">
                     <button
-                      className="bg-gray-300 px-2 py-1 rounded text-lg"
+                      className="bg-white text-gray-800 p-2 rounded-full shadow hover:bg-gray-100 hover:scale-110 transition"
                       onClick={() => decreaseQty(index)}
                     >
-                      -
+                      <Minus size={18} />
                     </button>
-                    <span>{item.quantity || 1}</span>
+                    <span className="text-lg font-medium px-2">
+                      {item.quantity || 1}
+                    </span>
                     <button
-                      className="bg-gray-300 px-2 py-1 rounded text-lg"
+                      className="bg-white text-gray-800 p-2 rounded-full shadow hover:bg-gray-100 hover:scale-110 transition"
                       onClick={() => increaseQty(index)}
                     >
-                      +
+                      <Plus size={18} />
                     </button>
                   </div>
                   <button
-                    className="text-red-500 hover:text-red-700 text-xl"
+                    className="text-red-600 hover:text-red-800 transition"
                     onClick={() => {
                       setItemToRemoveIndex(index);
                       setShowConfirmModal(true);
                     }}
                     title="Remove Item"
                   >
-                    ❌
+                    <Trash2 size={22} />
                   </button>
                 </div>
               </div>
@@ -208,7 +180,7 @@ const CustomerCartPage = () => {
           </div>
         ) : (
           <div className="flex items-center justify-center h-[60vh]">
-            <p className="text-xl text-gray-500 font-semibold">
+            <p className="text-2xl text-gray-500 font-semibold">
               🛒 Your cart is empty.
             </p>
           </div>
@@ -217,21 +189,21 @@ const CustomerCartPage = () => {
 
       {/* Modal */}
       {showConfirmModal && (
-        <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
-            <h3 className="text-lg font-semibold mb-4">Confirm Removal</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-sm w-full">
+            <h3 className="text-xl font-semibold mb-4">Confirm Removal</h3>
             <p className="text-gray-600 mb-6">
               Are you sure you want to remove this item from your cart?
             </p>
             <div className="flex justify-center gap-4">
               <button
-                className="bg-[#40A1CB] text-white px-4 py-2 rounded"
+                className="bg-[#40A1CB] text-white px-6 py-3 rounded-lg"
                 onClick={handleRemoveConfirmed}
               >
                 Yes, Remove
               </button>
               <button
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                className="bg-gray-300 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-400"
                 onClick={() => setShowConfirmModal(false)}
               >
                 Cancel
