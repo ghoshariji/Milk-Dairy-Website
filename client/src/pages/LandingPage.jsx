@@ -140,7 +140,7 @@ const LandingPage = () => {
       >
         <div className="relative z-10 max-w-6xl mx-auto text-center">
           <p className="text-[40A1CB] text-sm mb-2 tracking-widest">
-            LOREM IPSUM
+            Hallo Dairy
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold mb-12">
             Why Are We Unique ?
@@ -150,7 +150,7 @@ const LandingPage = () => {
             {/* Card 1 */}
             <div className="flex flex-col items-center px-4">
               <div className="bg-green-100 p-4 rounded-full mb-4">
-                <img src="/icons/delivery.svg" alt="Icon" className="w-8 h-8" />
+                <img src={screen1} alt="Icon" className="w-8 h-8" />
               </div>
               <h3 className="font-semibold text-lg mb-2">
                 We've Upped The Game.
@@ -164,7 +164,7 @@ const LandingPage = () => {
             {/* Card 2 */}
             <div className="flex flex-col items-center px-4">
               <div className="bg-green-100 p-4 rounded-full mb-4">
-                <img src="/icons/store.svg" alt="Icon" className="w-8 h-8" />
+              <img src={screen3} alt="Icon" className="w-8 h-8" />
               </div>
               <h3 className="font-semibold text-lg mb-2">
                 Order From Our Virtual Mall Of Local Stores
@@ -178,7 +178,7 @@ const LandingPage = () => {
             {/* Card 3 */}
             <div className="flex flex-col items-center px-4">
               <div className="bg-green-100 p-4 rounded-full mb-4">
-                <img src="/icons/service.svg" alt="Icon" className="w-8 h-8" />
+              <img src={screen2} alt="Icon" className="w-8 h-8" />
               </div>
               <h3 className="font-semibold text-lg mb-2">
                 Easy Access To Local Services
@@ -392,67 +392,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="relative py-20 overflow-hidden bg-[#40A1CB]">
-        {/* Background Layers for md+ */}
-
-        {/* Top Wave */}
-        <div className="absolute top-0 left-0 w-full z-40">
-          <svg viewBox="0 0 1440 60" className="w-full h-auto">
-            <path
-              fill="#e9f5e1"
-              d="M0,0 C480,60 960,0 1440,60 L1440,0 L0,0 Z"
-            />
-          </svg>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-50 max-w-6xl mx-auto px-4 text-center">
-          <p className="text-white text-sm tracking-widest mb-2">SCREENSHOTS</p>
-          <h2 className="text-3xl font-bold text-gray-900 mb-12">
-            App Screenshots
-          </h2>
-
-          {/* Screenshot Slider */}
-          <div className="overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
-            <div className="flex space-x-6 w-max justify-center">
-              {screenshots.map((img, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 snap-center w-[250px] sm:w-[300px] transition-transform duration-300 hover:scale-105"
-                >
-                  <img
-                    src={img}
-                    alt={`Screenshot ${index + 1}`}
-                    className="h-[500px] w-auto mx-auto rounded-2xl shadow-lg border border-gray-100"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Dot Pagination (static or with logic if needed) */}
-          <div className="mt-8 flex justify-center space-x-2">
-            {screenshots.map((_, index) => (
-              <span
-                key={index}
-                className={`h-2 w-2 rounded-full transition-all ${
-                  index === 2 ? "bg-green-500 w-4" : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom Wave */}
-        <div className="absolute bottom-0 left-0 w-full z-40">
-          <svg viewBox="0 0 1440 60" className="w-full h-auto rotate-180">
-            <path
-              fill="#e9f5e1"
-              d="M0,0 C480,60 960,0 1440,60 L1440,0 L0,0 Z"
-            />
-          </svg>
-        </div>
-      </section>
+ 
 
       <section className="py-20 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-10">
