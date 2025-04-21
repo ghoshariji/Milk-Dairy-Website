@@ -3,6 +3,7 @@ import {  useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast,ToastContainer } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
+import register12 from "../../pages/images/login.png"
 
 const Register = () => {
   const navigate = useNavigate();

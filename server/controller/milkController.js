@@ -4,6 +4,7 @@ const SellerMilkRecord = require("../modal/sellMilkModalRecord");
 const jwt = require("jsonwebtoken");
 const User = require("../modal/userModal");
 
+
 // Create a new milk record
 exports.bulkUpdateMilk = async (req, res) => {
   try {
@@ -288,80 +289,6 @@ exports.sellMilkToday = async (req, res) => {
   } catch (error) {
     console.error("Error adding milk record:", error);
     res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-exports.milkManMilkRecord = async (req, res) => {
-  try {
-    const milkmanId = req.user.userId; // Extracted from token
-
-    const { id } = req.params;
-
-    // Extract fromDate and toDate from query parameters
-    const { fromDate, toDate } = req.query;
-
-    if (!fromDate || !toDate) {
-      return res
-        .status(400)
-        .json({ message: "Please provide both fromDate and toDate" });
-    }
-
-    const startDate = new Date(fromDate);
-    const endDate = new Date(toDate);
-    endDate.setHours(23, 59, 59, 999); // Include the entire last day
-
-    // Fetch user details to check userType
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    let records = [];
-    if (user.userType === "Customer") {
-      // Fetch records from SellerMilkRecord
-      records = await MilkRecord.find({
-        userId: id,
-        milkmanId,
-        date: { $gte: startDate, $lte: endDate },
-      }).sort({ date: 1 });
-    } else {
-      // Fetch records from MilkRecord
-      records = await SellerMilkRecord.find({
-        userId: id,
-        milkmanId,
-        date: { $gte: startDate, $lte: endDate },
-      }).sort({ date: 1 });
-    }
-
-    if (records.length === 0) {
-      return res.status(200).json({
-        success: true,
-        message: "No records found in the given date range",
-        totalLitres: 0,
-        totalAmount: 0,
-        avgRate: 0,
-        records: [],
-      });
-    }
-
-    // Perform calculations
-    const totalLitres = records.reduce((sum, record) => sum + record.kg, 0);
-    const totalAmount = records.reduce(
-      (sum, record) => sum + record.kg * record.rate,
-      0
-    );
-    const avgRate = totalLitres > 0 ? totalAmount / totalLitres : 0;
-
-    res.status(200).json({
-      success: true,
-      totalLitres,
-      totalAmount,
-      avgRate: avgRate.toFixed(2),
-      records,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ message: "Internal server error" });
   }
 };
 

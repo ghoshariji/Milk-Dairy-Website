@@ -16,6 +16,8 @@ const {
   getCategories,
   updateMilkRate,
 } = require("../controller/milkmanController");
+
+
 const upload = require("../middleware/multer"); // Import multer middleware
 const authMiddleware = require("../middleware/authMiddleware"); // Middleware for token decoding
 
@@ -28,6 +30,9 @@ router.post("/register", registerMilkman);
 router.post("/login", loginMilkman);
 router.get("/:id", getCustomerById);
 router.delete("/:id", customerDeleteByMilkMan);
+
+
+
 
 // Route to fetch all milkmen
 router.get("/get-all/:latitude/:longitude", getAllMilkmen);
@@ -46,6 +51,7 @@ router.put("/category/edit/:categoryId", authMiddleware, editCategory);
 router.delete("/category/delete/:categoryId", authMiddleware, deleteCategory);
 router.get("/category/all", authMiddleware, getCategories);
 router.post("/update-rate/:id", updateMilkRate);
+
 
 
 

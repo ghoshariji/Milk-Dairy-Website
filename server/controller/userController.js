@@ -1078,27 +1078,34 @@ exports.getMilkManDataUser = async (req, res) => {
   }
 };
 
+
+
+
+
 exports.forgotPassword = async (req, res) => {
   const { enterCode } = req.body;
 
   try {
-    const user = await User.findOne({ enterCode });
+    let user = await User.findOne({ enterCode });
+    let isMilkman = false;
 
-    if (!user || !user.email) {
-      return res.status(404).json({ message: "User not found!" });
+    if (!user) {
+      user = await Milkman.findOne({ enterCode });
+      if (!user) {
+        return res.status(404).json({ message: "User not found!" });
+      }
+      isMilkman = true;
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     user.resetToken = token;
     user.resetTokenExpiry = expiresAt;
     await user.save();
 
     const resetLink = `${CLIENT_URL}/reset-password/${token}`;
-    // console.log(resetLink);
 
-    // Nodemailer setup
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -1117,9 +1124,7 @@ exports.forgotPassword = async (req, res) => {
             <img src="https://www.dairyfoods.com/ext/resources/DF/2024/Nov/GettyImages-2150650373.jpg?height=740&t=1734040205&width=auto" alt="Dairy Farm" style="width: 100%; height: auto;" />
 
             <div style="padding: 30px;">
-              <h2 style="color: #333;">Hello ${
-                user.name
-              }, welcome to <strong>Halo Dairy</strong> 🐄</h2>
+              <h2 style="color: #333;">Hello ${user.name}, welcome to <strong>Halo Dairy</strong> 🐄</h2>
 
               <p style="font-size: 16px; color: #555;">
                 We received a request to reset your password. Click the button below to create a new one:
@@ -1147,29 +1152,37 @@ exports.forgotPassword = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    res
-      .status(200)
-      .json({
-        message: "Reset link sent to your email. It will expire in 15 minutes.",
-      });
+    res.status(200).json({
+      message: "Reset link sent to your email. It will expire in 15 minutes.",
+    });
   } catch (err) {
     console.error("Error sending reset email:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+
+
+
 exports.resetPassword = async (req, res) => {
   const { token } = req.params;
   const { newPassword } = req.body;
 
   try {
-    const user = await User.findOne({
+    let user = await User.findOne({
       resetToken: token,
-      resetTokenExpiry: { $gt: new Date() }, // Ensure Date object is used
+      resetTokenExpiry: { $gt: new Date() },
     });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
+      user = await Milkman.findOne({
+        resetToken: token,
+        resetTokenExpiry: { $gt: new Date() },
+      });
+
+      if (!user) {
+        return res.status(400).json({ message: "Invalid or expired token" });
+      }
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -1184,3 +1197,4 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+

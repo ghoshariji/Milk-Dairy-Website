@@ -74,8 +74,11 @@ const milkmanSchema = new mongoose.Schema({
     {
       name: { type: String, default: "" }
     }
-  ]
-});
+  ],
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
+  
+}, { timestamps: true }); 
 
 const Milkman = mongoose.model("Milkman", milkmanSchema);
 

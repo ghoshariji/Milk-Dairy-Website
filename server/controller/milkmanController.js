@@ -5,6 +5,7 @@ const geolib = require("geolib");
 const User = require("../modal/userModal");
 const advancebookModal = require("../modal/advancebookModal");
 
+
 // Register Milkman
 exports.registerMilkman = async (req, res) => {
   const {
@@ -519,4 +520,5 @@ exports.updateMilkRate = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 

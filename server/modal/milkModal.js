@@ -1,29 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const milkRecordSchema = new mongoose.Schema({
+const milkRecordSchema = new mongoose.Schema(
+  {
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     milkmanId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Milkman',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Milkman",
+      required: true,
     },
     kg: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     date: {
-        type: Date,
-        required: true,
-        default: Date.now
+      type: Date,
+      required: true,
+      default: Date.now,
     },
     rate: {
-        type: Number,
-        required: true
-    }
-}, { timestamps: true });
+      type: Number,
+      required: true,
+    },
 
-module.exports = mongoose.model('MilkRecord', milkRecordSchema);
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("MilkRecord", milkRecordSchema);
