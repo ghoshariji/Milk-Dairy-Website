@@ -107,7 +107,7 @@ const CustomerChangeMilkMan = () => {
             placeholder="Search milkman by name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 mb-6 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mb-6 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
           />
 
           {/* List */}
@@ -120,7 +120,7 @@ const CustomerChangeMilkMan = () => {
                   >
                     {/* Avatar + Info */}
                     <div className="flex items-start sm:items-center">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#40A1CB] text-white flex items-center justify-center font-bold text-xl">
                         {milkman.name.charAt(0)}
                       </div>
                       <div className="ml-4 space-y-1">
@@ -139,7 +139,7 @@ const CustomerChangeMilkMan = () => {
                     {/* Assign button */}
                     <button
                       onClick={() => assignMilkman(milkman.name)}
-                      className="mt-4 sm:mt-0 bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600 transition self-end sm:self-center"
+                      className="mt-4 sm:mt-0 bg-[#40A1CB] text-white px-5 py-2 rounded-lg hover:bg-green-600 transition self-end sm:self-center"
                     >
                       Assign
                     </button>

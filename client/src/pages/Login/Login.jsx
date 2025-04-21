@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import login12 from "../../pages/images/login.png"; // Ensure the path is correct
+import login12 from "../../pages/images/login.png";
 import smalllogo from "../../pages/images/login.png";
 import Loader from "../../components/Loader/Loader";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -13,13 +13,11 @@ const Login = () => {
   const [post, setPost] = useState({ enterCode: "", password: "" });
   const [role, setRole] = useState("customer");
   const [showPassword, setShowPassword] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
   const [resetCode, setResetCode] = useState("");
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleInput = (e) => {
     setPost({ ...post, [e.target.name]: e.target.value });
@@ -38,10 +36,11 @@ const Login = () => {
 
       const response = await axios.post(apiUrl, post, config);
       setLoading(false);
-      console.log(response.data);
+
       if (response.data.message === "Login successful!") {
         localStorage.setItem("token", response.data.token);
         toast.success("Login successful!");
+
         setTimeout(() => {
           if (role === "customer") {
             navigate("/customer-dashboard");
@@ -57,8 +56,7 @@ const Login = () => {
     } catch (error) {
       setLoading(false);
       toast.error(
-        error.response?.data?.message ||
-          "Something went wrong. Please try again."
+        error.response?.data?.message || "Something went wrong. Please try again."
       );
     }
   };
@@ -69,9 +67,7 @@ const Login = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER}/api/auth/user/forgot-password`,
-        {
-          enterCode: resetCode,
-        }
+        { enterCode: resetCode }
       );
       toast.success(res.data.message);
       setShowModal(false);
@@ -90,31 +86,33 @@ const Login = () => {
           <Loader />
         </div>
       )}
-      <div className="flex flex-col md:flex-row h-screen justify-center items-center">
-        <div className="flex-1 flex justify-center items-center hidden sm:block ml-20">
-          <img
-            className="hidden sm:block w-full max-w-sm h-auto object-contain"
-            src={login12}
-            alt="Logo"
-          />
-        </div>
 
-        <div className="sm:hidden w-full flex justify-center items-center mt-14">
+      <div className="flex flex-col md:flex-row min-h-screen justify-center items-center bg-white px-4 py-6">
+        {/* Left Image for all screen sizes */}
+<div className="flex-1 flex justify-center items-center hidden md:block ml-24"> {/* Added ml-10 to add margin on the left */}
+  <img
+    src={login12}
+    alt="Login Visual"
+    className="w-3/4 lg:w-2/3 xl:w-1/2 object-contain"
+  />
+</div>
+
+
+        {/* Mobile Logo */}
+        <div className="md:hidden w-full flex justify-center items-center mt-4">
           <img
-            className="w-full max-w-xs h-[90%] object-contain"
             src={smalllogo}
-            alt="Logo"
+            alt="Small Logo"
+            className="w-1/2 max-w-xs object-contain"
           />
         </div>
 
-        <div className="flex-1 flex flex-col justify-start items-center sm:items-start px-6 sm:px-12 md:px-16 py-8 bg-white">
-          <div className="w-full max-w-md mt-8 sm:mt-0">
+        {/* Login Form */}
+        <div className="flex-1 flex flex-col items-center w-full px-4 sm:px-8 md:px-12 lg:px-20 py-8">
+          <div className="w-full max-w-md">
             <form onSubmit={login}>
               <div className="mb-4">
-                <label
-                  htmlFor="enterCode"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="enterCode" className="block text-sm font-medium text-gray-700">
                   Enter Code*
                 </label>
                 <input
@@ -128,11 +126,9 @@ const Login = () => {
                   required
                 />
               </div>
+
               <div className="mb-6 relative">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Password*
                 </label>
                 <input
@@ -150,15 +146,12 @@ const Login = () => {
                   onClick={togglePasswordVisibility}
                   className="absolute right-3 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                 >
-                  {showPassword ? (
-                    <FaEyeSlash className="w-5 h-5" />
-                  ) : (
-                    <FaEye className="w-5 h-5" />
-                  )}
+                  {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                 </button>
               </div>
-              <div className="mb-4 flex flex-col space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Select Role:
                 </label>
                 <div className="flex space-x-4">
@@ -197,33 +190,37 @@ const Login = () => {
                   </label>
                 </div>
               </div>
+
               <button
                 type="submit"
-                className="w-full py-2 px-4 bg-[#40A1CB] text-white rounded-md hover:bg-[#40A1CB]"
+                className="w-full py-2 px-4 bg-[#40A1CB] text-white rounded-md hover:bg-[#3693b7] transition"
               >
                 Log in
               </button>
             </form>
+
+            <div className="mt-4 text-center space-y-2">
+              <Link to="/register">
+                <p className="text-sm text-[#40A1CB] hover:underline">
+                  Don't have an account? Register
+                </p>
+              </Link>
+              <p
+                className="text-sm text-[#40A1CB] hover:underline cursor-pointer"
+                onClick={() => setShowModal(true)}
+              >
+                Forgot Password?
+              </p>
+            </div>
           </div>
-          <Link to="/register">
-            <p className="text-sm font-medium text-[#40A1CB] hover:underline hover:text-[#40A1CB] cursor-pointer transition duration-200">
-              Don't have an account? Register
-            </p>
-          </Link>
-          <p
-            className="text-sm font-medium text-[#40A1CB] hover:underline cursor-pointer"
-            onClick={() => setShowModal(true)}
-          >
-            Forgot Password?
-          </p>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
           <div className="bg-white rounded-2xl p-6 w-96 shadow-xl border border-gray-200">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">
-              Reset Password
-            </h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Reset Password</h2>
             <input
               type="text"
               placeholder="Enter your code"
