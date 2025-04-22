@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Mail, User, IndianRupee, MapPin, BadgeInfo } from "lucide-react";
-import API from "../api"; // make sure you are importing the correct axios instance
+import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
+import { motion } from "framer-motion";
+
+const infoItems = [
+  { icon: <User className="text-[#40A1CB]" size={28} />, label: "Name", key: "name" },
+  { icon: <Mail className="text-[#40A1CB]" size={28} />, label: "Email", key: "email" },
+  { icon: <IndianRupee className="text-[#40A1CB]" size={28} />, label: "UPI ID", key: "upiId" },
+  { icon: <BadgeInfo className="text-[#40A1CB]" size={28} />, label: "Code", key: "enterCode" },
+  { icon: <MapPin className="text-[#40A1CB]" size={28} />, label: "Village", key: "village" },
+];
 
 const CustomerMilkman = () => {
   const [item, setMilkMen] = useState({});
@@ -11,7 +20,6 @@ const CustomerMilkman = () => {
     const fetchMilkMen = async () => {
       try {
         const response = await API.get("/api/auth/user/get-milkman-data-user");
-        console.log(response.data);
         setMilkMen(response.data);
       } catch (error) {
         console.error("Error fetching milkmen:", error);
@@ -30,58 +38,45 @@ const CustomerMilkman = () => {
       </div>
     );
   }
-  return (
-    <div className="flex min-h-screen bg-gray-100">
-      <CustomerSidebar />
 
-      <div className="flex-1 flex items-center justify-center p-4 lg:mt-15 mt-20">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-3xl font-semibold text-center text-[#40A1CB] mb-8">
+  return (
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
+      <div className="w-full lg:w-64">
+        <CustomerSidebar />
+      </div>
+
+      <div className="flex-1 flex items-center justify-center p-4 mt-6 lg:mt-20 overflow-auto">
+        <motion.div
+          className="w-full sm:max-w-md bg-white rounded-2xl shadow-lg p-6 sm:p-8 mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl sm:text-3xl font-semibold text-center text-[#40A1CB] mb-6 sm:mb-8">
             Your Milkman
           </h2>
 
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 border-b pb-4">
-              <User className="text-[#40A1CB]" size={28} />
-              <div>
-                <p className="text-sm text-gray-500">Name</p>
-                <p className="text-lg font-medium">{item.name || "N/A"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 border-b pb-4">
-              <Mail className="text-[#40A1CB]" size={28} />
-              <div>
-                <p className="text-sm text-gray-500">Email</p>
-                <p className="text-lg font-medium">{item.email || "N/A"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 border-b pb-4">
-              <IndianRupee className="text-[#40A1CB]" size={28} />
-              <div>
-                <p className="text-sm text-gray-500">UPI ID</p>
-                <p className="text-lg font-medium">{item.upiId || "N/A"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 border-b pb-4">
-              <BadgeInfo className="text-[#40A1CB]" size={28} />
-              <div>
-                <p className="text-sm text-gray-500">Code</p>
-                <p className="text-lg font-medium">{item.enterCode || "N/A"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 border-b pb-4">
-              <MapPin className="text-[#40A1CB]" size={28} />
-              <div>
-                <p className="text-sm text-gray-500">Village</p>
-                <p className="text-lg font-medium">{item.village || "N/A"}</p>
-              </div>
-            </div>
+          <div className="space-y-4 sm:space-y-6">
+            {infoItems.map((info, index) => (
+              <motion.div
+                key={info.key}
+                className="flex items-start sm:items-center gap-3 sm:gap-4 border-b pb-3 sm:pb-4 p-2 sm:p-3 rounded-md shadow-sm bg-white hover:bg-gray-50 cursor-default"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 * index, duration: 0.5 }}
+                whileHover={{ scale: 1.03, boxShadow: "0 8px 24px rgba(0,0,0,0.1)" }}
+              >
+                {info.icon}
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-500">{info.label}</p>
+                  <p className="text-sm sm:text-lg font-medium break-words">
+                    {item[info.key] || "N/A"}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
