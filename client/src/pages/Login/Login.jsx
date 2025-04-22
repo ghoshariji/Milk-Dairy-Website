@@ -47,6 +47,8 @@ const Login = () => {
             navigate("/customer-dashboard");
           } else if (role === "seller") {
             navigate("/seller-dashboard");
+          } else if (role === "milkman" && post.enterCode == 98) {
+            navigate("/admin-dashboard");
           } else if (role === "milkman") {
             navigate("/milkman-dashboard");
           }

@@ -24,6 +24,6 @@ router.put("/update/:id", milkRecordController.updateMilkRecord);
 // Delete a milk record
 router.delete("/delete", milkRecordController.deleteMilkRecord);
 router.post("/sell-milk-anydate",authMiddleware, milkRecordController.sellMilkToday);
-router.get("/milkman-milkrecord/:id",authMiddleware, milkRecordController.milkManMilkRecord);
+// router.get("/milkman-milkrecord/:id",authMiddleware, milkRecordController.milkManMilkRecord);
 
 module.exports = router;
