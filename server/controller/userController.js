@@ -1080,8 +1080,6 @@ exports.getMilkManDataUser = async (req, res) => {
 
 
 
-
-
 exports.forgotPassword = async (req, res) => {
   const { enterCode } = req.body;
 
@@ -1105,6 +1103,7 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     const resetLink = `${CLIENT_URL}/reset-password/${token}`;
+    //console.log(resetLink);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

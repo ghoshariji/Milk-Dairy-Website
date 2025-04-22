@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
@@ -11,6 +11,26 @@ const MilkmanSellMilk = () => {
     weight: "",
     rate: "",
   });
+
+  const codeRef = useRef(null);
+  const weightRef = useRef(null);
+  const rateRef = useRef(null);
+
+  const handleKeyNavigation = (e, current) => {
+    if (e.key === "ArrowDown" || e.key === "Enter") {
+      if (current === codeRef) weightRef.current.focus();
+      else if (current === weightRef) rateRef.current.focus();
+    } else if (e.key === "ArrowUp") {
+      if (current === rateRef) weightRef.current.focus();
+      else if (current === weightRef) codeRef.current.focus();
+    } else if (e.key === "ArrowRight") {
+      if (current === codeRef) weightRef.current.focus();
+      else if (current === weightRef) rateRef.current.focus();
+    } else if (e.key === "ArrowLeft") {
+      if (current === rateRef) weightRef.current.focus();
+      else if (current === weightRef) codeRef.current.focus();
+    }
+  };
 
   const [productData, setProductData] = useState({
     date: new Date(),
@@ -96,127 +116,74 @@ const MilkmanSellMilk = () => {
       <AdminNav />
       <ToastContainer />
       <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-[#40A1CB]">Sell Milk</h3>
-          <input
-            type="text"
-            placeholder="Enter Code"
-            value={formData.enterCode}
-            onChange={(e) =>
-              setFormData({ ...formData, enterCode: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="number"
-            placeholder="Weight"
-            value={formData.weight}
-            onChange={(e) =>
-              setFormData({ ...formData, weight: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="number"
-            placeholder="Rate"
-            value={formData.rate}
-            onChange={(e) => setFormData({ ...formData, rate: e.target.value })}
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <button
-            className="bg-[#40A1CB] text-white px-4 py-2 rounded"
-            onClick={handleMilkSubmit}
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Sell Milk"}
-          </button>
-        </div>
+        <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-200 transition-transform duration-300 hover:scale-[1.01]">
+          <h3 className="text-2xl font-bold text-[#40A1CB] mb-6 transition-opacity duration-300">
+            Sell Milk
+          </h3>
 
-        {/* <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-          <h3 className="text-lg font-semibold text-[#40A1CB]">Add Product</h3>
-          <input
-            type="text"
-            placeholder="Name"
-            value={productData.name}
-            onChange={(e) =>
-              setProductData({ ...productData, name: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="Phone"
-            value={productData.phone}
-            onChange={(e) =>
-              setProductData({ ...productData, phone: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="Delivery Address"
-            value={productData.deliveryAddress}
-            onChange={(e) =>
-              setProductData({
-                ...productData,
-                deliveryAddress: e.target.value,
-              })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="Code"
-            value={productData.code}
-            onChange={(e) =>
-              setProductData({ ...productData, code: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="Item"
-            value={productData.item}
-            onChange={(e) =>
-              setProductData({ ...productData, item: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="number"
-            placeholder="Quantity"
-            value={productData.quantity}
-            onChange={(e) =>
-              setProductData({ ...productData, quantity: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={productData.price}
-            onChange={(e) =>
-              setProductData({ ...productData, price: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="Payment Mode"
-            value={productData.paymentMode}
-            onChange={(e) =>
-              setProductData({ ...productData, paymentMode: e.target.value })
-            }
-            className="w-full mb-2 p-2 border rounded"
-          />
-          <button
-            className="bg-[#40A1CB] text-white px-4 py-2 rounded"
-            onClick={handleProductAdd}
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Add Product"}
-          </button>
-        </div> */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Enter Code
+              </label>
+              <input
+                ref={codeRef}
+                type="text"
+                placeholder="E.g. M123"
+                value={formData.enterCode}
+                onChange={(e) =>
+                  setFormData({ ...formData, enterCode: e.target.value })
+                }
+                onKeyDown={(e) => handleKeyNavigation(e, codeRef)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Weight (litres)
+                </label>
+                <input
+                  ref={weightRef}
+                  type="number"
+                  placeholder="e.g. 5"
+                  value={formData.weight}
+                  onChange={(e) =>
+                    setFormData({ ...formData, weight: e.target.value })
+                  }
+                  onKeyDown={(e) => handleKeyNavigation(e, weightRef)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Rate (per litre)
+                </label>
+                <input
+                  ref={rateRef}
+                  type="number"
+                  placeholder="e.g. 50"
+                  value={formData.rate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, rate: e.target.value })
+                  }
+                  onKeyDown={(e) => handleKeyNavigation(e, rateRef)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
+                />
+              </div>
+            </div>
+
+            <button
+              className="w-full bg-[#40A1CB] hover:bg-[#2b89af] text-white text-lg font-semibold py-3 mt-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02]"
+              onClick={handleMilkSubmit}
+              disabled={loading}
+            >
+              {loading ? "Saving..." : "Sell Milk"}
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
