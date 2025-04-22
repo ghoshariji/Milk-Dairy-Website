@@ -70,49 +70,56 @@ const MilkmanNotific = () => {
       <AdminNav />
       <ToastContainer />
       <div className="lg:ml-64 mt-20">
-        <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
-          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl mt-6">
-            <h3 className="text-lg font-semibold mb-4 text-[#40A1CB]">Milkman Notifications</h3>
-            
-            <div className="mb-6">
-              <h4 className="text-md font-semibold text-[#40A1CB] mb-2">New Requests</h4>
-              <ul className="mt-4">
-                {mergedData.map((notif) => (
-                  <li
-                    key={notif._id}
-                    className="flex justify-between items-center bg-gray-200 p-3 mb-2 rounded"
+      <div className="min-h-screen flex flex-col items-center bg-gray-50 p-8">
+        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-3xl mt-6 border border-gray-200">
+          <h3 className="text-2xl font-bold mb-6 text-[#40A1CB]">Milkman Notifications</h3>
+    
+          {/* New Requests Section */}
+          <div className="mb-8">
+            <h4 className="text-xl font-semibold text-[#40A1CB] mb-4">New Requests</h4>
+            <ul className="space-y-4">
+              {mergedData.map((notif) => (
+                <li
+                  key={notif._id}
+                  className="flex justify-between items-center bg-white shadow-md rounded-lg p-4 hover:bg-gray-100 transition-all duration-300"
+                >
+                  <span className="text-lg text-gray-800">{notif.name} - {notif.phone}</span>
+                  <button
+                    className="ml-4 bg-[#40A1CB] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#3185a7] transition"
+                    onClick={() => handleAccept(notif._id)}
                   >
-                    <span className="text-black">{notif.name} - {notif.phone}</span>
-                    <button
-                      className="ml-4 bg-[#40A1CB] text-white px-3 py-1 rounded"
-                      onClick={() => handleAccept(notif._id)}
-                    >
-                      Accept
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-md font-semibold text-[#40A1CB] mb-2">Accepted/Rejected Orders</h4>
-              <ul>
-                {acceptOrder.map((order) => (
-                  <li
-                    key={order._id}
-                    className="flex justify-between items-center bg-gray-200 p-3 mb-2 rounded"
+                    Accept
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+    
+          {/* Accepted/Rejected Orders Section */}
+          <div>
+            <h4 className="text-xl font-semibold text-[#40A1CB] mb-4">Accepted/Rejected Orders</h4>
+            <ul className="space-y-4">
+              {acceptOrder.map((order) => (
+                <li
+                  key={order._id}
+                  className="flex justify-between items-center bg-white shadow-md rounded-lg p-4 hover:bg-gray-100 transition-all duration-300"
+                >
+                  <span className="text-lg text-gray-800">{order.name} - {order.phone}</span>
+                  <span
+                    className={
+                      order.status === "accepted" ? "text-green-600 font-semibold" : "text-red-600 font-semibold"
+                    }
                   >
-                    <span className="text-black">{order.name} - {order.phone}</span>
-                    <span className={order.status === "accepted" ? "text-green-600" : "text-red-600"}>
-                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
+    </div>
+    
     </>
   );
 };

@@ -98,7 +98,7 @@ const MilkManAddCategory = () => {
                         setEditModalOpen(true);
                       }}
                     >
-                      <FiEdit size={20} color="#40A1CB"/>
+                      <FiEdit size={20} color="#40A1CB" />
                     </button>
                     <button
                       className="text-red-500 hover:text-red-700"
@@ -115,8 +115,12 @@ const MilkManAddCategory = () => {
 
         {/* Add Category Modal */}
         {modalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center ">
-            <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            {/* Hazy Light Gray Background with Blur */}
+            <div className="absolute inset-0 bg-transparent bg-opacity-40 backdrop-blur-sm"></div>
+
+            {/* Modal Box */}
+            <div className="relative bg-white p-6 rounded-lg shadow-xl w-full max-w-md z-10">
               <h3 className="text-lg font-bold mb-4">Add Category</h3>
               <input
                 type="text"
@@ -127,7 +131,7 @@ const MilkManAddCategory = () => {
               />
               <div className="flex justify-end">
                 <button
-                  className="bg-[#40A1CB] hover:bg-[#40A1CB] text-white px-4 py-2 rounded mr-2"
+                  className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-4 py-2 rounded mr-2"
                   onClick={addCategory}
                 >
                   Save
@@ -145,25 +149,35 @@ const MilkManAddCategory = () => {
 
         {/* Edit Category Modal */}
         {editModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-              <h3 className="text-lg font-bold mb-4">Edit Category</h3>
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            {/* Background with transparent haze and blur effect */}
+            <div className="absolute inset-0 bg-transparent bg-opacity-40 backdrop-blur-sm"></div>
+
+            {/* Modal Box */}
+            <div className="relative bg-white p-6 rounded-lg shadow-xl w-full max-w-md z-10">
+              <h3 className="text-lg font-bold mb-4 text-center">
+                Edit Category
+              </h3>
+
+              {/* Input Field */}
               <input
                 type="text"
-                className="border px-4 py-2 w-full mb-4 rounded"
+                className="border px-4 py-2 w-full mb-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition"
                 placeholder="Edit category name"
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
               />
-              <div className="flex justify-end">
+
+              {/* Button Group */}
+              <div className="flex justify-between">
                 <button
-                  className="bg-[#40A1CB] hover:bg-[#40A1CB] text-white px-4 py-2 rounded mr-2"
+                  className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-6 py-2 rounded-lg transition"
                   onClick={editCategory}
                 >
                   Update
                 </button>
                 <button
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition"
                   onClick={() => {
                     setEditModalOpen(false);
                     setSelectedCategory(null);

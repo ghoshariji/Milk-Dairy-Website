@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
+
 const MilkManBuyMilk = () => {
   const [newUser, setNewUser] = useState({
     enterCode: "",
@@ -11,8 +12,18 @@ const MilkManBuyMilk = () => {
     fat: "",
   });
 
+  const inputRefs = useRef([]);
+
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "ArrowDown" && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1]?.focus();
+    } else if (e.key === "ArrowUp" && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
   };
 
   const handleAddUser = async () => {
@@ -42,61 +53,41 @@ const MilkManBuyMilk = () => {
   };
 
   return (
-    <div>
-      <div className="min-h-screen flex flex-col mt-10">
-        <AdminNav />
-        <ToastContainer />
-        <div className="flex flex-grow items-center justify-center mt-5">
-          <div className="bg-white p-8 w-full max-w-md ">
-            <h2 className="text-2xl font-semibold text-center mb-6">
-              Buy Milk
-            </h2>
+    <div className="min-h-screen bg-gray-50">
+      <AdminNav />
+      <ToastContainer />
+      <div className="flex justify-center items-center py-10 px-4 mt-17 ml-27">
+        <div className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg">
+          <h2 className="text-3xl font-bold text-center text-[#40A1CB] mb-8">
+            Buy Milk
+          </h2>
 
-            {/* Input Fields */}
-            <div className="space-y-4">
+          <div className="space-y-5">
+            {[
+              { name: "enterCode", placeholder: "Enter Code*" },
+              { name: "weight", placeholder: "Weight*" },
+              { name: "fat", placeholder: "Fat" },
+              { name: "snf", placeholder: "SNF" },
+              { name: "rate", placeholder: "Rate" },
+            ].map((field, index) => (
               <input
-                className="w-full p-3 border rounded-lg"
-                name="enterCode"
-                placeholder="Enter Code*"
-                value={newUser.enterCode}
+                key={field.name}
+                ref={(el) => (inputRefs.current[index] = el)}
+                className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+                name={field.name}
+                placeholder={field.placeholder}
+                value={newUser[field.name]}
                 onChange={handleChange}
+                onKeyDown={(e) => handleKeyDown(e, index)}
               />
-              <input
-                className="w-full p-3 border rounded-lg"
-                name="weight"
-                placeholder="weight*"
-                value={newUser.weight}
-                onChange={handleChange}
-              />
-              <input
-                className="w-full p-3 border rounded-lg"
-                name="fat"
-                placeholder="fat"
-                value={newUser.fat}
-                onChange={handleChange}
-              />
-              <input
-                className="w-full p-3 border rounded-lg"
-                name="snf"
-                placeholder="snf"
-                value={newUser.snf}
-                onChange={handleChange}
-              />
-              <input
-                className="w-full p-3 border rounded-lg"
-                name="rate"
-                placeholder="rate"
-                value={newUser.rate}
-                onChange={handleChange}
-              />
+            ))}
 
-              <button
-                className="bg-[#40A1CB] text-white w-full px-4 py-2 rounded-lg hover:bg-[#3185a7] transition"
-                onClick={handleAddUser}
-              >
-                Save
-              </button>
-            </div>
+            <button
+              onClick={handleAddUser}
+              className="w-full bg-[#40A1CB] text-white font-medium py-3 rounded-xl hover:bg-[#3185a7] transition"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>

@@ -45,6 +45,11 @@ import CustomerCartPage from "./Customer/CustomerCartPage";
 import CustomerCheckoutPage from "./Customer/CustomerCheckoutPage";
 import CustomerSuccessPage from "./Customer/CustomerSuccessPage";
 import ResetPassword from "./pages/ResetPassword";
+import SuperAdminDash from "./SuperAdmin/SuperAdminDash";
+import SuperAdminHelpPage from "./SuperAdmin/SuperAdminHelpPage";
+import SuperAdminProfile from "./SuperAdmin/SuperAdminProfile";
+import SuperAdminSubs from "./SuperAdmin/SuperAdminSubs";
+import SuperAdminUserList from "./SuperAdmin/SuperAdminUserList";
 const App = () => {
   return (
     <Routes>
@@ -67,6 +72,15 @@ const App = () => {
       <Route path="/milkman-subscription" element={<MilkManSubs />} />
       <Route path="/milkman-update-milk" element={<MilkManUpdateMilk />} />
       <Route path="/milkman-walltet" element={<MilkmanWallet />} />
+
+
+
+
+      <Route path="/admin-dashboard" element={<SuperAdminDash />} />
+      <Route path="/admin-help-support" element={<SuperAdminHelpPage />} />
+      <Route path="/admin-profile" element={<SuperAdminProfile />} />
+      <Route path="/admin-subscription" element={<SuperAdminSubs />} />
+      <Route path="/admin-user-list" element={<SuperAdminUserList />} />
 
 
 

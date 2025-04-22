@@ -1,5 +1,4 @@
-// src/components/MilkManHelpAndSupp.jsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
@@ -12,8 +11,23 @@ const MilkManHelpAndSupp = () => {
   });
   const [message, setMessage] = useState("");
 
+  const nameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const feedbackRef = useRef(null);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleKeyDown = (e, field) => {
+    if (e.key === "ArrowDown") {
+      if (field === "name") phoneRef.current.focus();
+      else if (field === "phone") feedbackRef.current.focus();
+    } else if (e.key === "ArrowUp") {
+      if (field === "feedback") phoneRef.current.focus();
+      else if (field === "phone") nameRef.current.focus();
+    }
+    // Optional: add ArrowLeft / ArrowRight logic if needed
   };
 
   const handleSubmit = async (e) => {
@@ -30,61 +44,76 @@ const MilkManHelpAndSupp = () => {
       toast.error("Error submitting feedback");
     }
   };
+  
 
   return (
     <>
       <AdminNav />
       <ToastContainer />
-      <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 px-4 ">
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold text-center text-[#40A1CB] mb-6">
+      <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 px-5 mt-10 ml-50">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md transition-transform duration-300 hover:scale-[1.01] animate-fadeInUp">
+          <h2 className="text-3xl font-bold text-center text-[#40A1CB] mb-6 tracking-wide">
             Submit Feedback
           </h2>
 
           {message && (
-            <p className="text-green-600 mb-4 text-center">{message}</p>
+            <p className="text-green-600 mb-4 text-center animate-pulse">
+              {message}
+            </p>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Name</label>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="group">
+              <label className="block text-sm font-medium mb-1 text-gray-700">
+                Name
+              </label>
               <input
                 type="text"
                 name="name"
+                ref={nameRef}
                 value={formData.name}
                 onChange={handleChange}
+                onKeyDown={(e) => handleKeyDown(e, "name")}
                 required
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-200"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Phone</label>
+            <div className="group">
+              <label className="block text-sm font-medium mb-1 text-gray-700">
+                Phone
+              </label>
               <input
                 type="text"
                 name="phone"
+                ref={phoneRef}
                 value={formData.phone}
                 onChange={handleChange}
+                onKeyDown={(e) => handleKeyDown(e, "phone")}
                 required
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-200"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Feedback</label>
+            <div className="group">
+              <label className="block text-sm font-medium mb-1 text-gray-700">
+                Feedback
+              </label>
               <textarea
                 name="feedback"
+                ref={feedbackRef}
                 value={formData.feedback}
                 onChange={handleChange}
+                onKeyDown={(e) => handleKeyDown(e, "feedback")}
                 required
                 rows={4}
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-200"
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-[#40A1CB] text-white py-2 rounded-md hover:bg-[#3495bc] transition"
+              className="w-full bg-[#40A1CB] text-white py-3 rounded-lg hover:bg-[#3495bc] font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95"
             >
               Submit Feedback
             </button>
