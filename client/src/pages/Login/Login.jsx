@@ -16,7 +16,6 @@ const Login = () => {
   const [showModal, setShowModal] = useState(false);
   const [resetCode, setResetCode] = useState("");
 
-
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleInput = (e) => {
@@ -42,14 +41,16 @@ const Login = () => {
         toast.success("Login successful!");
 
         setTimeout(() => {
-          if (role === "Customer") {
-            navigate("/customer-dashboard");
-          } else if (role === "Seller") {
-            navigate("/seller-dashboard");
-          } else if (role === "milkman" && post.enterCode == 98) {
+          if (role === "milkman" && post.enterCode == 98) {
             navigate("/admin-dashboard");
-          } else if (role === "milkman") {
+          }
+          if (role === "milkman") {
             navigate("/milkman-dashboard");
+          }
+          if (response.data.userType === "Customer") {
+            navigate("/customer-dashboard");
+          } else if (response.data.userType === "Seller") {
+            navigate("/seller-dashboard");
           }
         }, 2000);
       } else {
@@ -58,7 +59,8 @@ const Login = () => {
     } catch (error) {
       setLoading(false);
       toast.error(
-        error.response?.data?.message || "Something went wrong. Please try again."
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
       );
     }
   };
@@ -91,14 +93,15 @@ const Login = () => {
 
       <div className="flex flex-col md:flex-row min-h-screen justify-center items-center bg-white px-4 py-6">
         {/* Left Image for all screen sizes */}
-<div className="flex-1 flex justify-center items-center hidden md:block ml-24"> {/* Added ml-10 to add margin on the left */}
-  <img
-    src={login12}
-    alt="Login Visual"
-    className="w-3/4 lg:w-2/3 xl:w-1/2 object-contain"
-  />
-</div>
-
+        <div className="flex-1 flex justify-center items-center hidden md:block ml-24">
+          {" "}
+          {/* Added ml-10 to add margin on the left */}
+          <img
+            src={login12}
+            alt="Login Visual"
+            className="w-3/4 lg:w-2/3 xl:w-1/2 object-contain"
+          />
+        </div>
 
         {/* Mobile Logo */}
         <div className="md:hidden w-full flex justify-center items-center mt-4">
@@ -114,7 +117,10 @@ const Login = () => {
           <div className="w-full max-w-md">
             <form onSubmit={login}>
               <div className="mb-4">
-                <label htmlFor="enterCode" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="enterCode"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Enter Code*
                 </label>
                 <input
@@ -130,7 +136,10 @@ const Login = () => {
               </div>
 
               <div className="mb-6 relative">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Password*
                 </label>
                 <input
@@ -148,7 +157,11 @@ const Login = () => {
                   onClick={togglePasswordVisibility}
                   className="absolute right-3 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                 >
-                  {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <FaEyeSlash className="w-5 h-5" />
+                  ) : (
+                    <FaEye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
 
@@ -222,7 +235,9 @@ const Login = () => {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
           <div className="bg-white rounded-2xl p-6 w-96 shadow-xl border border-gray-200">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Reset Password</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-800">
+              Reset Password
+            </h2>
             <input
               type="text"
               placeholder="Enter your code"
