@@ -89,7 +89,7 @@ const Login = () => {
 
       <div className="flex flex-col md:flex-row min-h-screen justify-center items-center bg-white px-4 py-6">
         {/* Left Image for all screen sizes */}
-<div className="flex-1 flex justify-center items-center hidden md:block ml-24"> {/* Added ml-10 to add margin on the left */}
+<div className="flex-1  justify-center items-center hidden md:block ml-24"> {/* Added ml-10 to add margin on the left */}
   <img
     src={login12}
     alt="Login Visual"

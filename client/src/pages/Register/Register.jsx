@@ -140,8 +140,36 @@ const Register = () => {
         </div>
       )}
 
-      <div className="flex-1 flex justify-center items-center w-full px-4 sm:px-8 md:px-12">
-        <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
+
+<div className="flex-1 flex justify-center items-center w-full px-4 sm:px-8 md:px-12 overflow-hidden">
+<div className="hidden lg:block w-full lg:w-1/2 mb-6 lg:mb-0 flex justify-center">
+  <img
+    src={register12}
+    alt="Register"
+    className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
+  />
+</div>
+
+<div className="hidden md:block lg:hidden w-full md:w-1/2 mb-6 lg:mb-0 flex justify-center">
+  <img
+    src={register12}
+    alt="Register"
+    className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
+  />
+</div>
+
+
+
+
+  <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
+  <div className="w-full flex justify-center mb-6 sm:block md:hidden lg:hidden overflow-hidden">
+    <img
+      src={register12}
+      alt="Register"
+      className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
+    />
+  </div>
+
           <h2 className="text-2xl font-semibold mb-6 text-center">Welcome</h2>
           <form onSubmit={handleSubmit} className="space-y-4 ">
             <div className="mb-4">
@@ -157,7 +185,7 @@ const Register = () => {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
                 placeholder="Enter your Name*"
                 required
               />
@@ -176,7 +204,7 @@ const Register = () => {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
                 placeholder="Enter your Phone*"
                 required
               />
@@ -195,7 +223,7 @@ const Register = () => {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
                 placeholder="Enter your Email*"
                 required
               />
@@ -214,7 +242,7 @@ const Register = () => {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
                 placeholder="••••••••"
                 required
               />
