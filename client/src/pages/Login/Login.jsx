@@ -42,9 +42,9 @@ const Login = () => {
         toast.success("Login successful!");
 
         setTimeout(() => {
-          if (role === "customer") {
+          if (role === "Customer") {
             navigate("/customer-dashboard");
-          } else if (role === "seller") {
+          } else if (role === "Seller") {
             navigate("/seller-dashboard");
           } else if (role === "milkman" && post.enterCode == 98) {
             navigate("/admin-dashboard");
