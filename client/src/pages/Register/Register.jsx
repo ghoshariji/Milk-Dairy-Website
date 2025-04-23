@@ -142,27 +142,7 @@ const Register = () => {
 
 
 <div className="flex-1 flex justify-center items-center w-full px-4 sm:px-8 md:px-12 overflow-hidden">
-<div className="hidden lg:block w-full lg:w-1/2 mb-6 lg:mb-0  justify-center">
-  <img
-    src={register12}
-    alt="Register"
-    className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
-  />
-</div>
-
-<div className="hidden md:block lg:hidden w-full md:w-1/2 mb-6 lg:mb-0  justify-center">
-  <img
-    src={register12}
-    alt="Register"
-    className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
-  />
-</div>
-
-
-
-
-  <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
-  <div className="w-full flex justify-center mb-6 sm:block md:hidden lg:hidden overflow-hidden">
+  <div className="hidden lg:block w-full lg:w-1/2 mb-6 lg:mb-0 justify-center">
     <img
       src={register12}
       alt="Register"
@@ -170,277 +150,186 @@ const Register = () => {
     />
   </div>
 
-          <h2 className="text-2xl font-semibold mb-6 text-center">Welcome</h2>
-          <form onSubmit={handleSubmit} className="space-y-4 ">
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter Name*
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
-                placeholder="Enter your Name*"
-                required
-              />
-            </div>
+  <div className="hidden md:block lg:hidden w-full md:w-1/2 mb-6 lg:mb-0 justify-center">
+    <img
+      src={register12}
+      alt="Register"
+      className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
+    />
+  </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter Phone*
-              </label>
-              <input
-                type="text"
-                id="phone"
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
-                placeholder="Enter your Phone*"
-                required
-              />
-            </div>
+  <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-md">
+    <div className="w-full flex justify-center mb-6 sm:block md:hidden lg:hidden overflow-hidden">
+      <img
+        src={register12}
+        alt="Register"
+        className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
+      />
+    </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter Email*
-              </label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
-                placeholder="Enter your Email*"
-                required
-              />
-            </div>
+    <h2 className="text-2xl font-semibold mb-6 text-center">Welcome</h2>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Name */}
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Enter Name*</label>
+          <input type="text" id="name" name="name" value={form.name} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter your Name*" required />
+        </div>
 
-            <div className="mb-6 relative">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password*
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200 hover:shadow-md hover:-translate-y-[1px]"
-                placeholder="••••••••"
-                required
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-              >
-                {showPassword ? (
-                  <FaEyeSlash className="w-5 h-5" />
-                ) : (
-                  <FaEye className="w-5 h-5" />
-                )}
-              </button>
-            </div>
+        {/* Phone */}
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Enter Phone*</label>
+          <input type="text" id="phone" name="phone" value={form.phone} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter your Phone*" required />
+        </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="upiId"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter UPI ID*
-              </label>
-              <input
-                type="text"
-                id="upiId"
-                name="upiId"
-                value={form.upiId}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your UPI ID*"
-                required
-              />
-            </div>
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Enter Email*</label>
+          <input type="text" id="email" name="email" value={form.email} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter your Email*" required />
+        </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="Village"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter Village*
-              </label>
-              <input
-                type="text"
-                id="Village"
-                name="village"
-                value={form.village}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your Village*"
-                required
-              />
-            </div>
+        {/* Password */}
+        <div className="relative">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password*</label>
+          <input type={showPassword ? "text" : "password"} id="password" name="password"
+            value={form.password} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="••••••••" required />
+          <button type="button" onClick={togglePasswordVisibility}
+            className="absolute right-3 top-9 text-gray-500 hover:text-gray-700">
+            {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
+          </button>
+        </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="enterCode"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter Code(unique, eg:123)*
-              </label>
-              <input
-                type="text"
-                id="enterCode"
-                name="enterCode"
-                value={form.enterCode}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your Code(unique, eg:123)*"
-                required
-              />
-            </div>
+        {/* UPI ID */}
+        <div>
+          <label htmlFor="upiId" className="block text-sm font-medium text-gray-700">Enter UPI ID*</label>
+          <input type="text" id="upiId" name="upiId" value={form.upiId} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter your UPI ID*" required />
+        </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="subcriptionCode"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Enter subcriptionCode
-              </label>
-              <input
-                type="text"
-                id="subcriptionCode"
-                name="subcriptionCode"
-                value={form.subcriptionCode}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your subcriptionCode"
-              />
-            </div>
-            <div className="mb-4">
-              {role !== "milkman" && (
-                <div className="col-span-1 md:col-span-2">
-                  <button
-                    type="button"
-                    onClick={() => setModalOpen(true)}
-                    className="bg-[#40A1CB] text-white w-full py-2 rounded-lg hover:bg-[#40A1CB]"
-                  >
-                    {form.milkman
-                      ? `Selected: ${form.milkman.name}`
-                      : "Select Milkman"}
-                  </button>
-                </div>
-              )}
-            </div>
+        {/* Village */}
+        <div>
+          <label htmlFor="village" className="block text-sm font-medium text-gray-700">Enter Village*</label>
+          <input type="text" id="village" name="village" value={form.village} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter your Village*" required />
+        </div>
 
-            <div className="mb-4 flex flex-col space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Select Role:
-              </label>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="customer"
-                    checked={role === "customer"}
-                    onChange={() => setRole("customer")}
-                    className="mr-2"
-                  />
-                  Customer
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="seller"
-                    checked={role === "seller"}
-                    onChange={() => setRole("seller")}
-                    className="mr-2"
-                  />
-                  Seller
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="milkman"
-                    checked={role === "milkman"}
-                    onChange={() => setRole("milkman")}
-                    className="mr-2"
-                  />
-                  Milkman
-                </label>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-[#40A1CB] text-white rounded-md hover:bg-[#40A1CB]"
-            >
-              {loading ? "Submitting..." : "Register"}
-            </button>
-            <Link to="/login">
-              <p className="text-sm font-medium text-[#40A1CB] hover:underline hover:text-[#40A1CB] cursor-pointer transition duration-200">
-                Already have an account? Login
-              </p>
-            </Link>
-          </form>
+        {/* Code */}
+        <div>
+          <label htmlFor="enterCode" className="block text-sm font-medium text-gray-700">Enter Code (e.g., 123)*</label>
+          <input type="text" id="enterCode" name="enterCode" value={form.enterCode} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter your Code*" required />
+        </div>
+
+        {/* Subscription Code */}
+        <div>
+          <label htmlFor="subcriptionCode" className="block text-sm font-medium text-gray-700">Enter Subscription Code</label>
+          <input type="text" id="subcriptionCode" name="subcriptionCode" value={form.subcriptionCode} onChange={handleChange}
+            className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:border-indigo-500 sm:text-sm"
+            placeholder="Optional code" />
         </div>
       </div>
 
-      {/* Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white w-full max-w-md p-4 rounded-xl shadow-xl">
-            <h3 className="text-lg font-bold mb-2">Select Milkman</h3>
-            <input
-              type="text"
-              className="w-full border p-2 rounded mb-2"
-              placeholder="Search..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-            <div className="max-h-60 overflow-y-auto space-y-2">
-              {filteredMilkmen.length > 0
-                ? filteredMilkmen.map((m) => (
-                    <div
-                      key={m._id}
-                      className="border p-2 rounded cursor-pointer hover:bg-gray-200"
-                      onClick={() => {
-                        setForm((prev) => ({ ...prev, milkman: m }));
-                        setModalOpen(false);
-                      }}
-                    >
-                      {m.name}
-                    </div>
-                  ))
-                : "No Milkman found 30km raduis"}
-            </div>
-            <button
-              onClick={() => setModalOpen(false)}
-              className="mt-4 text-sm text-blue-600 hover:underline"
-            >
-              Close
-            </button>
-          </div>
+      {/* Select Milkman */}
+      {role !== "milkman" && (
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className="bg-[#40A1CB] text-white w-full py-2 rounded-lg hover:bg-[#3690b5]"
+          >
+            {form.milkman ? `Selected: ${form.milkman.name}` : "Select Milkman"}
+          </button>
         </div>
       )}
+
+      {/* Select Role */}
+      <div className="mt-4">
+        <label className="text-sm font-medium text-gray-700">Select Role:</label>
+        <div className="flex space-x-4 mt-2">
+          {["customer", "seller", "milkman"].map((r) => (
+            <label key={r} className="flex items-center">
+              <input
+                type="radio"
+                name="role"
+                value={r}
+                checked={role === r}
+                onChange={() => setRole(r)}
+                className="mr-2"
+              />
+              {r.charAt(0).toUpperCase() + r.slice(1)}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        className="mt-6 w-full py-2 px-4 bg-[#40A1CB] text-white rounded-md hover:bg-[#3690b5]"
+      >
+        {loading ? "Submitting..." : "Register"}
+      </button>
+
+      <Link to="/login">
+        <p className="text-sm font-medium text-[#40A1CB] mt-4 text-center hover:underline">
+          Already have an account? Login
+        </p>
+      </Link>
+    </form>
+  </div>
+
+  {/* Modal */}
+  {modalOpen && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white w-full max-w-md p-4 rounded-xl shadow-xl">
+        <h3 className="text-lg font-bold mb-2">Select Milkman</h3>
+        <input
+          type="text"
+          className="w-full border p-2 rounded mb-2"
+          placeholder="Search..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+        <div className="max-h-60 overflow-y-auto space-y-2">
+          {filteredMilkmen.length > 0 ? (
+            filteredMilkmen.map((m) => (
+              <div
+                key={m._id}
+                className="border p-2 rounded cursor-pointer hover:bg-gray-200"
+                onClick={() => {
+                  setForm((prev) => ({ ...prev, milkman: m }));
+                  setModalOpen(false);
+                }}
+              >
+                {m.name}
+              </div>
+            ))
+          ) : (
+            "No Milkman found in 30km radius"
+          )}
+        </div>
+        <button
+          onClick={() => setModalOpen(false)}
+          className="mt-4 text-sm text-blue-600 hover:underline"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
     </>
   );
 };

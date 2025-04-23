@@ -27,44 +27,14 @@ import milkproduct from "./assets/milkproduct.png";
 import client1 from "./assets/client1.png";
 
 import playstore from "./assets/play-store.svg";
-
+import Navbar from "../components/Navbar/Navbar";
 const LandingPage = () => {
   const screenshots = [screen1, screen2, screen3, screen4, screen5];
 
   return (
     <div className="font-sans">
       {/* Navbar */}
-      <header className="w-full flex flex-wrap justify-between items-center px-6 py-4 bg-white shadow">
-        <div className="text-xl sm:text-2xl font-extrabold text-[#40A1CB]">
-          Hallo Dairy
-        </div>
-        <nav className="hidden md:flex space-x-6 text-base font-medium mt-2 md:mt-0">
-          <a
-            href="#home"
-            className="text-[#40A1CB] border-b-2 border-[#40A1CB]"
-          >
-            Home
-          </a>
-          <a
-            href="#about"
-            className="hover:text-[#40A1CB] transition-colors duration-200"
-          >
-            About
-          </a>
-          <a
-            href="#contact"
-            className="hover:text-[#40A1CB] transition-colors duration-200"
-          >
-            Contact
-          </a>
-          <a
-            href="/login"
-            className="hover:text-[#40A1CB] transition-colors duration-200"
-          >
-            Login
-          </a>
-        </nav>
-      </header>
+      <Navbar/>
 
       {/* Hero Section */}
       <section
