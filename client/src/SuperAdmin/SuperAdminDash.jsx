@@ -1,59 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { ChevronUp, ChevronDown } from "lucide-react";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import API from "../api";
 
-const activeUsers = 27;
-const totalUsers = 80;
-const questionsAnswered = 3298;
-const avgSession = "2m 34s";
-const knowledgeData = {
-  starting: 64,
-  current: 86,
-  gain: 34,
+const StatBox = ({ title, value }) => {
+  return (
+    <div className="bg-[#B1D4E0] text-black p-6 rounded-2xl shadow-md w-full">
+      <h4 className="text-sm font-bold mb-2">{title}</h4>
+      <p className="text-3xl font-bold">{value}</p>
+    </div>
+  );
 };
-const activityData = [
-  { name: "FEB", users: 180 },
-  { name: "MAR", users: 230 },
-  { name: "APR", users: 210 },
-  { name: "MAY", users: 400 },
-  { name: "JUN", users: 300 },
-  { name: "JUL", users: 380 },
-  { name: "AUG", users: 420 },
-  { name: "SEP", users: 500 },
-  { name: "OCT", users: 490 },
-  { name: "NOV", users: 580 },
-  { name: "DEC", users: 600 },
-];
-const weakestTopics = [
-  { name: "Food Safety", score: 74 },
-  { name: "Compliance Basics Procedures", score: 52 },
-  { name: "Company Networking", score: 36 },
-];
-const strongestTopics = [
-  { name: "Covid Protocols", score: 95 },
-  { name: "Cyber Security Basics", score: 92 },
-  { name: "Social Media Policies", score: 88 },
-];
-const users = [
-  { name: "Jesse Thomas", points: 637, correct: 94, position: 1 },
-  { name: "Thisal Mahityahagan", points: 625, correct: 89, position: 2 },
-];
-const groups = [
-  { name: "Houston Facility", points: 52, correct: 97, position: 1 },
-  { name: "Test Group", points: 52, correct: 95, position: 2 },
-];
-
-const StatBox = ({ title, value }) => (
-  <div className="p-4 rounded-xl shadow bg-white w-full">
-    <p className="text-gray-500 text-sm mb-1">{title}</p>
-    <h3 className="text-xl font-semibold">{value}</h3>
-  </div>
-);
+const StatBox1 = ({ title, value }) => {
+  return (
+    <div className="bg-gray-100 text-black p-6 rounded-2xl shadow-md w-full">
+      <h4 className="text-sm font-medium mb-2">{title}</h4>
+      <p className="text-3xl font-bold">{value}</p>
+    </div>
+  );
+};
 
 const Box = ({ children }) => (
-  <div className="p-4 rounded-xl shadow bg-white w-full">{children}</div>
+  <div className="p-4 rounded-xl shadow bg-gray-100 w-full">{children}</div>
+);
+
+const Box1 = ({ children }) => (
+  <div className="p-4 rounded-xl shadow bg-[#B1D4E0] w-full">{children}</div>
 );
 
 const SuperAdminDash = () => {
@@ -84,32 +55,38 @@ const SuperAdminDash = () => {
         {/* Main Content */}
         <div className=" w-full lg:ml-64 mt-20">
           <div className="flex-1  grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="p-4 md:p-8 bg-gray-100 ">
+            <div className="p-4 md:p-8 ">
               <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6">
                 <StatBox
                   title="User List (7 days)"
                   value={stats.milkmenCreated ? stats.milkmenCreated : "0"}
                 />
-                <StatBox
+                <StatBox1
                   title="Complain (7 Days)"
                   value={`+${stats.helpRequests}`}
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <Box>
-                  <div className="mt-6">
-                    <p className="font-medium mb-2">Recent Users</p>
+                <Box className="bg-gray-100 p-6 rounded-xl shadow-sm">
+                  <div className="mt-4">
+                    <p className="text-lg font-bold text-gray-800 mb-4">
+                      Recent Users
+                    </p>
+
                     {stats.latestUsers.slice(0, 5).map((user, idx) => (
                       <div key={idx} className="mb-2">
-                        <p className="text-sm font-medium">{user.name} - {user.email}</p>
+                        <p className="text-sm text-gray-700 font-medium">
+                          <span className="text-[#40A1CB]">{user.name}</span> —{" "}
+                          {user.email}
+                        </p>
                       </div>
                     ))}
 
-                    <div className="mt-4 text-right">
+                    <div className="mt-6 text-right">
                       <a
                         href="/users"
-                        className="inline-block px-4 py-2 bg-[#40A1CB] text-white rounded hover:bg-[#40A1CB] transition"
+                        className="inline-block px-5 py-2.5 bg-[#40A1CB] text-white rounded-lg hover:bg-[#3495b8] transition duration-300"
                       >
                         Show All Users
                       </a>
@@ -117,24 +94,28 @@ const SuperAdminDash = () => {
                   </div>
                 </Box>
 
-                <Box>
-                  <p className="font-medium mb-2">Manage Subscription Plans</p>
-                  <p className="text-sm text-gray-600 mb-4">
-                    As an admin, you can manage and assign subscription plans to
-                    users. Provide access to premium features tailored to their
-                    needs. Click below to explore and configure the available
-                    subscription plans.
-                  </p>
+                <Box1 className="flex flex-col justify-between h-full p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
+                  <div>
+                    <p className="text-xl font-bold mb-4 text-gray-800 group-hover:text-[#40A1CB] transition-colors duration-300">
+                      Manage Subscription Plans
+                    </p>
+                    <p className="text-base text-gray-600 leading-relaxed">
+                      As an admin, you can manage and assign subscription plans
+                      to users. Provide access to premium features tailored to
+                      their needs. Click below to explore and configure the
+                      available subscription plans.
+                    </p>
+                  </div>
 
-                  <div className="mt-4 text-right">
+                  <div className="mt-10 text-right">
                     <a
                       href="/subscriptions"
-                      className="inline-block px-4 py-2 bg-[#40A1CB] text-white rounded hover:bg-[#40A1CB] transition"
+                      className="inline-block px-6 py-3 bg-[#40A1CB] text-white rounded-lg shadow-md hover:bg-[#3495b8] hover:shadow-lg transition-all duration-300"
                     >
                       Configure Plans
                     </a>
                   </div>
-                </Box>
+                </Box1>
               </div>
             </div>
           </div>

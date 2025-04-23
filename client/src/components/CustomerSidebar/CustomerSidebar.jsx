@@ -72,7 +72,7 @@ const CustomerSidebar = () => {
   return (
     <div>
       {/* Top Navbar */}
-      <nav className="fixed top-0 z-50 w-full bg-[#40A1CB] shadow-lg">
+      <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900 shadow-lg">
         <div className="px-3 py-3 lg:px-5 lg:pl-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -88,8 +88,8 @@ const CustomerSidebar = () => {
                   />
                 </svg>
               </button>
-              <Link to="/milkman-dashboard" className="ml-2">
-                <img src={currentLogo} alt="Logo" className="w-[80%] h-14" />
+              <Link to="/customer-dashboard" className="ml-2">
+              <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
               </Link>
             </div>
             <div className="hidden lg:block">
@@ -101,7 +101,7 @@ const CustomerSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-[#40A1CB] ${
+        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform dark:bg-black dark:border-gray-900 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0 md:translate-x-0 lg:translate-x-0`}
         aria-label="Sidebar"

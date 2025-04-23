@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
+import Loader from "../components/Loader/Loader";
 
 const SuperAdminHelpPage = () => {
   const [helpData, setHelpData] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [searchText, setSearchText] = useState("");
 
+  const [loading, setLoading] = useState(false);
   const fetchData = async () => {
     try {
+      setLoading(true);
       const response = await API.get("/api/help/all");
+      setLoading(false);
+
       setHelpData(response.data);
     } catch (error) {
+      setLoading(false);
+
       console.error("Error fetching help data:", error);
     }
   };
 
   const handleSeen = async (id) => {
     try {
+      setLoading(true);
+
       const response = await fetch(
         `${import.meta.env.VITE_SERVER}/api/help/seen/${id}`,
         {
@@ -26,9 +35,12 @@ const SuperAdminHelpPage = () => {
           body: JSON.stringify({ unread: false }),
         }
       );
+      setLoading(false);
 
       if (response.ok) fetchData();
     } catch (error) {
+      setLoading(false);
+
       console.error("Error updating seen status:", error);
     }
   };
@@ -46,13 +58,21 @@ const SuperAdminHelpPage = () => {
     .filter((chat) =>
       chat.name.toLowerCase().includes(searchText.toLowerCase())
     )
-    .sort((a, b) => (b.unread ? 1 : 0) - (a.unread ? 1 : 0));
-
+    .sort((a, b) => {
+      if (a.unread !== b.unread) {
+        return b.unread - a.unread; // Unread messages first
+      }
+      return new Date(b.createdAt) - new Date(a.createdAt); // Most recent first
+    });
   return (
     <div className="flex">
       <SuperAdminSidebar />
       {/* Sidebar */}
-
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       {/* Main Content */}
       <div className=" w-full lg:ml-64 mt-20">
         <div className="flex-1 p-6">
@@ -100,7 +120,7 @@ const SuperAdminHelpPage = () => {
                   <div className="text-right">
                     <p className="text-sm text-gray-500">{displayTime}</p>
                     {chat.unread && (
-                      <span className="inline-block w-6 h-6 bg-green-600 text-white rounded-full text-center font-bold">
+                      <span className="inline-block w-6 h-6 bg-red-500 text-white rounded-full text-center font-bold">
                         !
                       </span>
                     )}

@@ -3,6 +3,7 @@ import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
+import Loader from "../components/Loader/Loader";
 
 const SuperAdminProfile = () => {
   const [name, setName] = useState("");
@@ -19,10 +20,12 @@ const SuperAdminProfile = () => {
   const createImageUrl = (imageData, contentType) => {
     try {
       const typedArray = new Uint8Array(imageData);
-      const blob = new Blob([typedArray], { type: contentType || 'image/jpeg' });
+      const blob = new Blob([typedArray], {
+        type: contentType || "image/jpeg",
+      });
       return URL.createObjectURL(blob);
     } catch (error) {
-      console.error('Error creating image URL:', error);
+      console.error("Error creating image URL:", error);
       return null;
     }
   };
@@ -30,7 +33,7 @@ const SuperAdminProfile = () => {
     try {
       setLoading(true);
       const { data } = await API.get("/api/auth/user/get-milkman");
-      console.log(data)
+      console.log(data);
       setLoading(false);
       if (data && data.milkman) {
         setName(data.milkman.name);
@@ -82,17 +85,16 @@ const SuperAdminProfile = () => {
     setLoading(false);
     setModalVisible(false);
   };
-  if (loading) {
-    return (
-      <div className="lg:ml-64 mt-20 p-6 min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-lg text-gray-600">Loading profile...</p>
-      </div>
-    );
-  }
   return (
     <>
       <SuperAdminSidebar />
       <ToastContainer />
+      {/* Sidebar */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold text-[#40A1CB]">
@@ -100,11 +102,11 @@ const SuperAdminProfile = () => {
           </h3>
           <div className="flex items-center mt-4">
             <img
-              src={profilePhoto ? profilePhoto :"Loading"}
+              src={profilePhoto ? profilePhoto : "Loading"}
               alt="Profile"
               className="w-24 h-24 rounded-full border"
             />
-            
+
             <div className="ml-4">
               <p className="text-gray-700">
                 <strong>Name:</strong> {name}

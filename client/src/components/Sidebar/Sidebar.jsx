@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import dashboard from "../../assetss/icons/Dashboard.png";
-import contact from "../../assetss/icons/contact-list.png";
-import AddUser from "../../assetss/icons/add-user.png";
-import user from "../../assetss/icons/user.png";
 import logo from "../../pages/images/login.png";
 import smallLogo from "../../pages/images/login.png";
-import logoout from "../../assetss/icons/logout.png";
-import event from "../../assetss/icons/calendar.png";
-import test from "../../assetss/icons/faqs.png";
-import faq from "../../assetss/icons/review.png";
 
 const AdminNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -62,21 +55,18 @@ const AdminNav = () => {
 
   return (
     <div>
-      <nav className="fixed top-0 z-50 w-full bg-[#40A1CB] dark:bg-[#40A1CB] ">
+      <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900 ">
         <div className="px-3 py-3 lg:px-5 lg:pl-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center justify-start">
+            <div className="flex items-center">
               <button
                 onClick={toggleSidebar}
-                type="button"
-                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                className="inline-flex items-center p-2 text-sm text-white rounded-lg sm:hidden md:block lg:hidden hover:bg-[#3184A6]"
               >
-                <span className="sr-only">Open sidebar</span>
                 <svg
                   className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     clipRule="evenodd"
@@ -85,16 +75,14 @@ const AdminNav = () => {
                   />
                 </svg>
               </button>
-              <Link
-                to="/milkman-dashboard"
-                className="flex items-center ms-2 md:me-24"
-              >
-                <img
-                  src={currentLogo}
-                  alt="FoxTech Logo"
-                  className="w-[80%] h-14 mr-2"
-                />
+              <Link to="/milkman-dashboard" className="ml-2">
+                <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
               </Link>
+            </div>
+            <div className="hidden lg:block">
+              <span className="text-white text-lg font-semibold">
+                Welcome to Halo Dairy
+              </span>
             </div>
           </div>
         </div>
@@ -102,12 +90,12 @@ const AdminNav = () => {
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-[#40A1CB] border-r border-gray-200 dark:bg-[#40A1CB] ${
+        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform dark:bg-black dark:border-gray-900 border-r border-gray-200  ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-[#40A1CB] dark:bg-[#40A1CB]">
+        <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-black dark:border-gray-900">
           <ul className="space-y-2 font-medium">
             <li>
               <NavLink

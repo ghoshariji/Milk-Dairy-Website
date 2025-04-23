@@ -45,7 +45,7 @@
   app.use("/api/help", feedbackroute);
   app.use("/api/advance", advanceBookRoute);
   app.use("/api/order", productOrderRoute);
-  // app.use("/api/milk", milkroute);
+  app.use("/api/milk", milkroute);
   app.use("/api/seller/milk", sellerMilkroute);
   app.use("/api/coupon", couponRoute);
   app.use("/api/analytics", analyticsRoute);

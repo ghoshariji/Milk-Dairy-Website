@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import API from "../api";
+import { toast, ToastContainer } from 'react-toastify';
 
 const CustomerAdvanceBook = () => {
   const [name, setName] = useState("");
@@ -29,7 +30,7 @@ const CustomerAdvanceBook = () => {
         deliveredBy: delivery,
       });
 
-      alert("Order submitted successfully!");
+      toast.success("Order submitted successfully!");
       setName("");
       setDescription("");
       setPrice("");
@@ -38,7 +39,7 @@ const CustomerAdvanceBook = () => {
       setDelivery("");
     } catch (error) {
       console.error("Error submitting order:", error.response?.data || error);
-      alert("Failed to submit order.");
+      toast.error("Failed to submit order.");
     } finally {
       setLoading(false);
     }
@@ -47,7 +48,12 @@ const CustomerAdvanceBook = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <CustomerSidebar />
-
+      <ToastContainer />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <div className="flex-1 p-4 md:p-8 mt-20 lg:ml-64">
         <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">Advance Booking Form</h2>
@@ -126,7 +132,7 @@ const CustomerAdvanceBook = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#40A1CB] text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+                className="w-full bg-[#40A1CB] text-white py-2 rounded-md transition disabled:opacity-50"
               >
                 {loading ? "Submitting..." : "Submit Booking"}
               </button>

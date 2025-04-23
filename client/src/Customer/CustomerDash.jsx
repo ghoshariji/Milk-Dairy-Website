@@ -3,25 +3,15 @@ import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CalendarIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import {
-  BarChart,
-  Bar,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import API from "../api";
+import MilkRecordModal from "../components/SellerCusMilkRecordModal";
+import Loader from "../components/Loader/Loader";
 
 const CustomerDash = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [milkData, setMilkData] = useState([]);
-  const [todayMilk, setTodayMilk] = useState(null);
+  const [todayMilk, setTodayMilk] = useState({});
   const [showCalendar, setShowCalendar] = useState(false);
   const [dashboardData, setDashboardData] = useState({
     productsCount: 0,
@@ -38,125 +28,149 @@ const CustomerDash = () => {
     return new Date(date.setDate(diff));
   };
 
-  const fetchDashboardData = async () => {
-    try {
-      const res = await axios.get("/api/analytics/dashboard-metrics");
-      setDashboardData(res.data);
-    } catch (err) {
-      console.error("Error loading dashboard data:", err);
-    }
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchWeekData = async () => {
-    const startDate = getWeekStartDate().toISOString().split("T")[0];
-    const endDate = new Date(selectedDate).toISOString().split("T")[0];
+    const selecDate = new Date(selectedDate).toISOString().split("T")[0];
     try {
-      const response = await axios.get(`/api/milk/week?start=${startDate}&end=${endDate}`);
-      setMilkData(response.data);
+      const response = await API.get(
+        `/api/auth/user/getMilkRecord-seller?date=${selecDate}`
+      );
+      console.log(response.data.data);
+      setMilkData(response.data.data[0]);
+      setIsModalOpen(true);
     } catch (error) {
       console.error("Error fetching milk data:", error);
     }
   };
 
   const fetchTodayMilk = async () => {
-    const today = new Date().toISOString().split("T")[0];
+    const startDate = new Date().toISOString().split("T")[0];
+
+    const endDate = new Date().toISOString().split("T")[0];
+
     try {
-      const response = await axios.get(`/api/milk/today?date=${today}`);
+      const response = await API.get("/api/auth/user/records-seller", {
+        params: {
+          from: startDate,
+          to: endDate,
+        },
+      });
+      console.log(response.data);
       setTodayMilk(response.data);
     } catch (error) {
       console.error("Error fetching today milk:", error);
     }
   };
 
+  const [monthData, setMonthData] = useState(null);
+
+  const [selectedMonth, setSelectedMonth] = useState("February");
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const fetchMonthData = async () => {
+    try {
+      const response = await API.get("/api/auth/user/monthly-records-seller", {
+        params: { month: selectedMonth, year: selectedYear },
+      });
+      console.log(response.data);
+      setMonthData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const years = Array.from(
+    { length: 10 },
+    (_, i) => new Date().getFullYear() - i
+  );
+  useEffect(() => {
+    fetchWeekData();
+  }, [selectedDate]);
+
+  useEffect(() => {
+    fetchMonthData();
+  }, [selectedYear, selectedMonth]);
+
   useEffect(() => {
     const loadAll = async () => {
       setLoading(true);
-      await Promise.all([fetchWeekData(), fetchTodayMilk(), fetchDashboardData()]);
+      await Promise.all([
+        fetchTodayMilk(),
+        fetchMonthData(),
+      ]);
       setLoading(false);
     };
     loadAll();
-  }, [selectedDate]);
+  }, []);
 
-  const graphData = [
-    { name: "Products", count: dashboardData.productsCount, link: "/customer-products" },
-    { name: "Orders", count: dashboardData.ordersCount, link: "/orders" },
-    { name: "Milkmans", count: dashboardData.milkmanCount, link: "/customer-milk-record" },
-  ];
+  const [item, setMilkMen] = useState({});
 
-  const lineChartData = [
-    { day: "Mon", Products: 12, Orders: 9, Milkmans: 3 },
-    { day: "Tue", Products: 18, Orders: 14, Milkmans: 4 },
-    { day: "Wed", Products: 15, Orders: 11, Milkmans: 5 },
-    { day: "Thu", Products: 20, Orders: 17, Milkmans: 4 },
-    { day: "Fri", Products: 25, Orders: 21, Milkmans: 6 },
-    { day: "Sat", Products: 23, Orders: 19, Milkmans: 7 },
-    { day: "Sun", Products: 30, Orders: 25, Milkmans: 8 },
-  ];
+  useEffect(() => {
+    const fetchMilkMen = async () => {
+      try {
+        const response = await API.get("/api/auth/user/get-milkman-data-user");
+        console.log(response.data);
+        setMilkMen(response.data);
+      } catch (error) {
+        console.error("Error fetching milkmen:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchMilkMen();
+  }, []);
   return (
     <div className="flex">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <CustomerSidebar />
       <div className="p-4 w-full lg:ml-64 mt-20 bg-white min-h-screen">
         {/* Weekly Trend Line Chart */}
-        <div className="mb-6 bg-white p-4 rounded-xl shadow">
-          <h2 className="text-lg font-semibold text-[#40A1CB] mb-4">Weekly Overview</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={lineChartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="Products" stroke="#40A1CB" />
-              <Line type="monotone" dataKey="Orders" stroke="#7DD3FC" />
-              <Line type="monotone" dataKey="Milkmans" stroke="#60A5FA" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
 
         {/* Graphs Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          {graphData.every(item => item.count === 0) ? (
-            <p className="text-center col-span-3 text-gray-400">No dashboard metrics available.</p>
-          ) : (
-            graphData.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => navigate(item.link)}
-                className="bg-[#eaf4f9] p-4 rounded-xl shadow cursor-pointer hover:bg-[#d3eaf4] transition"
-              >
-                <h3 className="text-center text-[#40A1CB] font-semibold mb-2">{item.name}</h3>
-                <ResponsiveContainer width="100%" height={150}>
-                  <BarChart data={[item]}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis allowDecimals={false} />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#40A1CB" barSize={40} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            ))
-          )}
-        </div>
 
         {/* Weekly & Today's Milk Record */}
         {loading ? (
-          <div className="text-center text-gray-400 mt-10">Loading dashboard...</div>
+          <div className="text-center text-gray-400 mt-10">
+            Loading dashboard...
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Weekly Milk Box */}
-            <div className="bg-white p-4 rounded-lg shadow-md relative">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold text-[#40A1CB]">Milk Data (This Week)</h2>
+            <div className="bg-white p-5 rounded-2xl shadow-lg relative">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-[#40A1CB]">
+                  Milk Data (This Week)
+                </h2>
                 <button
                   onClick={() => setShowCalendar(!showCalendar)}
-                  className="text-[#40A1CB] hover:text-[#2b91ba]"
+                  className="text-[#40A1CB] hover:text-[#2b91ba] transition-colors duration-200"
                 >
                   <CalendarIcon className="h-5 w-5" />
                 </button>
               </div>
+
               {showCalendar && (
-                <div className="mb-3">
+                <div className="mb-4">
                   <DatePicker
                     selected={selectedDate}
                     onChange={(date) => {
@@ -164,10 +178,12 @@ const CustomerDash = () => {
                       setShowCalendar(false);
                     }}
                     inline
+                    calendarClassName="rounded-lg border shadow-md"
                   />
                 </div>
               )}
-              <div className="mb-2 text-sm text-gray-600 flex flex-wrap gap-2">
+
+              <div className="mb-1 text-sm text-gray-600 flex flex-wrap gap-2">
                 {Array.from({ length: 7 }, (_, i) => {
                   const weekStart = getWeekStartDate();
                   const date = new Date(weekStart);
@@ -176,12 +192,15 @@ const CustomerDash = () => {
                     weekday: "short",
                     day: "numeric",
                   });
-                  const isToday = date.toDateString() === new Date().toDateString();
+                  const isToday =
+                    date.toDateString() === new Date().toDateString();
                   return (
                     <span
                       key={i}
-                      className={`px-2 py-1 rounded-md ${
-                        isToday ? "bg-[#e6f7fc] font-semibold text-[#40A1CB]" : ""
+                      className={`px-3 py-1 rounded-full border ${
+                        isToday
+                          ? "bg-[#e6f7fc] border-[#40A1CB] font-medium text-[#40A1CB]"
+                          : "bg-gray-100 text-gray-700"
                       }`}
                     >
                       {formatted}
@@ -192,23 +211,38 @@ const CustomerDash = () => {
             </div>
 
             {/* Today's Milk Record */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold text-[#40A1CB] mb-2">Today’s Milk Record</h2>
+            <div className="bg-[#eaf4f9] p-6 rounded-2xl shadow-lg border border-gray-100">
+              <h2 className="text-xl font-bold text-[#40A1CB]  mb-4">
+                Your MilkMan
+              </h2>
               {todayMilk ? (
-                <div className="text-[#40A1CB] space-y-2 text-sm">
+                <div className="text-gray-700 text-sm space-y-3">
                   <p>
-                    <strong>Quantity:</strong> {todayMilk.quantity} L
+                    <span className="font-semibold text-gray-900">Name :</span>{" "}
+                    {item.name}
                   </p>
                   <p>
-                    <strong>Type:</strong> {todayMilk.type}
+                    <span className="font-semibold text-gray-900">Email:</span>{" "}
+                    <a
+                      href={`mailto:${item.email}`}
+                      className="text-[#40A1CB] hover:underline"
+                    >
+                      {item.email}
+                    </a>
                   </p>
                   <p>
-                    <strong>Recorded At:</strong>{" "}
-                    {new Date(todayMilk.createdAt).toLocaleTimeString()}
+                    <span className="font-semibold text-gray-900">Code :</span>{" "}
+                    {item.enterCode}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Address :
+                    </span>{" "}
+                    {item.village}
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-500">No milk recorded today.</p>
+                <p className="text-gray-400 italic">No milk recorded today.</p>
               )}
             </div>
           </div>
@@ -220,45 +254,117 @@ const CustomerDash = () => {
           <div className="bg-[#eaf4f9] p-5 rounded-2xl shadow-md">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-lg font-semibold text-gray-700">Today's Milk Record</h2>
+                <h2 className="text-lg font-semibold text-gray-700">
+                  Today's Milk Record
+                </h2>
                 <div className="flex items-end gap-1 mt-2">
-                  <span className="text-4xl font-bold text-black">6</span>
+                  <span className="text-4xl font-bold text-black">
+                    {todayMilk.totalLiters}
+                  </span>
                   <span className="text-lg text-gray-600">LTR</span>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-600">25 Sep</p>
-                <p className="text-2xl font-bold text-black">420.20 <span className="text-sm font-medium text-gray-600">INR</span></p>
+                <p className="text-sm text-gray-600">
+                  {new Date().toLocaleDateString("en-US", {
+                    day: "2-digit",
+                    month: "short",
+                  })}
+                </p>{" "}
+                <p className="text-2xl font-bold text-black">
+                  {todayMilk.totalPrice}
+                  <span className="text-sm font-medium text-gray-600">INR</span>
+                </p>
               </div>
             </div>
             <div className="flex justify-between mt-4 text-sm text-gray-700">
-              <div><p className="font-semibold">Fat</p><p>5.1</p></div>
-              <div><p className="font-semibold">Snf</p><p>5.1</p></div>
-              <div><p className="font-semibold">Rate</p><p>69 INR</p></div>
+              <div>
+                <p className="font-semibold">Fat</p>
+                <p>N/A</p>
+              </div>
+              <div>
+                <p className="font-semibold">Snf</p>
+                <p>N/A</p>
+              </div>
+              <div>
+                <p className="font-semibold">Rate</p>
+                <p>{todayMilk.avgRate} INR</p>
+              </div>
             </div>
           </div>
 
           {/* Monthly Milk Summary */}
-          <div className="bg-[#eaf4f9] p-5 rounded-2xl shadow-md">
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-700">Monthly Record</h2>
-                <p className="text-2xl font-bold text-black mt-2">5600 <span className="text-sm font-medium text-gray-600">INR</span></p>
+          {monthData ? (
+            <div className="bg-white p-5 rounded-2xl shadow-md">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-700">
+                    Monthly Record
+                  </h2>
+                  <p className="text-2xl font-bold text-black mt-2">
+                    {monthData.totalAmount}
+                    <span className="text-sm font-medium text-gray-600">
+                      INR
+                    </span>
+                  </p>
+                </div>
+
+                <div className="text-right">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <select
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                      className="text-sm text-gray-700 border border-gray-300 rounded px-2 py-1"
+                    >
+                      {months.map((month) => (
+                        <option key={month} value={month}>
+                          {month}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => setSelectedYear(e.target.value)}
+                      className="text-sm text-gray-700 border border-gray-300 rounded px-2 py-1"
+                    >
+                      {years.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <p className="text-2xl font-bold text-black">
+                    {monthData.totalLiters}
+                    <span className="text-sm font-medium text-gray-600">
+                      LTR
+                    </span>
+                  </p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-600">September ▼</p>
-                <p className="text-2xl font-bold text-black mt-2">80 <span className="text-sm font-medium text-gray-600">LTR</span></p>
+
+              <div className="flex justify-center mt-4 text-sm text-gray-700">
+                <div>
+                  <p className="font-semibold">Avg. Rate</p>
+                  <p>{monthData.avgRate} INR</p>
+                </div>
               </div>
+              <p className="text-xs text-center text-gray-500 mt-3">
+                Based on your milk history
+              </p>
             </div>
-            <div className="flex justify-between mt-4 text-sm text-gray-700">
-              <div><p className="font-semibold">Avg. Fat</p><p>5.1</p></div>
-              <div><p className="font-semibold">Avg. Snf</p><p>7.0</p></div>
-              <div><p className="font-semibold">Avg. Rate</p><p>69 INR</p></div>
+          ) : (
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+              <Loader />
             </div>
-            <p className="text-xs text-center text-gray-500 mt-3">Based on your milk history</p>
-          </div>
+          )}
         </div>
       </div>
+      <MilkRecordModal
+        data={milkData}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

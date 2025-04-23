@@ -62,21 +62,18 @@ const SuperAdminSidebar = () => {
 
   return (
     <div>
-      <nav className="fixed top-0 z-50 w-full bg-[#40A1CB] dark:bg-[#40A1CB] ">
+      <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900  ">
         <div className="px-3 py-3 lg:px-5 lg:pl-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center justify-start">
+        <div className="flex items-center justify-between">
+            <div className="flex items-center">
               <button
                 onClick={toggleSidebar}
-                type="button"
-                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                className="inline-flex items-center p-2 text-sm text-white rounded-lg sm:hidden md:block lg:hidden hover:bg-[#3184A6]"
               >
-                <span className="sr-only">Open sidebar</span>
                 <svg
                   className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     clipRule="evenodd"
@@ -85,16 +82,14 @@ const SuperAdminSidebar = () => {
                   />
                 </svg>
               </button>
-              <Link
-                to="/milkman-dashboard"
-                className="flex items-center ms-2 md:me-24"
-              >
-                <img
-                  src={currentLogo}
-                  alt="FoxTech Logo"
-                  className="w-[80%] h-14 mr-2"
-                />
+              <Link to="/admin-dashboard" className="ml-2">
+                <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
               </Link>
+            </div>
+            <div className="hidden lg:block">
+              <span className="text-white text-lg font-semibold">
+                Welcome to Halo Dairy
+              </span>
             </div>
           </div>
         </div>
@@ -107,7 +102,7 @@ const SuperAdminSidebar = () => {
         } sm:translate-x-0`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-[#40A1CB] dark:bg-[#40A1CB]">
+        <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-black dark:border-gray-900 ">
           <ul className="space-y-2 font-medium">
             <li>
               <NavLink

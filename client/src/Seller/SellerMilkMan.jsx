@@ -4,13 +4,34 @@ import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { motion } from "framer-motion";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
+import Loader from "../components/Loader/Loader";
 
 const infoItems = [
-  { icon: <User className="text-[#40A1CB]" size={28} />, label: "Name", key: "name" },
-  { icon: <Mail className="text-[#40A1CB]" size={28} />, label: "Email", key: "email" },
-  { icon: <IndianRupee className="text-[#40A1CB]" size={28} />, label: "UPI ID", key: "upiId" },
-  { icon: <BadgeInfo className="text-[#40A1CB]" size={28} />, label: "Code", key: "enterCode" },
-  { icon: <MapPin className="text-[#40A1CB]" size={28} />, label: "Village", key: "village" },
+  {
+    icon: <User className="text-[#40A1CB]" size={28} />,
+    label: "Name",
+    key: "name",
+  },
+  {
+    icon: <Mail className="text-[#40A1CB]" size={28} />,
+    label: "Email",
+    key: "email",
+  },
+  {
+    icon: <IndianRupee className="text-[#40A1CB]" size={28} />,
+    label: "UPI ID",
+    key: "upiId",
+  },
+  {
+    icon: <BadgeInfo className="text-[#40A1CB]" size={28} />,
+    label: "Code",
+    key: "enterCode",
+  },
+  {
+    icon: <MapPin className="text-[#40A1CB]" size={28} />,
+    label: "Village",
+    key: "village",
+  },
 ];
 
 const SellerMilkman = () => {
@@ -32,16 +53,13 @@ const SellerMilkman = () => {
     fetchMilkMen();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-gray-500 text-xl">Loading milkman data...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <div className="w-full lg:w-64">
         <SellerSideBar />
       </div>
@@ -65,11 +83,16 @@ const SellerMilkman = () => {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 * index, duration: 0.5 }}
-                whileHover={{ scale: 1.03, boxShadow: "0 8px 24px rgba(0,0,0,0.1)" }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                }}
               >
                 {info.icon}
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-500">{info.label}</p>
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    {info.label}
+                  </p>
                   <p className="text-sm sm:text-lg font-medium break-words">
                     {item[info.key] || "N/A"}
                   </p>

@@ -40,19 +40,22 @@ const Login = () => {
         localStorage.setItem("token", response.data.token);
         toast.success("Login successful!");
 
+        console.log(post.enterCode)
+        console.log(role)
         setTimeout(() => {
-          if (role === "milkman" && post.enterCode == 98) {
-            navigate("/admin-dashboard");
-          }
           if (role === "milkman") {
-            navigate("/milkman-dashboard");
-          }
-          if (response.data.userType === "Customer") {
+            if (post.enterCode == 98) {
+              navigate("/admin-dashboard");
+            } else {
+              navigate("/milkman-dashboard");
+            }
+          } else if (response.data.userType === "Customer") {
             navigate("/customer-dashboard");
           } else if (response.data.userType === "Seller") {
             navigate("/seller-dashboard");
           }
         }, 2000);
+        
       } else {
         toast.error(response.data.message || "Invalid credentials!");
       }

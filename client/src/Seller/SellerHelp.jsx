@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import SellerSideBar from '../components/SellerSidebar/SellerSidebar';
 import axios from 'axios';
 import API from '../api';
+import Loader from '../components/Loader/Loader';
+import { toast, ToastContainer } from 'react-toastify';
 
 const SellerHelp = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ const SellerHelp = () => {
     feedback: '',
   });
 
+  const [loading,setLoading] = useState(false)
   const [errors, setErrors] = useState({ phone: '' });
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -40,7 +43,6 @@ const SellerHelp = () => {
       alert('All fields are required!');
       return;
     }
-
     if (formData.phone.length !== 10) {
       setErrors((prev) => ({
         ...prev,
@@ -48,23 +50,33 @@ const SellerHelp = () => {
       }));
       return;
     }
+    setLoading(true)
 
     try {
       const response = await API.post(
         `/api/help/seller`,
         formData
       );
+      setLoading(false)
       setSuccessMsg(response.data.message || 'Feedback submitted successfully');
+      toast.success(response.data.message || 'Feedback submitted successfully')
       setFormData({ name: '', phone: '', feedback: '' });
     } catch (error) {
-      alert('Failed to submit feedback: ' + error.message);
+      toast.error('Failed to submit feedback: ' + error.message);
+      setLoading(false)
+
     }
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       <SellerSideBar />
-
+      <ToastContainer />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <div className="flex-1 p-6 lg:ml-64 flex items-center justify-center mt-15">
         <form
           onSubmit={handleSubmit}
@@ -122,7 +134,7 @@ const SellerHelp = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#40A1CB] text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            className="w-full bg-[#40A1CB] text-white py-2 rounded-lg transition"
           >
             Submit
           </button>

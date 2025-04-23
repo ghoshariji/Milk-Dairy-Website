@@ -3,6 +3,8 @@ import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { toast, ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
+import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
+import Loader from "../components/Loader/Loader";
 
 const CustomerProfile = () => {
   const [profile, setProfile] = useState({
@@ -14,6 +16,7 @@ const CustomerProfile = () => {
   const [file, setFile] = useState(null); // actual image file for upload
   const [editing, setEditing] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   // Convert binary image data to a browser blob URL
   const createImageUrl = (imageData, contentType) => {
     try {
@@ -30,6 +33,7 @@ const CustomerProfile = () => {
 
   // Fetch profile on mount
   useEffect(() => {
+    setLoading(true);
     const fetchProfile = async () => {
       try {
         const response = await API.get(`/api/auth/user/get-profile`);
@@ -42,7 +46,7 @@ const CustomerProfile = () => {
             user.profileImage.contentType
           );
         }
-
+        setLoading(false);
         setProfile({
           name: user.name || "",
           email: user.email || "",
@@ -50,6 +54,8 @@ const CustomerProfile = () => {
           profileImage: imageUrl,
         });
       } catch (error) {
+        setLoading(false);
+
         console.error("Error fetching profile:", error);
         alert("Failed to fetch profile.");
       }
@@ -69,150 +75,138 @@ const CustomerProfile = () => {
   };
 
   const updateProfile = async () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("name", profile.name);
     formData.append("email", profile.email);
     formData.append("phone", profile.phone);
-  
+
     if (file) {
       formData.append("updateProfile", file);
     }
-  
+
     try {
       await API.put(`/api/auth/user/update-profile`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-  
+
+      setLoading(false);
       toast.success("Profile updated successfully!");
       setEditing(false);
     } catch (error) {
+      setLoading(false);
+
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile.");
     }
   };
-  
+
   return (
-    <>
-      <CustomerSidebar />
+    <div className="flex min-h-screen bg-gray-50">
+      <SellerSideBar />
       <ToastContainer />
-      <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
-        <h2 className="text-2xl font-semibold mb-4 text-center">User Profile</h2>
 
-        {/* Profile Image Section */}
-        <div className="flex justify-center mb-6">
-          {profile.profileImage ? (
-            <img
-              src={profile.profileImage}
-              alt="Profile"
-              className="h-32 w-32 object-cover rounded-full mb-4"
-            />
-          ) : (
-            <div className="h-32 w-32 bg-gray-300 flex items-center justify-center rounded-full mb-4">
-              No Image Found
-            </div>
-          )}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
         </div>
+      )}
 
-        {/* Input Fields */}
-        <motion.div
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 0.5 }}
-          className="mb-4"
-        >
-          <label className="block text-sm font-medium">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={profile.name}
-            onChange={handleChange}
-            disabled={!editing}
-            className="w-full p-2 border rounded transition-all duration-300 ease-in-out border-gray-300 focus:border-[#40A1CB]"
-          />
-        </motion.div>
+      <div className="flex-1 flex justify-center items-start pt-15">
+        <div className="w-full max-w-3xl   p-6">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+            👤 User Profile
+          </h2>
 
-        <motion.div
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 0.5 }}
-          className="mb-4"
-        >
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={profile.email}
-            onChange={handleChange}
-            disabled={!editing}
-            className="w-full p-2 border rounded transition-all duration-300 ease-in-out border-gray-300 focus:border-[#40A1CB]"
-          />
-        </motion.div>
+          {/* Profile Image Section */}
+          <div className="flex justify-center mb-6">
+            {profile.profileImage ? (
+              <img
+                src={profile.profileImage}
+                alt="Profile"
+                className="h-32 w-32 object-cover rounded-full shadow"
+              />
+            ) : (
+              <div className="h-32 w-32 bg-gray-300 flex items-center justify-center rounded-full text-sm text-gray-600 shadow">
+                No Image
+              </div>
+            )}
+          </div>
 
-        <motion.div
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 0.5 }}
-          className="mb-4"
-        >
-          <label className="block text-sm font-medium">Phone</label>
-          <input
-            type="text"
-            name="phone"
-            value={profile.phone}
-            onChange={handleChange}
-            disabled={!editing}
-            className="w-full p-2 border rounded transition-all duration-300 ease-in-out border-gray-300 focus:border-[#40A1CB]"
-          />
-        </motion.div>
+          {/* Input Fields */}
+          <div className="space-y-4">
+            {["name", "email", "phone"].map((field) => (
+              <motion.div
+                key={field}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <label className="block text-sm font-medium capitalize mb-1">
+                  {field}
+                </label>
+                <input
+                  type={field === "email" ? "email" : "text"}
+                  name={field}
+                  value={profile[field]}
+                  onChange={handleChange}
+                  disabled={!editing}
+                  className="w-full px-4 py-2 border rounded-lg transition duration-200 border-gray-300 focus:ring-2 focus:ring-[#40A1CB] focus:outline-none"
+                />
+              </motion.div>
+            ))}
 
-        {/* Profile Image Update */}
-        <motion.div
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 0.5 }}
-          className="mb-4"
-        >
-          <label className="block text-sm font-medium mb-1">Profile Image</label>
-          {editing && (
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full p-2 border rounded"
-            />
-          )}
-        </motion.div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-between mt-4">
-          {!editing ? (
-            <button
-              className="px-4 py-2 bg-[#40A1CB] text-white rounded"
-              onClick={() => setEditing(true)}
+            {/* Profile Image Update */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
             >
-              Edit Profile
-            </button>
-          ) : (
-            <>
+              <label className="block text-sm font-medium mb-1">
+                Profile Image
+              </label>
+              {editing && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+              )}
+            </motion.div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-4 mt-6">
+            {!editing ? (
               <button
-                className="px-4 py-2 bg-[#40A1CB] text-white rounded"
-                onClick={updateProfile}
+                className="px-5 py-2 bg-[#40A1CB] text-white rounded-lg shadow hover:bg-[#3692b7] transition"
+                onClick={() => setEditing(true)}
               >
-                Save
+                Edit Profile
               </button>
-              <button
-                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                onClick={() => setEditing(false)}
-              >
-                Cancel
-              </button>
-            </>
-          )}
+            ) : (
+              <>
+                <button
+                  className="px-5 py-2 bg-[#40A1CB] text-white rounded-lg shadow hover:bg-[#3692b7] transition"
+                  onClick={updateProfile}
+                >
+                  Save
+                </button>
+                <button
+                  className="px-5 py-2 bg-gray-400 text-white rounded-lg shadow hover:bg-gray-500 transition"
+                  onClick={() => setEditing(false)}
+                >
+                  Cancel
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
