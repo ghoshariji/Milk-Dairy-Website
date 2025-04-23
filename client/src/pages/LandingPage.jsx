@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import phoneImg from "./assets/phone.png";
 import bg from "./assets/bg.png";
 import milkbg from "./assets/milkbg.png";
@@ -11,7 +11,8 @@ import phone12 from "./assets/mani.jpg";
 import jarbg from "./assets/bg_bottom.png";
 import milkwave from "./assets/milkwave.png";
 import "../index.css";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios"
 import screen1 from "./assets/screen1.png";
 import screen2 from "./assets/screen2.png";
 import screen3 from "./assets/screen2.png";
@@ -25,20 +26,51 @@ import smileIcon from "./assets/happy.png";
 
 import milkproduct from "./assets/milkproduct.png";
 import client1 from "./assets/client1.png";
+import { toast, ToastContainer } from "react-toastify";
 
 import playstore from "./assets/play-store.svg";
 import Navbar from "../components/Navbar/Navbar";
 const LandingPage = () => {
   const screenshots = [screen1, screen2, screen3, screen4, screen5];
 
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
+  const handleChange = (e) => {
+    setFormData({ 
+      ...formData, 
+      [e.target.name]: e.target.value 
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER}/api/get-in/add`,
+        formData
+      );
+      toast.success("We will get back to you soon...");
+      console.log("Response:", response.data);
+      // Clear form
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Something went wrong. Try again!");
+    }
+  };
+
   return (
     <div className="font-sans">
       {/* Navbar */}
-      <Navbar/>
-
+      <Navbar />
+<ToastContainer />
       {/* Hero Section */}
       <section
-      id="home"
+        id="home"
         className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden"
         style={{
           backgroundImage: `url(${bg})`,
@@ -62,14 +94,12 @@ const LandingPage = () => {
               <button
                 className="text-white px-6 py-3 rounded-lg shadow transition hover:brightness-90"
                 style={{ backgroundColor: "#40A1CB" }}
+                onClick={() => navigate("/login")}
               >
                 Get Started
               </button>
 
               {/* View More button only visible on small and medium screens */}
-              <button className="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:border-green-600 transition block lg:hidden">
-                View More
-              </button>
             </div>
           </div>
 
@@ -134,7 +164,7 @@ const LandingPage = () => {
             {/* Card 2 */}
             <div className="flex flex-col items-center px-4">
               <div className="bg-green-100 p-4 rounded-full mb-4">
-              <img src={screen3} alt="Icon" className="w-8 h-8" />
+                <img src={screen3} alt="Icon" className="w-8 h-8" />
               </div>
               <h3 className="font-semibold text-lg mb-2">
                 Order From Our Virtual Mall Of Local Stores
@@ -148,7 +178,7 @@ const LandingPage = () => {
             {/* Card 3 */}
             <div className="flex flex-col items-center px-4">
               <div className="bg-green-100 p-4 rounded-full mb-4">
-              <img src={screen2} alt="Icon" className="w-8 h-8" />
+                <img src={screen2} alt="Icon" className="w-8 h-8" />
               </div>
               <h3 className="font-semibold text-lg mb-2">
                 Easy Access To Local Services
@@ -179,11 +209,17 @@ const LandingPage = () => {
               When You Join Deliver2e You Will Enjoy Our New And Improved Way Of
               Shopping Through Our Virtual Mall Experience
             </p>
-            <img
-              src={playstore}
-              alt="Get it on Google Play"
-              className="w-40 mx-auto lg:mx-0 mt-4"
-            />
+            <a
+              href="https://play.google.com/store/apps/details?id=com.yourapp.dairy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={playstore}
+                alt="Get it on Google Play"
+                className="w-40 mx-auto lg:mx-0 mt-4"
+              />
+            </a>
           </div>
 
           {/* Phone Image (responsive placement) */}
@@ -317,7 +353,10 @@ const LandingPage = () => {
       </section>
 
       {/* App Stats Section */}
-      <section className="bg-white pt-2 pb-16 px-6 md:px-14 text-center" id="about">
+      <section
+        className="bg-white pt-2 pb-16 px-6 md:px-14 text-center"
+        id="about"
+      >
         <p className="text-[#40A1CB] text-sm tracking-widest mb-2">
           LOREM IPSUM
         </p>
@@ -361,8 +400,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
- 
 
       <section className="py-20 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-10">
@@ -419,37 +456,48 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section id="contact" className="relative w-full min-h-screen bg-gray-100 overflow-hidden flex flex-col md:flex-row items-center justify-center">
+      <section
+        id="contact"
+        className="relative w-full min-h-screen bg-gray-100 overflow-hidden flex flex-col md:flex-row items-center justify-center"
+      >
         {/* Contact Form Container */}
         <div className="relative z-10 w-full max-w-md mx-auto p-6 md:p-12 md:ml-auto md:mr-16 bg-white rounded-2xl shadow-xl mt-10 md:mt-0">
-          <p className="text-sm text-[#40A1CB] font-medium mb-2">Contact Us</p>
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            Get In Touch With Us!
-          </h2>
-          <form className="space-y-4">
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-            />
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-            />
-            <textarea
-              placeholder="Your Message"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB] h-28"
-            ></textarea>
-            <button
-              type="submit"
-              className="bg-[#40A1CB] text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
-            >
-              Send Now
-            </button>
-          </form>
-        </div>
-
+      <p className="text-sm text-[#40A1CB] font-medium mb-2">Contact Us</p>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        Get In Touch With Us!
+      </h2>
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Your Name"
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+        />
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Your Email"
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+        />
+        <textarea
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          placeholder="Your Message"
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB] h-28"
+        ></textarea>
+        <button
+          type="submit"
+          className="bg-[#40A1CB] text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
+        >
+          Send Now
+        </button>
+      </form>
+    </div>
         {/* Background Jar Image for Desktop */}
         <div
           className="hidden md:block absolute inset-0 bg-cover bg-right bg-no-repeat z-0"
