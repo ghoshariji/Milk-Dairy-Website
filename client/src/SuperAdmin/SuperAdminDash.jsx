@@ -10,6 +10,7 @@ const StatBox = ({ title, value }) => {
     </div>
   );
 };
+
 const StatBox1 = ({ title, value }) => {
   return (
     <div className="bg-gray-100 text-black p-6 rounded-2xl shadow-md w-full">
