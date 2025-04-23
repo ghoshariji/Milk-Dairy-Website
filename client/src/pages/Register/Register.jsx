@@ -142,7 +142,7 @@ const Register = () => {
 
 
 <div className="flex-1 flex justify-center items-center w-full px-4 sm:px-8 md:px-12 overflow-hidden">
-<div className="hidden lg:block w-full lg:w-1/2 mb-6 lg:mb-0 flex justify-center">
+<div className="hidden lg:block w-full lg:w-1/2 mb-6 lg:mb-0  justify-center">
   <img
     src={register12}
     alt="Register"
@@ -150,7 +150,7 @@ const Register = () => {
   />
 </div>
 
-<div className="hidden md:block lg:hidden w-full md:w-1/2 mb-6 lg:mb-0 flex justify-center">
+<div className="hidden md:block lg:hidden w-full md:w-1/2 mb-6 lg:mb-0  justify-center">
   <img
     src={register12}
     alt="Register"
