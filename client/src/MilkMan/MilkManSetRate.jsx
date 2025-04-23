@@ -156,7 +156,7 @@ const MilkmanSetRate = () => {
             <div className="bg-white p-8 rounded-2xl w-80 shadow-xl text-center z-50">
               <p className="text-xl font-semibold text-gray-800 mb-6">
                 Are you sure you want to add this rate?
-              </p>
+                </p>
               <div className="flex justify-around">
                 <button
                   onClick={handleConfirmAdd}
