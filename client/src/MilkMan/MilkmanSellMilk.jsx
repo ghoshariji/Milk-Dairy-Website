@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
 
 const MilkmanSellMilk = () => {
   const [formData, setFormData] = useState({
@@ -51,6 +52,7 @@ const MilkmanSellMilk = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        
         const response = await API.get(
           "/api/milkman/product/get-sellMilk-product"
         );
@@ -115,76 +117,104 @@ const MilkmanSellMilk = () => {
     <>
       <AdminNav />
       <ToastContainer />
-      <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
-        <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-200 transition-transform duration-300 hover:scale-[1.01]">
-          <h3 className="text-2xl font-bold text-[#40A1CB] mb-6 transition-opacity duration-300">
-            Sell Milk
-          </h3>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Enter Code
-              </label>
-              <input
-                ref={codeRef}
-                type="text"
-                placeholder="E.g. M123"
-                value={formData.enterCode}
-                onChange={(e) =>
-                  setFormData({ ...formData, enterCode: e.target.value })
-                }
-                onKeyDown={(e) => handleKeyNavigation(e, codeRef)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Weight (litres)
-                </label>
-                <input
-                  ref={weightRef}
-                  type="number"
-                  placeholder="e.g. 5"
-                  value={formData.weight}
-                  onChange={(e) =>
-                    setFormData({ ...formData, weight: e.target.value })
-                  }
-                  onKeyDown={(e) => handleKeyNavigation(e, weightRef)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Rate (per litre)
-                </label>
-                <input
-                  ref={rateRef}
-                  type="number"
-                  placeholder="e.g. 50"
-                  value={formData.rate}
-                  onChange={(e) =>
-                    setFormData({ ...formData, rate: e.target.value })
-                  }
-                  onKeyDown={(e) => handleKeyNavigation(e, rateRef)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
-                />
-              </div>
-            </div>
-
-            <button
-              className="w-full bg-[#40A1CB] hover:bg-[#2b89af] text-white text-lg font-semibold py-3 mt-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02]"
-              onClick={handleMilkSubmit}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Sell Milk"}
-            </button>
-          </div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
         </div>
-      </div>
+      )}
+  <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
+    className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-200 transition-transform duration-300 hover:scale-[1.01]"
+  >
+    <motion.h3
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2, duration: 0.4 }}
+      className="text-2xl font-bold text-[#40A1CB] mb-6"
+    >
+      Sell Milk
+    </motion.h3>
+
+    <div className="space-y-4">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Enter Code
+        </label>
+        <input
+          ref={codeRef}
+          type="text"
+          placeholder="E.g. M123"
+          value={formData.enterCode}
+          onChange={(e) =>
+            setFormData({ ...formData, enterCode: e.target.value })
+          }
+          onKeyDown={(e) => handleKeyNavigation(e, codeRef)}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
+        />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+        className="grid grid-cols-2 gap-4"
+      >
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Weight (litres)
+          </label>
+          <input
+            ref={weightRef}
+            type="number"
+            placeholder="e.g. 5"
+            value={formData.weight}
+            onChange={(e) =>
+              setFormData({ ...formData, weight: e.target.value })
+            }
+            onKeyDown={(e) => handleKeyNavigation(e, weightRef)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Rate (per litre)
+          </label>
+          <input
+            ref={rateRef}
+            type="number"
+            placeholder="e.g. 50"
+            value={formData.rate}
+            onChange={(e) =>
+              setFormData({ ...formData, rate: e.target.value })
+            }
+            onKeyDown={(e) => handleKeyNavigation(e, rateRef)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition duration-200"
+          />
+        </div>
+      </motion.div>
+
+      <motion.button
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.2 }}
+        className="w-full bg-[#40A1CB] hover:bg-[#2b89af] text-white text-lg font-semibold py-3 mt-4 rounded-xl transition-all duration-300"
+        onClick={handleMilkSubmit}
+        disabled={loading}
+      >
+        {loading ? "Saving..." : "Sell Milk"}
+      </motion.button>
+    </div>
+  </motion.div>
+</div>
+
     </>
   );
 };

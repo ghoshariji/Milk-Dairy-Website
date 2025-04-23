@@ -50,6 +50,7 @@ import SuperAdminHelpPage from "./SuperAdmin/SuperAdminHelpPage";
 import SuperAdminProfile from "./SuperAdmin/SuperAdminProfile";
 import SuperAdminSubs from "./SuperAdmin/SuperAdminSubs";
 import SuperAdminUserList from "./SuperAdmin/SuperAdminUserList";
+import MilkManAdvanceBook from "./MilkMan/MilkManAdvanceBook";
 const App = () => {
   return (
     <Routes>
@@ -64,7 +65,8 @@ const App = () => {
       <Route path="/milkman-buy-milk" element={<MilkManBuyMilk />} />
       <Route path="/milkman-customer" element={<MilkManCustomer />} />
       <Route path="/milkman-help" element={<MilkManHelpAndSupp />} />
-      <Route path="/milkman-notofication" element={<MilkmanNotific />} />
+      <Route path="/milkman-notification" element={<MilkmanNotific />} />
+      <Route path="/milkman-advance-book" element={<MilkManAdvanceBook />} />
       <Route path="/milkman-products" element={<MilkManProducts />} />
       <Route path="/milkman-profile" element={<MilkManProfile />} />
       <Route path="/milkman-sell-milk" element={<MilkmanSellMilk />} />

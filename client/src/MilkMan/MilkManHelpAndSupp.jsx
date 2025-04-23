@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
+import { motion } from "framer-motion"; // Import motion from framer-motion
+import Loader from "../components/Loader/Loader";
 
 const MilkManHelpAndSupp = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ const MilkManHelpAndSupp = () => {
   });
   const [message, setMessage] = useState("");
 
+  const [loading, setLoading] = useState(false);
   const nameRef = useRef(null);
   const phoneRef = useRef(null);
   const feedbackRef = useRef(null);
@@ -32,38 +35,68 @@ const MilkManHelpAndSupp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await API.post("/api/help/milkman", {
         ...formData,
       });
+      setLoading(false);
       setMessage(response.data.message);
       toast.success("Feedback submitted successfully!");
       setFormData({ name: "", phone: "", feedback: "" });
     } catch (error) {
+      setLoading(false);
+
       setMessage("Error submitting feedback");
       toast.error("Error submitting feedback");
     }
   };
-  
 
   return (
     <>
       <AdminNav />
       <ToastContainer />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 px-5 mt-10 ml-50">
-        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md transition-transform duration-300 hover:scale-[1.01] animate-fadeInUp">
-          <h2 className="text-3xl font-bold text-center text-[#40A1CB] mb-6 tracking-wide">
+        <motion.div
+          className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          whileHover={{ scale: 1.02 }}
+        >
+          <motion.h2
+            className="text-3xl font-bold text-center text-[#40A1CB] mb-6 tracking-wide"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             Submit Feedback
-          </h2>
+          </motion.h2>
 
           {message && (
-            <p className="text-green-600 mb-4 text-center animate-pulse">
+            <motion.p
+              className="text-green-600 mb-4 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+            >
               {message}
-            </p>
+            </motion.p>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="group">
+            {/* Name Field */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+            >
               <label className="block text-sm font-medium mb-1 text-gray-700">
                 Name
               </label>
@@ -75,11 +108,17 @@ const MilkManHelpAndSupp = () => {
                 onChange={handleChange}
                 onKeyDown={(e) => handleKeyDown(e, "name")}
                 required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-200"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-300 transform hover:scale-105"
               />
-            </div>
+            </motion.div>
 
-            <div className="group">
+            {/* Phone Field */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+            >
               <label className="block text-sm font-medium mb-1 text-gray-700">
                 Phone
               </label>
@@ -91,11 +130,17 @@ const MilkManHelpAndSupp = () => {
                 onChange={handleChange}
                 onKeyDown={(e) => handleKeyDown(e, "phone")}
                 required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-200"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-300 transform hover:scale-105"
               />
-            </div>
+            </motion.div>
 
-            <div className="group">
+            {/* Feedback Field */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.3 }}
+            >
               <label className="block text-sm font-medium mb-1 text-gray-700">
                 Feedback
               </label>
@@ -107,18 +152,22 @@ const MilkManHelpAndSupp = () => {
                 onKeyDown={(e) => handleKeyDown(e, "feedback")}
                 required
                 rows={4}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-200"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#40A1CB] transition-all duration-300 transform hover:scale-105"
               ></textarea>
-            </div>
+            </motion.div>
 
-            <button
+            {/* Submit Button */}
+            <motion.button
               type="submit"
               className="w-full bg-[#40A1CB] text-white py-3 rounded-lg hover:bg-[#3495bc] font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.3 }}
             >
               Submit Feedback
-            </button>
+            </motion.button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </>
   );

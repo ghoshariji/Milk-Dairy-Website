@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import API from "../api";
 import { toast, ToastContainer } from 'react-toastify';
+import Loader from "../components/Loader/Loader";
 
 const CustomerAdvanceBook = () => {
   const [name, setName] = useState("");

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import Loader from "../components/Loader/Loader";
 
 const CustomerCheckoutPage = () => {
   const navigate = useNavigate();
@@ -8,8 +11,9 @@ const CustomerCheckoutPage = () => {
     name: "",
     phone: "",
     address: "",
-    paymentMode: "cash", // default
+    paymentMode: "cash on", // default
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("customerCart")) || [];
@@ -30,16 +34,63 @@ const CustomerCheckoutPage = () => {
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Order Info:", { ...form, cartItems });
+  const handleSubmit = async (e) => {
+    try {
+      setLoading(true);
+      e.preventDefault();
+      console.log("Order Info:", { ...form, cartItems });
+      const products = JSON.parse(localStorage.getItem("customerCart")) || [];
+      const token = localStorage.getItem("token");
+      const orderData = {
+        name: form.name,
+        phone: form.phone,
+        deliveryAddress: form.address,
+        products: products.map((product) => ({
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: product.quantity,
+        })),
+        paymentMode: form.paymentMode.toLowerCase(),
+      };
 
-    localStorage.removeItem("customerCart");
-    navigate("/customer-success", { state: { name: form.name } });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER}/api/order/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
+      setLoading(false);
+
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("Order placed successfully!");
+        localStorage.removeItem("customerCart");
+        navigate("/customer-success", { state: { name: form.name } });
+      } else {
+        toast.error(result.message || "Failed to place order");
+      }
+    } catch (error) {
+      setLoading(false);
+
+      toast.error("Internal Server Error...");
+      console.log("Error" + error);
+    }
   };
 
   return (
     <div className="p-4 max-w-xl mx-auto">
+      <ToastContainer />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
 
       {/* Bill Summary */}
@@ -109,8 +160,8 @@ const CustomerCheckoutPage = () => {
               <input
                 type="radio"
                 name="paymentMode"
-                value="cash"
-                checked={form.paymentMode === "cash"}
+                value="cash on"
+                checked={form.paymentMode === "cash on"}
                 onChange={handleChange}
               />
               Cash on Delivery

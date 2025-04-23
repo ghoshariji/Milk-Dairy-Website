@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import dashboard from "../../assetss/icons/Dashboard.png";
 import logo from "../../pages/images/login.png";
 import smallLogo from "../../pages/images/login.png";
+import API from "../../api";
 
 const AdminNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -36,6 +37,44 @@ const AdminNav = () => {
 
   const [currentLogo, setCurrentLogo] = useState(logo);
 
+  const [seenCOunt, setSeenCount] = useState('');
+  const fetchData = async () => {
+    try {
+      const data = await API.get(
+        '/api/auth/user/getNotificationCount',
+      );
+      setSeenCount(data.data);
+    } catch (error) {}
+  };
+
+  const [countOrder, setCountOrder] = useState(0);
+  const fetchAdvanceBook = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+      setLoading(true);
+
+      let orderData = [];
+      try {
+        const data = await API.get("/api/order/get-milkman-notification");
+        orderData = data.data.data;
+        setCountOrder(orderData.length);
+        console.log(orderData);
+      } catch (error) {
+        console.log("Error fetching milkman notifications:", error);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchAdvanceBook();
+    fetchData()
+  }, []);
   useEffect(() => {
     const updateLogo = () => {
       if (window.innerWidth <= 768) {
@@ -225,7 +264,7 @@ const AdminNav = () => {
             </li>
             <li>
               <NavLink
-                to="/milkman-notofication"
+                to="/milkman-notification"
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -241,7 +280,28 @@ const AdminNav = () => {
                     className="w-6 h-6 rounded-full"
                   />
                 </div>
-                <span className="ms-3">Notification</span>
+                <span className="ms-3">Products Order's ({countOrder})</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/milkman-advance-book"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
+                    isActive
+                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
+                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
+                  }`
+                }
+              >
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <img
+                    src={dashboard}
+                    alt="Profile"
+                    className="w-6 h-6 rounded-full"
+                  />
+                </div>
+                <span className="ms-3">Advance Booking ({seenCOunt})</span>
               </NavLink>
             </li>
             <li>

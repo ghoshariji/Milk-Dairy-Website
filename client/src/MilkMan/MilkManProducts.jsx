@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
+import Loader from "../components/Loader/Loader";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 
 const MilkManProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -108,22 +110,36 @@ const MilkManProducts = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-[#40A1CB]">
-            Milkman Products
-          </h3>
-          <button
+        <motion.div
+          className="bg-white p-6 rounded-lg shadow-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.button
             className="bg-[#40A1CB] text-white px-4 py-2 rounded mt-4"
             onClick={() => {
               setIsEditMode(false);
               setIsModalOpen(true);
             }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
           >
             Add Product
-          </button>
+          </motion.button>
 
-          <table className="min-w-full mt-4 bg-white border border-gray-300">
+          <motion.table
+            className="min-w-full mt-4 bg-white border border-gray-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <thead>
               <tr className="bg-gray-200">
                 <th className="border px-4 py-2">Name</th>
@@ -134,13 +150,18 @@ const MilkManProducts = () => {
               </tr>
             </thead>
             <tbody>
-              {allProducts.map((product) => (
-                <tr key={product._id} className="border">
+              {allProducts.map((product, index) => (
+                <motion.tr
+                  key={product._id}
+                  className="border"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
                   <td className="px-4 py-2">{product.name}</td>
                   <td className="px-4 py-2">{product.price}</td>
                   <td className="px-4 py-2">{product.category}</td>
                   <td className="px-4 py-2">
-                    {" "}
                     {product.image ? (
                       <img
                         src={product.image}
@@ -152,33 +173,49 @@ const MilkManProducts = () => {
                     )}
                   </td>
                   <td className="px-4 py-2">
-                    <button
+                    <motion.button
                       className="bg-[#40A1CB] text-white px-3 py-1 rounded mr-2"
                       onClick={() => {
                         setCurrentProduct(product);
                         setIsEditMode(true);
                         setIsModalOpen(true);
                       }}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
                     >
                       Edit
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                       className="bg-black text-white px-3 py-1 rounded"
                       onClick={() => handleDeleteProduct(product._id)}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
                     >
                       Delete
-                    </button>
+                    </motion.button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
-          </table>
-        </div>
+          </motion.table>
+        </motion.div>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <motion.div
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div
+            className="bg-white p-6 rounded-lg shadow-lg w-96"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
             <h3 className="text-lg font-semibold mb-4">
               {isEditMode ? "Edit Product" : "Add Product"}
             </h3>
@@ -208,9 +245,11 @@ const MilkManProducts = () => {
                   category: e.target.value,
                 })
               }
-              className="w-full mb-2 p-2 border rounded"
+              className="w-full mb-2 p-2 border rounded text-[#40A1CB] border-[#40A1CB] focus:ring-2 focus:ring-[#40A1CB] focus:outline-none"
             >
-              <option value="">Select Category</option>
+              <option value="" className="text-gray-500">
+                Select Category
+              </option>
               {categories.map((cat, idx) => (
                 <option key={idx} value={cat.name}>
                   {cat.name}
@@ -247,8 +286,8 @@ const MilkManProducts = () => {
                 {isEditMode ? "Update" : "Add"}
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </>
   );

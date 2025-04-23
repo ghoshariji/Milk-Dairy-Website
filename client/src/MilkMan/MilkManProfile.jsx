@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
+import Loader from "../components/Loader/Loader";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Mail, Phone } from "lucide-react";
 
 const MilkManProfile = () => {
   const [name, setName] = useState("");
@@ -18,19 +21,19 @@ const MilkManProfile = () => {
   const createImageUrl = (imageData, contentType) => {
     try {
       const typedArray = new Uint8Array(imageData);
-      const blob = new Blob([typedArray], { type: contentType || 'image/jpeg' });
+      const blob = new Blob([typedArray], {
+        type: contentType || "image/jpeg",
+      });
       return URL.createObjectURL(blob);
     } catch (error) {
-      console.error('Error creating image URL:', error);
+      console.error("Error creating image URL:", error);
       return null;
     }
   };
   const fetchData = async () => {
     try {
-      setLoading(true);
       const { data } = await API.get("/api/auth/user/get-milkman");
-      console.log(data)
-      setLoading(false);
+      console.log(data);
       if (data && data.milkman) {
         setName(data.milkman.name);
         setEmail(data.milkman.email);
@@ -43,7 +46,6 @@ const MilkManProfile = () => {
         );
       }
     } catch (error) {
-      setLoading(false);
       console.error("Error fetching data", error);
     }
   };
@@ -81,117 +83,147 @@ const MilkManProfile = () => {
     setLoading(false);
     setModalVisible(false);
   };
-  if (loading) {
-    return (
-      <div className="lg:ml-64 mt-20 p-6 min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-lg text-gray-600">Loading profile...</p>
-      </div>
-    );
-  }
+
   return (
     <>
       <AdminNav />
       <ToastContainer />
-      <div className="lg:ml-64 mt-30 p-6 bg-gray-50 min-h-screen ">
-      <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-3xl mx-auto">
-        <h3 className="text-2xl font-semibold text-[#40A1CB] text-center mb-6">
-          Milkman Profile
-        </h3>
-        
-        <div className="flex items-center justify-center gap-8">
-          <div className="relative">
-            <img
-              src={profilePhoto ? profilePhoto : "Loading"}
-              alt="Profile"
-              className="w-40 h-40 rounded-full border-4 border-[#40A1CB] object-cover shadow-lg"
-            />
+      <div className="lg:ml-64 mt-30 p-6  min-h-screen ">
+        {loading && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+            <Loader />
           </div>
-    
-          <div className="space-y-6">
-            <p className="text-xl text-gray-800">
-              <strong>Name:</strong> {name}
-            </p>
-            <p className="text-xl text-gray-800">
-              <strong>Email:</strong> {email}
-            </p>
-            <p className="text-xl text-gray-800">
-              <strong>Phone:</strong> {mobileNo}
-            </p>
-            <button
-              className="mt-6 w-full bg-[#40A1CB] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#3185a7] transition duration-300"
-              onClick={() => setModalVisible(true)}
+        )}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="bg-gray-50 p-8 rounded-xl shadow-xl w-full max-w-3xl mx-auto"
+        >
+          <h3 className="text-2xl font-semibold text-[#40A1CB] text-center mb-6">
+            Milkman Profile
+          </h3>
+
+          <div className="flex items-center justify-center gap-8">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="relative"
             >
-              Edit Profile
-            </button>
+              <img
+                src={profilePhoto ? profilePhoto : "Loading"}
+                alt="Profile"
+                className="w-40 h-40 rounded-full border-4 border-[#40A1CB] object-cover shadow-lg"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="space-y-6"
+            >
+              <p className="text-xl text-gray-800 flex items-center gap-2">
+                <User className="text-[#40A1CB]" size={20} />
+                <strong>Name:</strong> {name}
+              </p>
+              <p className="text-xl text-gray-800 flex items-center gap-2">
+                <Mail className="text-[#40A1CB]" size={20} />
+                <strong>Email:</strong> {email}
+              </p>
+              <p className="text-xl text-gray-800 flex items-center gap-2">
+                <Phone className="text-[#40A1CB]" size={20} />
+                <strong>Phone:</strong> {mobileNo}
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+                className="mt-6 w-full bg-[#40A1CB] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#3185a7] transition duration-300"
+                onClick={() => setModalVisible(true)}
+              >
+                Edit Profile
+              </motion.button>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
-    
 
-      {isModalVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md">
-            <h3 className="text-2xl font-semibold text-center mb-6">
-              Edit Profile
-            </h3>
+      <AnimatePresence>
+        {isModalVisible && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 backdrop-blur-sm z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 50 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md"
+            >
+              <h3 className="text-2xl font-semibold text-center mb-6">
+                Edit Profile
+              </h3>
 
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-              />
-
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-              />
-
-              <input
-                type="text"
-                placeholder="Phone"
-                value={mobileNo}
-                onChange={(e) => setMobileNo(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-              />
-
-              {/* Image Upload */}
-              <label className="block">
-                <span className="block mb-1 text-sm font-medium text-gray-700">
-                  Profile Picture
-                </span>
+              <div className="space-y-4">
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="block w-full text-sm text-gray-700 border border-gray-300 rounded-md cursor-pointer file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-[#40A1CB] file:text-white hover:file:bg-[#368bb0]"
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
                 />
-              </label>
-            </div>
 
-            <div className="flex justify-end mt-6 space-x-3">
-              <button
-                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition"
-                onClick={() => setModalVisible(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-[#40A1CB] hover:bg-[#368bb0] text-white px-4 py-2 rounded-md transition"
-                onClick={handleSave}
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  value={mobileNo}
+                  onChange={(e) => setMobileNo(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+                />
+
+                <label className="block">
+                  <span className="block mb-1 text-sm font-medium text-gray-700">
+                    Profile Picture
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="block w-full text-sm text-gray-700 border border-gray-300 rounded-md cursor-pointer file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-[#40A1CB] file:text-white hover:file:bg-[#368bb0]"
+                  />
+                </label>
+              </div>
+
+              <div className="flex justify-end mt-6 space-x-3">
+                <button
+                  className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition"
+                  onClick={() => setModalVisible(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-[#40A1CB] hover:bg-[#368bb0] text-white px-4 py-2 rounded-md transition"
+                  onClick={handleSave}
+                >
+                  Save Changes
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

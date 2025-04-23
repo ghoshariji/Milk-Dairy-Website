@@ -5,7 +5,7 @@ import API from "../api";
 const MilkManCustomer = () => {
   const [isBuyer, setIsBuyer] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
   const [buyers, setCustomers] = useState([]);
   const [sellers, setSellers] = useState([]);
 
@@ -15,7 +15,9 @@ const MilkManCustomer = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const response = await API.post("/api/auth/user/validate-token", { token });
+        const response = await API.post("/api/auth/user/validate-token", {
+          token,
+        });
 
         if (response.data.success) {
           const user = response.data.user;
@@ -34,7 +36,10 @@ const MilkManCustomer = () => {
 
   const data = isBuyer ? buyers : sellers;
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const paginatedData = data.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -43,19 +48,23 @@ const MilkManCustomer = () => {
         <div className="max-w-4xl mx-auto">
           {/* Toggle Switch */}
           <div className="flex justify-center items-center gap-4 mb-8">
-            <span className="text-lg font-medium text-gray-700">Buyer</span>
+            <span className="text-lg font-medium text-gray-700">
+              {isBuyer && "Buyer"}
+            </span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 className="sr-only peer"
-                checked={!isBuyer}
+                checked={isBuyer}
                 onChange={() => setIsBuyer(!isBuyer)}
               />
               <div className="w-14 h-7 bg-gray-300 rounded-full peer peer-checked:bg-[#40A1CB] transition-all duration-300">
                 <div className="absolute w-6 h-6 bg-white rounded-full top-0.5 left-0.5 peer-checked:translate-x-7 transform transition-all duration-300 shadow"></div>
               </div>
             </label>
-            <span className="text-lg font-medium text-gray-700">Seller</span>
+            <span className="text-lg font-medium text-gray-700">
+              {!isBuyer && "Seller"}
+            </span>
           </div>
 
           {/* Table */}
@@ -103,7 +112,9 @@ const MilkManCustomer = () => {
               Page <strong>{currentPage}</strong> of {totalPages}
             </span>
             <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
               className={`px-4 py-2 rounded-full transition  ${
                 currentPage === totalPages

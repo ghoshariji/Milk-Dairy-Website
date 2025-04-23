@@ -14,6 +14,19 @@ import { Line } from "react-chartjs-2";
 import API from "../api";
 import { ArrowPathIcon } from "@heroicons/react/24/outline"; // refresh icon
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import Loader from "../components/Loader/Loader";
+import {
+  UserIcon,
+  CheckCircleIcon,
+  MapPinIcon,
+  CreditCardIcon,
+  PhoneIcon,
+  ClockIcon,
+  ClipboardDocumentIcon,
+  CurrencyDollarIcon,
+  CalendarIcon,
+} from "@heroicons/react/24/solid";
 
 // Register chart components
 ChartJS.register(
@@ -86,21 +99,21 @@ const chartData2 = {
 };
 
 const MilkManDashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [milkData, setMilkData] = useState(null);
   const [mergedData, setMergedData] = useState([]);
   const handleAddMoreClick = () => {
     navigate("/milkman-notofication"); // Adjust this route according to your page structure
   };
 
-  const [load, setLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
   const fetchAdvanceBook = async () => {
-    setLoad(true);
+    setLoading(true);
     try {
       const token = await localStorage.getItem("token"); // Await token retrieval
       if (!token) {
         console.error("No token found");
-        setLoad(false);
+        setLoading(false);
         return;
       }
 
@@ -138,16 +151,16 @@ const MilkManDashboard = () => {
       );
 
       setMergedData(mergedData);
-      setLoad(false);
+      setLoading(false);
     } catch (error) {
-      setLoad(false);
+      setLoading(false);
       console.error("Error fetching data:", error);
     }
   };
 
   const fetchMilkData = async () => {
     try {
-      setLoad(true);
+      setLoading(true);
 
       const token = await localStorage.getItem("token");
 
@@ -162,11 +175,11 @@ const MilkManDashboard = () => {
           "Content-Type": "application/json",
         },
       });
-      setLoad(false);
+      setLoading(false);
 
       setMilkData(response.data.totalLiters);
     } catch (err) {
-      setLoad(false);
+      setLoading(false);
 
       console.error(
         "Error fetching milk data:",
@@ -184,16 +197,16 @@ const MilkManDashboard = () => {
   const [notificationData, setNotificationData] = useState([]);
   const fetchdataMilkSBuyMilk = async () => {
     try {
-      setLoad(true);
+      setLoading(true);
 
       const response = await API.get("/api/seller/milk/milk-today");
 
       const { totalKg, totalFat, totalAmount } = response.data;
-      setLoad(false);
+      setLoading(false);
 
       setTotals({ totalKg, totalFat, totalAmount }); // Store calculated totals in state
     } catch (error) {
-      setLoad(false);
+      setLoading(false);
 
       console.error("Error fetching milk records:", error);
     }
@@ -247,48 +260,69 @@ const MilkManDashboard = () => {
     <div className="flex">
       {/* Sidebar */}
       <AdminNav />
-
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
       {/* Main Content */}
       <div className="p-6 w-full lg:ml-64 mt-20">
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto ">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Notification Section */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h2 className="text-[#40A1CB] text-xl font-semibold">
-                Today Buy Milk
-              </h2>
-              <p className="mt-2 text-black">{totals.totalKg} kg</p>
-            </div>
-
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-gray-100 p-6 rounded-xl shadow-lg"
+            >
+              <h2 className="text-black text-2xl font-bold">Today Buy Milk</h2>
+              <p className="mt-3 text-black text-xl">{totals.totalKg} kg</p>
+            </motion.div>
             {/* Orders Section */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h2 className="text-[#40A1CB] text-xl font-semibold">
-                Today Sell Milk
-              </h2>
-              <p className="mt-2 text-black">{milkData} kg</p>
-            </div>
-
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-[#40A1CB] p-6 rounded-xl shadow-lg"
+            >
+              <h2 className="text-white text-2xl font-bold">Today Sell Milk</h2>
+              <p className="mt-3 text-white text-xl">{milkData} kg</p>
+            </motion.div>
             {/* Feedback Section */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h2 className="text-[#40A1CB] text-xl font-semibold">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="bg-gray-100 p-6 rounded-xl shadow-lg"
+            >
+              <h2 className="text-black text-2xl font-bold">
                 Product New Order
               </h2>
-              <p className="mt-2 text-[#40A1CB]">{seenCOunt}</p>
-            </div>
-
+              <p className="mt-3 text-black text-xl font-semibold">
+                {seenCOunt}
+              </p>
+            </motion.div>
             {/* Revenue Section */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-[#40A1CB] text-xl font-semibold">
-                  Latest Milkman Notifications
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="bg-[#40A1CB] p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-white/10"
+            >
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-white text-2xl font-bold tracking-wide drop-shadow-sm">
+                  Latest Notifications
                 </h2>
-                <button
+                <motion.button
+                  whileTap={{ rotate: 180 }}
                   onClick={handleRefresh}
-                  className="text-[#40A1CB] hover:text-[#2b91ba] transition"
+                  className="text-white hover:text-white/90 transition duration-200"
                   title="Refresh Notifications"
                 >
-                  <ArrowPathIcon className="h-5 w-5" />
-                </button>
+                  <ArrowPathIcon className="h-6 w-6" />
+                </motion.button>
               </div>
 
               {notificationData.length > 0 ? (
@@ -297,65 +331,91 @@ const MilkManDashboard = () => {
                     .slice(-2)
                     .reverse()
                     .map((notification, index) => (
-                      <li
+                      <motion.li
                         key={index}
-                        className="mt-4 text-[#40A1CB] flex space-x-3 items-start"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                        className="mt-4 text-white/90 flex space-x-3 items-start"
                       >
                         <span className="font-bold">{index + 1}.</span>
-                        <div className="flex flex-col space-y-1">
-                          <p>
-                            <strong>Name:</strong> {notification.name}
+                        <div className="flex flex-col space-y-2 text-sm">
+                          <p className="flex items-center gap-2">
+                            <UserIcon className="h-4 w-4 text-white" />
+                            <strong className="text-white">Name:</strong>{" "}
+                            {notification.name}
                           </p>
-                          <p>
-                            <strong>Status:</strong> {notification.status}
+                          <p className="flex items-center gap-2">
+                            <CheckCircleIcon className="h-4 w-4 text-white" />
+                            <strong className="text-white">Status:</strong>{" "}
+                            {notification.status}
                           </p>
-                          <p>
-                            <strong>Delivery Address:</strong>{" "}
+                          <p className="flex items-center gap-2">
+                            <MapPinIcon className="h-4 w-4 text-white" />
+                            <strong className="text-white">
+                              Delivery Address:
+                            </strong>{" "}
                             {notification.deliveryAddress}
                           </p>
-                          <p>
-                            <strong>Payment Mode:</strong>{" "}
+                          <p className="flex items-center gap-2">
+                            <CreditCardIcon className="h-4 w-4 text-white" />
+                            <strong className="text-white">
+                              Payment Mode:
+                            </strong>{" "}
                             {notification.paymentMode}
                           </p>
-                          <p>
-                            <strong>Phone:</strong> {notification.phone}
+                          <p className="flex items-center gap-2">
+                            <PhoneIcon className="h-4 w-4 text-white" />
+                            <strong className="text-white">Phone:</strong>{" "}
+                            {notification.phone}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-xs text-white/70 italic flex items-center gap-2">
+                            <ClockIcon className="h-4 w-4 text-white/70" />
                             {timeAgo(notification.createdAt)}
                           </p>
                         </div>
-                      </li>
+                      </motion.li>
                     ))}
                 </ul>
               ) : (
-                <p>No notifications available.</p>
+                <p className="text-white/90">No notifications available.</p>
               )}
 
-              {/* Show More Button */}
               {notificationData.length > 2 && (
-                <div className="mt-4 text-center">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-6 text-center"
+                >
                   <button
                     onClick={handleAddMoreClick}
-                    className="text-white bg-[#40A1CB] hover:bg-[#2b91ba] font-medium px-4 py-2 rounded"
+                    className="bg-white text-[#40A1CB] hover:bg-gray-100 font-semibold px-5 py-2 rounded-xl shadow-md transition duration-200"
                   >
                     Show More
                   </button>
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
-            <div className="bg-white p-4 rounded-lg shadow-md mt-4">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-[#40A1CB] text-xl font-semibold">
-                  Latest Advance Booking
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-gray-100 p-6 rounded-2xl shadow-lg border border-gray-200"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-black text-2xl font-bold">
+                  Latest Booking(adv)
                 </h2>
-                <button
+                <motion.button
+                  whileTap={{ rotate: 180 }}
                   onClick={handleRefresh}
-                  className="text-[#40A1CB] hover:text-[#2b91ba] transition"
+                  className="text-black hover:text-[#2b91ba] transition"
                   title="Refresh Bookings"
                 >
                   <ArrowPathIcon className="h-5 w-5" />
-                </button>
+                </motion.button>
               </div>
 
               {advanceBookingData.length > 0 ? (
@@ -364,76 +424,116 @@ const MilkManDashboard = () => {
                     .slice(-2)
                     .reverse()
                     .map((booking, index) => (
-                      <li
+                      <motion.li
                         key={index}
-                        className="mt-4 text-[#40A1CB] flex space-x-3 items-start"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                        className="mt-4 text-black flex space-x-3 items-start"
                       >
                         <span className="font-bold">{index + 1}.</span>
-                        <div className="flex flex-col space-y-2">
-                          <p>
+                        <div className="flex flex-col space-y-2 text-sm">
+                          <p className="flex items-center gap-2">
+                            <UserIcon className="h-4 w-4 text-black" />
                             <strong>Booking Name:</strong> {booking.name}
                           </p>
-                          <p>
+                          <p className="flex items-center gap-2">
+                            <ClipboardDocumentIcon className="h-4 w-4 text-black" />
                             <strong>Description:</strong> {booking.description}
                           </p>
-                          <p>
+                          <p className="flex items-center gap-2">
+                            <CheckCircleIcon className="h-4 w-4 text-black" />
                             <strong>Status:</strong> {booking.status}
                           </p>
-                          <p>
-                            <strong>Price:</strong> ${booking.price}
+                          <p className="flex items-center gap-2">
+                            <CurrencyDollarIcon className="h-4 w-4 text-black" />
+                            <strong>Price:</strong> {booking.price} /-
                           </p>
-                          <p>
+                          <p className="flex items-center gap-2">
+                            <CalendarIcon className="h-4 w-4 text-black" />
                             <strong>Required Date:</strong>{" "}
                             {new Date(booking.date).toLocaleDateString()}
                           </p>
                         </div>
-                      </li>
+                      </motion.li>
                     ))}
                 </ul>
               ) : (
-                <p>No advance bookings available.</p>
+                <p className="text-[#40A1CB]">No advance bookings available.</p>
               )}
 
-              {/* Show More Button */}
-              <div className="mt-4 flex justify-center">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-6 text-center"
+              >
                 <button
                   onClick={handleAddMoreClick}
-                  className="px-4 py-2 bg-[#40A1CB] text-white rounded hover:bg-[#2b91ba] transition"
+                  className="px-5 py-2 bg-[#40A1CB] text-white rounded-xl shadow-md hover:bg-[#2b91ba] transition"
                 >
                   Show More
                 </button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Sales Data Section with Graphs */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h2 className="text-[#40A1CB] text-xl font-semibold">
-                {salesData.title}
-              </h2>
-              <p className="mt-2 text-[#40A1CB]">{salesData.content}</p>
-
-              {/* Rendering Graph 1 (Black theme) */}
-              <div className="mt-4 bg-[#40A1CB] p-4 rounded-lg">
-                <h3 className="text-white">Graph 1 - Black Theme</h3>
-                <div className="h-32">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-[#40A1CB] p-6 rounded-xl shadow-lg"
+            >
+              {/* Graph 1: Black Theme */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 200 }}
+                className="mt-6 bg-[#40A1CB] p-4 rounded-lg shadow-xl"
+              >
+                <h3 className="text-white text-xl font-semibold">Payment</h3>
+                <div className="h-32 mt-2 rounded-lg overflow-hidden shadow-md bg-[#2b91ba]">
                   <Line
                     data={chartData1}
-                    options={{ responsive: true, maintainAspectRatio: false }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: "white",
+                          },
+                        },
+                      },
+                    }}
                   />
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Rendering Graph 2 (White theme) */}
-              <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-[#40A1CB]">Graph 2 - White Theme</h3>
-                <div className="h-32">
+              {/* Graph 2: White Theme */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 200 }}
+                className="mt-6 bg-[#40A1CB] p-4 rounded-lg shadow-xl"
+              >
+                <h3 className="text-white text-xl font-semibold">Products</h3>
+                <div className="h-32 mt-2 rounded-lg overflow-hidden shadow-md bg-[#f1f5f9]">
                   <Line
                     data={chartData2}
-                    options={{ responsive: true, maintainAspectRatio: false }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: "#40A1CB",
+                          },
+                        },
+                      },
+                    }}
                   />
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>

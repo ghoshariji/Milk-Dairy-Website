@@ -83,13 +83,7 @@ const CustomerCartPage = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={() => navigate("/customer-products")}
-              className="inline-flex items-center justify-center bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded w-fit text-gray-800"
-            >
-              ← Back
-            </button>
+   
             <h2 className="text-3xl font-semibold text-gray-900 mt-2 sm:mt-0">
               Your Cart
             </h2>

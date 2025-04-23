@@ -10,18 +10,25 @@ import {
   FaTimesCircle,
   FaEye,
 } from "react-icons/fa";
+import Loader from "../components/Loader/Loader";
 
 const CustomerProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
 
   const fetchProducts = async () => {
     try {
+      setLoading(true)
       const res = await API.get("/api/milkman/product/getCustomerProduct");
       setAllProducts(res.data.products || []);
+      setLoading(false)
+
     } catch (error) {
+      setLoading(false)
+
       console.error("Error fetching products:", error.message);
     }
   };
@@ -61,6 +68,11 @@ const CustomerProducts = () => {
     <div className="flex">
       <Toaster position="top-right" />
       <CustomerSidebar />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
 
       <main className="lg:ml-64 w-full mt-20 p-6 bg-gray-50 min-h-screen">
         <header className="flex justify-between items-center mb-6">
@@ -91,7 +103,7 @@ const CustomerProducts = () => {
                     src={
                       p.image?.data?.data
                         ? createImageUrl(p.image.data.data, p.image.contentType)
-                        : "/placeholder.png"
+                        : "https://agrimart.in/uploads/vendor_banner_image/default.jpg"
                     }
                     alt={p.name}
                     className="w-full h-full object-cover"
