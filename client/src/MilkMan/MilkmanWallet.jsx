@@ -63,7 +63,7 @@ const MilkmanWallet = () => {
     <>
       <AdminNav />
       <Toaster position="top-right" />
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white p-6 max-w-4xl mx-auto mt-22 mr-40">
+      <div className="min-h-screen bg-white to-white p-6 max-w-4xl mx-auto mt-22 mr-40">
         <div className="bg-[#40A1CB] text-white p-6 rounded-xl shadow-md text-center">
           <h1 className="text-2xl font-bold mb-2">My Wallet</h1>
           <p className="text-lg">Current Balance</p>

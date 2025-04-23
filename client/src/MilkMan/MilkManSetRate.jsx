@@ -51,12 +51,9 @@ const MilkmanSetRate = () => {
     <>
       <AdminNav />
       <Toaster position="top-right" />
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white p-6 max-w-4xl mx-auto mr-40 mt-24">
+      <div className="min-h-screen  to-white p-6 max-w-4xl mx-auto mr-40 mt-20">
 
-        {/* Header */}
-        <div className="flex items-center bg-[#40A1CB] text-white px-6 py-4 rounded-xl shadow-md">
-          <h1 className="text-2xl font-bold text-center w-full">Set Milk Rate</h1>
-        </div>
+
 
         <div className="space-y-8 mt-8">
           {[{
@@ -74,7 +71,7 @@ const MilkmanSetRate = () => {
             rate: cowRate,
             divider: "284/100"
           }].map((milk, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg p-6 transition-transform hover:scale-[1.01]">
+            <div key={index} className="bg-white rounded-2xl shadow-lg p-3 transition-transform hover:scale-[1.01]">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">{milk.label}</h2>
               <div className="flex items-center justify-center gap-4">
                 <span className="text-gray-700 text-base">Snf × Fat ×</span>
