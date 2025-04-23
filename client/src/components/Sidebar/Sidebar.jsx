@@ -119,9 +119,17 @@ const AdminNav = () => {
               </Link>
             </div>
             <div className="hidden lg:block">
-              <span className="text-white text-lg font-semibold">
-                Welcome to Halo Dairy
-              </span>
+              <div className="flex items-center space-x-4">
+                {/* Profile Icon Circle */}
+                <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
+                  {firstName?.charAt(0).toUpperCase()}
+                </div>
+
+                {/* Welcome Message */}
+                <span className="text-white text-lg font-semibold">
+                  Welcome to Halo Dairy {firstName}
+                </span>
+              </div>
             </div>
           </div>
         </div>

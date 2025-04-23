@@ -64,7 +64,7 @@ const SuperAdminSidebar = () => {
     <div>
       <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900  ">
         <div className="px-3 py-3 lg:px-5 lg:pl-8">
-        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
                 onClick={toggleSidebar}
@@ -87,9 +87,17 @@ const SuperAdminSidebar = () => {
               </Link>
             </div>
             <div className="hidden lg:block">
-              <span className="text-white text-lg font-semibold">
-                Welcome to Halo Dairy
-              </span>
+              <div className="flex items-center space-x-4">
+                {/* Profile Icon Circle */}
+                <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
+                  {firstName?.charAt(0).toUpperCase()}
+                </div>
+
+                {/* Welcome Message */}
+                <span className="text-white text-lg font-semibold">
+                  Welcome to Halo Dairy {firstName}
+                </span>
+              </div>
             </div>
           </div>
         </div>

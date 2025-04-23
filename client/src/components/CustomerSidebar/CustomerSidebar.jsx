@@ -60,14 +60,34 @@ const CustomerSidebar = () => {
     { path: "/customer-milk-record", label: "Milk Record", icon: milkIcon },
     { path: "/customer-products", label: "Products", icon: productIcon },
     { path: "/customer-wallet", label: "Wallet", icon: walletIcon },
-    { path: "/customer-payment-history", label: "Payment History", icon: paymentHistoryIcon },
+    {
+      path: "/customer-payment-history",
+      label: "Payment History",
+      icon: paymentHistoryIcon,
+    },
     { path: "/customer-profile", label: "Profile", icon: profileIcon },
-    { path: "/customer-payments", label: "Payment Options", icon: paymentOptionIcon },
+    {
+      path: "/customer-payments",
+      label: "Payment Options",
+      icon: paymentOptionIcon,
+    },
     { path: "/customer-milkman", label: "Your Milkman", icon: milkmanIcon },
-    { path: "/customer-change-milkman", label: "Change Milkman", icon: changeMilkmanIcon },
+    {
+      path: "/customer-change-milkman",
+      label: "Change Milkman",
+      icon: changeMilkmanIcon,
+    },
     { path: "/customer-help", label: "Help & Support", icon: supportIcon },
-    { path: "/customer-advance-book", label: "Advance Booking", icon: bookingIcon },
-    { path: "/customer-notification", label: "Notification", icon: bookingIcon },
+    {
+      path: "/customer-advance-book",
+      label: "Advance Booking",
+      icon: bookingIcon,
+    },
+    {
+      path: "/customer-notification",
+      label: "Notification",
+      icon: bookingIcon,
+    },
   ];
 
   return (
@@ -81,7 +101,11 @@ const CustomerSidebar = () => {
                 onClick={toggleSidebar}
                 className="inline-flex items-center p-2 text-sm text-white rounded-lg sm:hidden md:block lg:hidden hover:bg-[#3184A6]"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     clipRule="evenodd"
                     fillRule="evenodd"
@@ -90,11 +114,21 @@ const CustomerSidebar = () => {
                 </svg>
               </button>
               <Link to="/customer-dashboard" className="ml-2">
-              <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
+                <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
               </Link>
             </div>
             <div className="hidden lg:block">
-              <span className="text-white text-lg font-semibold">Welcome to Halo Dairy</span>
+              <div className="flex items-center space-x-4">
+                {/* Profile Icon Circle */}
+                <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
+                  {firstName?.charAt(0).toUpperCase()}
+                </div>
+
+                {/* Welcome Message */}
+                <span className="text-white text-lg font-semibold">
+                  Welcome to Halo Dairy {firstName}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +148,11 @@ const CustomerSidebar = () => {
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex items-center p-2 rounded-lg transition duration-300 transform ${isActive ? "bg-[#B1D4E0] text-gray-900" : "hover:bg-[#3184A6] hover:scale-105"}`
+                    `flex items-center p-2 rounded-lg transition duration-300 transform ${
+                      isActive
+                        ? "bg-[#B1D4E0] text-gray-900"
+                        : "hover:bg-[#3184A6] hover:scale-105"
+                    }`
                   }
                 >
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
