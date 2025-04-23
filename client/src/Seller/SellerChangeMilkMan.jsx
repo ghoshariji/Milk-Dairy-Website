@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, Phone } from "lucide-react";
 import API from "../api";
+import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 
 const SellerChangeMilkMan = () => {
@@ -94,6 +95,7 @@ const SellerChangeMilkMan = () => {
       alert("Failed to assign milkman.");
     }
   };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <SellerSideBar />
@@ -106,46 +108,49 @@ const SellerChangeMilkMan = () => {
             placeholder="Search milkman by name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 mb-6 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mb-6 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
           />
 
           {/* List */}
-          <div className="space-y-4">
-            {filteredList.length > 0
-              ? filteredList.map((milkman, index) => (
+            <div className="flex flex-col space-y-4">
+              {filteredList.length > 0 ? (
+                filteredList.map((milkman, idx) => (
                   <div
-                    key={index}
-                    className="flex justify-between items-center bg-white rounded-lg shadow p-4 hover:shadow-md transition duration-300"
+                    key={idx}
+                    className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white rounded-lg shadow p-4"
                   >
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">
+                    {/* Avatar + Info */}
+                    <div className="flex items-start sm:items-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#40A1CB] text-white flex items-center justify-center font-bold text-xl">
                         {milkman.name.charAt(0)}
                       </div>
-                      <div className="ml-4">
-                        <h3 className="text-lg font-semibold">
-                          {milkman.name}
-                        </h3>
-                        <div className="flex items-center text-gray-600 text-sm mt-1">
+                      <div className="ml-4 space-y-1">
+                        <h3 className="text-lg font-semibold">{milkman.name}</h3>
+                        <div className="flex items-center text-gray-600 text-sm">
                           <MapPin className="w-4 h-4 mr-1" />
-                          Distance : {milkman.distance}
+                          <span>Distance: {milkman.distance}</span>
                         </div>
-
-                        <div className="flex items-center text-gray-600 text-sm mt-1">
+                        <div className="flex items-center text-gray-600 text-sm">
                           <Phone className="w-4 h-4 mr-1" />
-                          {milkman.phone || "N/A"}
+                          <span>{milkman.phone || "N/A"}</span>
                         </div>
                       </div>
                     </div>
+
+                    {/* Assign button */}
                     <button
                       onClick={() => assignMilkman(milkman.name)}
-                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                      className="mt-4 sm:mt-0 bg-[#40A1CB] text-white px-5 py-2 rounded-lg hover:bg-green-600 transition self-end sm:self-center"
                     >
                       Assign
                     </button>
                   </div>
                 ))
-              : "No Milkman Found..."}
-          </div>
+              ) : (
+                <p className="text-gray-500">No Milkman Found...</p>
+              )}
+            </div>
+
         </div>
       </div>
     </div>

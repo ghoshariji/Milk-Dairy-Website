@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import { FaCalendarAlt } from "react-icons/fa";
 import API from "../api";
+import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
+import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 
 const SellerMilkRecord = () => {
   const [fromDate, setFromDate] = useState("2024-08-22");
@@ -17,52 +18,50 @@ const SellerMilkRecord = () => {
           to: toDate,
         },
       });
-      console.log(response.data);
-      setMilkData(response.data); // enable this now
+      setMilkData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    if (fromDate && toDate) {
-      fetchMilkData();
-    }
+    fetchMilkData();
   }, [fromDate, toDate]);
 
   return (
     <div className="flex">
       <SellerSideBar />
 
-      <div className="lg:ml-64 w-full mt-20 p-6 bg-gray-100 min-h-screen">
-        <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4 text-center">
-            Milk Record
+      <div className="lg:ml-64 w-full min-h-screen bg-white pt-24 px-4 flex justify-center items-start">
+        <div className="w-full max-w-4xl bg-white shadow-2xl rounded-2xl p-8">
+          {/* Header */}
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6 border-b pb-2">
+            🥛 Milk Record Dashboard
           </h2>
 
-          {/* Date Pickers */}
-          <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+          {/* Date Range Selector */}
+          <div className="flex flex-col sm:flex-row justify-between gap-6 mb-8">
             <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1">From</label>
+              <label className="block text-sm text-gray-600 mb-1">From Date</label>
               <div className="relative">
                 <input
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
-                  className="w-full border rounded px-3 py-2 pr-10"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:ring-2 focus:ring-green-300"
                 />
                 <FaCalendarAlt className="absolute right-3 top-3 text-gray-400" />
               </div>
             </div>
 
             <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1">To</label>
+              <label className="block text-sm text-gray-600 mb-1">To Date</label>
               <div className="relative">
                 <input
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
-                  className="w-full border rounded px-3 py-2 pr-10"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:ring-2 focus:ring-green-300"
                 />
                 <FaCalendarAlt className="absolute right-3 top-3 text-gray-400" />
               </div>
@@ -71,30 +70,37 @@ const SellerMilkRecord = () => {
 
           {/* Milk Data Table */}
           {milkData && milkData.length > 0 ? (
-            <div className="overflow-x-auto mt-4">
-              <table className="min-w-full text-sm text-left">
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white rounded-xl text-sm shadow-md">
                 <thead>
-                  <tr className="bg-gray-200">
-                    <th className="px-4 py-2">Date</th>
-                    <th className="px-4 py-2">Quantity (Litres)</th>
-                    <th className="px-4 py-2">Fat %</th>
-                    <th className="px-4 py-2">Price</th>
+                  <tr className="bg-green-200 text-gray-700 text-sm uppercase">
+                    <th className="px-5 py-3 text-left">Date</th>
+                    <th className="px-5 py-3 text-left">Quantity (Litres)</th>
+                    <th className="px-5 py-3 text-left">Fat %</th>
+                    <th className="px-5 py-3 text-left">Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   {milkData.map((record, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="px-4 py-2">{record.date}</td>
-                      <td className="px-4 py-2">{record.quantity}</td>
-                      <td className="px-4 py-2">{record.fat}</td>
-                      <td className="px-4 py-2">₹{record.price}</td>
+                    <tr
+                      key={index}
+                      className="border-t hover:bg-green-50 transition duration-200"
+                    >
+                      <td className="px-5 py-3">{record.date}</td>
+                      <td className="px-5 py-3">{record.quantity}</td>
+                      <td className="px-5 py-3">{record.fat}</td>
+                      <td className="px-5 py-3 font-semibold text-green-700">
+                        ₹{record.price}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ) : (
-            <p className="text-center text-gray-500 mt-4">No records found.</p>
+            <p className="text-center text-gray-600 mt-6">
+              No milk records found for the selected range.
+            </p>
           )}
         </div>
       </div>

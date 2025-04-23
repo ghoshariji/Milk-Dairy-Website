@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
+import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { toast, ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 
-const ProfilePage = () => {
+const SellerProfile = () => {
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -96,10 +98,31 @@ const ProfilePage = () => {
     <>
       <SellerSideBar />
       <ToastContainer />
-      <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
-        <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
+      <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg lg:mt-24 mt-20">
+        <h2 className="text-2xl font-semibold mb-4 text-center">User Profile</h2>
 
-        <div className="mb-4">
+        {/* Profile Image Section */}
+        <div className="flex justify-center mb-6">
+          {profile.profileImage ? (
+            <img
+              src={profile.profileImage}
+              alt="Profile"
+              className="h-32 w-32 object-cover rounded-full mb-4"
+            />
+          ) : (
+            <div className="h-32 w-32 bg-gray-300 flex items-center justify-center rounded-full mb-4">
+              No Image Found
+            </div>
+          )}
+        </div>
+
+        {/* Input Fields */}
+        <motion.div
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 0.5 }}
+          className="mb-4"
+        >
           <label className="block text-sm font-medium">Name</label>
           <input
             type="text"
@@ -107,11 +130,16 @@ const ProfilePage = () => {
             value={profile.name}
             onChange={handleChange}
             disabled={!editing}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded transition-all duration-300 ease-in-out border-gray-300 focus:border-[#40A1CB]"
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
+        <motion.div
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 0.5 }}
+          className="mb-4"
+        >
           <label className="block text-sm font-medium">Email</label>
           <input
             type="email"
@@ -119,11 +147,16 @@ const ProfilePage = () => {
             value={profile.email}
             onChange={handleChange}
             disabled={!editing}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded transition-all duration-300 ease-in-out border-gray-300 focus:border-[#40A1CB]"
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
+        <motion.div
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 0.5 }}
+          className="mb-4"
+        >
           <label className="block text-sm font-medium">Phone</label>
           <input
             type="text"
@@ -131,35 +164,33 @@ const ProfilePage = () => {
             value={profile.phone}
             onChange={handleChange}
             disabled={!editing}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded transition-all duration-300 ease-in-out border-gray-300 focus:border-[#40A1CB]"
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            Profile Image
-          </label>
-          {profile.profileImage ? (
-            <img
-              src={profile.profileImage}
-              alt="Profile"
-              className="h-32 w-32 object-cover rounded-full mb-2"
-            />
-          ) : (
-            <div className="h-32 w-32 bg-gray-300 flex items-center justify-center rounded-full mb-2">
-              No Image Found
-            </div>
-          )}
-
+        {/* Profile Image Update */}
+        <motion.div
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 0.5 }}
+          className="mb-4"
+        >
+          <label className="block text-sm font-medium mb-1">Profile Image</label>
           {editing && (
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full p-2 border rounded"
+            />
           )}
-        </div>
+        </motion.div>
 
+        {/* Action Buttons */}
         <div className="flex justify-between mt-4">
           {!editing ? (
             <button
-              className="px-4 py-2 bg-[#40A1CB] text-white rounded "
+              className="px-4 py-2 bg-[#40A1CB] text-white rounded"
               onClick={() => setEditing(true)}
             >
               Edit Profile
@@ -167,7 +198,7 @@ const ProfilePage = () => {
           ) : (
             <>
               <button
-                className="px-4 py-2 bg-[#40A1CB] text-white rounded "
+                className="px-4 py-2 bg-[#40A1CB] text-white rounded"
                 onClick={updateProfile}
               >
                 Save
@@ -186,4 +217,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default SellerProfile;
