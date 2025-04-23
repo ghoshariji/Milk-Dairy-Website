@@ -257,12 +257,13 @@ const CustomerDash = () => {
                 <h2 className="text-lg font-semibold text-gray-700">
                   Today's Milk Record
                 </h2>
-                <div className="flex items-end gap-1 mt-2">
-                  <span className="text-4xl font-bold text-black">
-                    {todayMilk.totalLiters}
+                <div className="flex flex-wrap items-end gap-1 mt-2 max-w-full">
+                  <span className="text-4xl font-bold text-black break-words">
+                    {todayMilk.totalLiters?.toFixed(2)}
                   </span>
                   <span className="text-lg text-gray-600">LTR</span>
                 </div>
+
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-600">

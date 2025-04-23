@@ -9,18 +9,16 @@ import smallLogo from "../../pages/images/login.png";
 import logoout from "../../assetss/icons/logout.png";
 import event from "../../assetss/icons/calendar.png";
 import test from "../../assetss/icons/faqs.png";
-import faq from "../../assetss/icons/review.png";
 
 const SuperAdminSidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [admin, isAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [userName, setUserName] = useState(false);
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const [userName, setUserName] = useState("");
+  const [currentLogo, setCurrentLogo] = useState(logo);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -35,13 +33,12 @@ const SuperAdminSidebar = () => {
   useEffect(() => {
     const adminStatus = localStorage.getItem("admin");
     const name = localStorage.getItem("name");
-    setUserName(name);
-    isAdmin(adminStatus === "true");
+    setUserName(name || "");
+    setIsAdmin(adminStatus === "true");
     setLoading(false);
   }, []);
-  const firstName = userName ? userName.split(" ")[0] : "User";
 
-  const [currentLogo, setCurrentLogo] = useState(logo);
+  const firstName = userName ? userName.split(" ")[0] : "User";
 
   useEffect(() => {
     const updateLogo = () => {
@@ -51,18 +48,21 @@ const SuperAdminSidebar = () => {
         setCurrentLogo(logo);
       }
     };
-
     updateLogo();
     window.addEventListener("resize", updateLogo);
-
-    return () => {
-      window.removeEventListener("resize", updateLogo);
-    };
+    return () => window.removeEventListener("resize", updateLogo);
   }, []);
+
+  const handleNavClick = () => {
+    if (window.innerWidth <= 768) {
+      setIsSidebarOpen(false);
+    }
+  };
 
   return (
     <div>
-      <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900  ">
+      {/* Top Navbar */}
+      <nav className="fixed top-0 z-50 w-full bg-[#40A1CB] border-gray-200 dark:bg-[#40A1CB] dark:border-gray-900">
         <div className="px-3 py-3 lg:px-5 lg:pl-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -70,11 +70,7 @@ const SuperAdminSidebar = () => {
                 onClick={toggleSidebar}
                 className="inline-flex items-center p-2 text-sm text-white rounded-lg sm:hidden md:block lg:hidden hover:bg-[#3184A6]"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     clipRule="evenodd"
                     fillRule="evenodd"
@@ -82,39 +78,40 @@ const SuperAdminSidebar = () => {
                   />
                 </svg>
               </button>
-              <Link to="/admin-dashboard" className="ml-2">
-                <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
+              <Link to="/milkman-dashboard" className="ml-2">
+                <img
+                  src={currentLogo}
+                  onError={(e) => (e.target.src = smallLogo)}
+                  alt="Logo"
+                  className="w-[100%] h-14"
+                />
               </Link>
             </div>
-            <div className="hidden lg:block">
-              <div className="flex items-center space-x-4">
-                {/* Profile Icon Circle */}
-                <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
-                  {firstName?.charAt(0).toUpperCase()}
-                </div>
-
-                {/* Welcome Message */}
-                <span className="text-white text-lg font-semibold">
-                  Welcome to Halo Dairy {firstName}
-                </span>
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#40A1CB] font-bold text-lg">
+                {firstName?.charAt(0).toUpperCase()}
               </div>
+              <span className="text-white text-lg font-semibold">Welcome {firstName}</span>
             </div>
           </div>
         </div>
       </nav>
 
+      {/* Sidebar */}
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-[#40A1CB] border-r border-gray-200 dark:bg-[#40A1CB] ${
+        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform duration-300 ease-in-out bg-[#40A1CB] border-r border-gray-200 dark:bg-[#40A1CB] ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0`}
+        } lg:translate-x-0`} // Always show sidebar on large screens
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-black dark:border-gray-900 ">
+        <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-black dark:border-gray-900">
           <ul className="space-y-2 font-medium">
+            {/* Sidebar Links */}
             <li>
               <NavLink
                 to="/admin-dashboard"
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -124,18 +121,16 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <img src={dashboard} alt="Dashboard" className="w-6 h-6 rounded-full" />
                 </div>
                 <span className="ms-3">Dashboard</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/admin-help-support"
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -145,39 +140,16 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <img src={test} alt="Help & Support" className="w-6 h-6 rounded-full" />
                 </div>
-                <span className="ms-3">Help & Supports</span>
+                <span className="ms-3">Help & Support</span>
               </NavLink>
             </li>
-            {/* <li>
-              <NavLink
-                to="/seller-products"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Products</span>
-              </NavLink>
-            </li> */}
+
             <li>
               <NavLink
                 to="/admin-profile"
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -187,18 +159,17 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <img src={user} alt="Profile" className="w-6 h-6 rounded-full" />
                 </div>
-                <span className="ms-3"> Profile</span>
+                <span className="ms-3">Profile</span>
               </NavLink>
             </li>
+
+            {/* Additional sidebar links */}
             <li>
               <NavLink
                 to="/admin-subscription"
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -208,18 +179,16 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <img src={event} alt="Subscription" className="w-6 h-6 rounded-full" />
                 </div>
                 <span className="ms-3">Subscription</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/admin-user-list"
+                onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -229,27 +198,19 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <img src={AddUser} alt="User List" className="w-6 h-6 rounded-full" />
                 </div>
-                <span className="ms-3">UserList</span>
+                <span className="ms-3">User List</span>
               </NavLink>
             </li>
 
             <li>
               <button
-                onClick={handleLogout} // Define this function to handle logout
+                onClick={handleLogout}
                 className="flex w-full items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <img src={logoout} alt="Logout" className="w-6 h-6 rounded-full" />
                 </div>
                 <span className="ms-3">Log out</span>
               </button>

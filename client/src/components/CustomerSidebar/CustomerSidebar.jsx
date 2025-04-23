@@ -91,15 +91,16 @@ const CustomerSidebar = () => {
   ];
 
   return (
-    <div>
+    <>
       {/* Top Navbar */}
-      <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900 shadow-lg">
+      <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900 shadow-lg bg-white">
         <div className="px-3 py-3 lg:px-5 lg:pl-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
+              {/* Toggle button visible only on mobile/tablet */}
               <button
                 onClick={toggleSidebar}
-                className="inline-flex items-center p-2 text-sm text-white rounded-lg sm:hidden md:block lg:hidden hover:bg-[#3184A6]"
+                className="inline-flex items-center p-2 text-sm text-black rounded-lg lg:hidden hover:bg-[#3184A6]"
               >
                 <svg
                   className="w-6 h-6"
@@ -119,14 +120,11 @@ const CustomerSidebar = () => {
             </div>
             <div className="hidden lg:block">
               <div className="flex items-center space-x-4">
-                {/* Profile Icon Circle */}
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}
                 </div>
-
-                {/* Welcome Message */}
-                <span className="text-white text-lg font-semibold">
-                  Welcome to Halo Dairy {firstName}
+                <span className="text-black text-lg font-semibold">
+                  Welcome {firstName}
                 </span>
               </div>
             </div>
@@ -134,15 +132,24 @@ const CustomerSidebar = () => {
         </div>
       </nav>
 
+      {/* Overlay for mobile when sidebar is open */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black opacity-50 lg:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform dark:bg-black dark:border-gray-900 ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0 md:translate-x-0 lg:translate-x-0`}
-        aria-label="Sidebar"
-      >
+  className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform dark:bg-black dark:border-gray-900 bg-white 
+  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+  lg:translate-x-0`}
+  aria-label="Sidebar"
+>
+
         <div className="h-full px-3 pb-4 overflow-y-auto">
-          <ul className="space-y-2 font-medium text-white">
+          <ul className="space-y-2 font-medium text-black">
             {navItems.map((item) => (
               <li key={item.path}>
                 <NavLink
@@ -170,13 +177,13 @@ const CustomerSidebar = () => {
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                   <img src={logoutIcon} alt="Logout" className="w-5 h-5" />
                 </div>
-                <span className="ml-3">Log out</span>
+                <span className="ml-3 text-black">Log out</span>
               </button>
             </li>
           </ul>
         </div>
       </aside>
-    </div>
+    </>
   );
 };
 
