@@ -3,7 +3,6 @@ import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 
-
 const MilkManAddUser = () => {
   const [userType, setUserType] = useState("Customer");
   const [newUser, setNewUser] = useState({
