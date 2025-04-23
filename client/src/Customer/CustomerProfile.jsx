@@ -3,7 +3,6 @@ import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { toast, ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
-import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import Loader from "../components/Loader/Loader";
 
 const CustomerProfile = () => {
@@ -105,7 +104,7 @@ const CustomerProfile = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <SellerSideBar />
+      <CustomerSidebar />
       <ToastContainer />
 
       {loading && (
