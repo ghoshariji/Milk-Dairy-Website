@@ -4,54 +4,105 @@ import { FiMenu, FiX } from "react-icons/fi";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleToggle = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-white shadow-md relative">
+    <header className="w-full bg-white shadow px-6 py-4 flex justify-between items-center relative z-30">
       {/* Logo */}
-      <h1 className="text-2xl font-bold text-[#40A1CB]">Hallo Dairy</h1>
+      <div className="text-xl sm:text-2xl font-extrabold text-[#40A1CB]">
+        Hallo Dairy
+      </div>
 
       {/* Desktop Menu */}
-      <ul className="hidden md:flex space-x-6 text-gray-600">
-        <li className="hover:text-green-500 cursor-pointer">Home</li>
-        <li className="hover:text-green-500 cursor-pointer">About</li>
-        <li className="hover:text-green-500 cursor-pointer">Contact</li>
-      </ul>
+      <nav className="hidden md:flex space-x-6 text-base font-medium">
+        <a href="#home" className="text-[#40A1CB] border-b-2 border-[#40A1CB]">
+          Home
+        </a>
+        <a
+          href="#about"
+          className="hover:text-[#40A1CB] transition-colors duration-200"
+        >
+          About
+        </a>
+        <a
+          href="#contact"
+          className="hover:text-[#40A1CB] transition-colors duration-200"
+        >
+          Contact
+        </a>
+        <a
+          href="/login"
+          className="hover:text-[#40A1CB] transition-colors duration-200"
+        >
+          Login
+        </a>
+      </nav>
 
-      {/* Mobile Menu Button */}
-      <div className="block md:hidden">
-  <button
-    className="text-gray-600 text-3xl focus:outline-none"
-    onClick={() => setIsOpen(!isOpen)}
-  >
-    {isOpen ? <FiX /> : <FiMenu />}
-  </button>
-</div>
+      {/* Toggle Button */}
+      <button
+        className="md:hidden text-3xl text-[#40A1CB] focus:outline-none z-40"
+        onClick={handleToggle}
+      >
+        {isOpen ? <FiX /> : <FiMenu />}
+      </button>
 
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <ul className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col space-y-4 p-6 text-gray-600 md:hidden z-10">
-          <li
-            onClick={() => setIsOpen(false)}
-            className="hover:text-green-500 cursor-pointer"
-          >
-            Home
+      {/* Slide-in Mobile Menu */}
+      <div
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-30 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <ul className="flex flex-col space-y-6 p-6 text-base font-medium mt-16">
+          <li>
+            <a
+              href="#home"
+              onClick={closeMenu}
+              className="text-[#40A1CB] border-b-2 border-[#40A1CB]"
+            >
+              Home
+            </a>
           </li>
-          <li
-            onClick={() => setIsOpen(false)}
-            className="hover:text-green-500 cursor-pointer"
-          >
-            About
+          <li>
+            <a
+              href="#about"
+              onClick={closeMenu}
+              className="hover:text-[#40A1CB] transition duration-200"
+            >
+              About
+            </a>
           </li>
-          <li
-            onClick={() => setIsOpen(false)}
-            className="hover:text-green-500 cursor-pointer"
-          >
-            Contact
+          <li>
+            <a
+              href="#contact"
+              onClick={closeMenu}
+              className="hover:text-[#40A1CB] transition duration-200"
+            >
+              Contact
+            </a>
+          </li>
+          <li>
+            <a
+              href="/login"
+              onClick={closeMenu}
+              className="hover:text-[#40A1CB] transition duration-200"
+            >
+              Login
+            </a>
           </li>
         </ul>
+      </div>
+
+      {/* Backdrop when menu is open */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-30 md:hidden z-20"
+          onClick={closeMenu}
+        />
       )}
-    </nav>
+    </header>
   );
 };
 
 export default Navbar;
+  
