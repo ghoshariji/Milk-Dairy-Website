@@ -51,6 +51,7 @@ import SuperAdminProfile from "./SuperAdmin/SuperAdminProfile";
 import SuperAdminSubs from "./SuperAdmin/SuperAdminSubs";
 import SuperAdminUserList from "./SuperAdmin/SuperAdminUserList";
 import MilkManAdvanceBook from "./MilkMan/MilkManAdvanceBook";
+import CustomerNotification from "./Customer/CustomerNotification";
 const App = () => {
   return (
     <Routes>
@@ -121,6 +122,7 @@ const App = () => {
       <Route path="/customer-profile" element={<CustomerProfile />} />
       <Route path="/customer-payments" element={<CustomerPayments />} />
       <Route path="/customer-milkman" element={<CustomerMilkman />} />
+      <Route path="/customer-notification" element={<CustomerNotification />} />
       <Route
         path="/customer-change-milkman"
         element={<CustomerChangeMilkMan />}

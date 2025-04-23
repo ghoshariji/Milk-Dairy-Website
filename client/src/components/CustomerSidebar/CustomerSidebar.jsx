@@ -67,6 +67,7 @@ const CustomerSidebar = () => {
     { path: "/customer-change-milkman", label: "Change Milkman", icon: changeMilkmanIcon },
     { path: "/customer-help", label: "Help & Support", icon: supportIcon },
     { path: "/customer-advance-book", label: "Advance Booking", icon: bookingIcon },
+    { path: "/customer-notification", label: "Notification", icon: bookingIcon },
   ];
 
   return (
