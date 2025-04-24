@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import phoneImg from "./assets/phone.png";
 import bg from "./assets/bg.png";
 import milkbg from "./assets/milkbg.png";
@@ -12,7 +12,7 @@ import jarbg from "./assets/bg_bottom.png";
 import milkwave from "./assets/milkwave.png";
 import "../index.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import screen1 from "./assets/screen1.png";
 import screen2 from "./assets/screen2.png";
 import screen3 from "./assets/screen2.png";
@@ -30,6 +30,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 import playstore from "./assets/play-store.svg";
 import Navbar from "../components/Navbar/Navbar";
+import AdPopup from "../components/Add/AddPopU[p";
 const LandingPage = () => {
   const screenshots = [screen1, screen2, screen3, screen4, screen5];
 
@@ -38,12 +39,12 @@ const LandingPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: ""
+    message: "",
   });
   const handleChange = (e) => {
-    setFormData({ 
-      ...formData, 
-      [e.target.name]: e.target.value 
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
   };
   const handleSubmit = async (e) => {
@@ -62,13 +63,41 @@ const LandingPage = () => {
       toast.error("Something went wrong. Try again!");
     }
   };
+  const [ads, setAds] = useState([]);
+
+  const fetchAds = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/api/add/media`);
+      const data = await res.json();
+
+      const adsWithUrls = data.map((ad) => {
+        if (ad.media && ad.media.data && ad.media.contentType) {
+          const uint8Array = new Uint8Array(ad.media.data.data);
+          const blob = new Blob([uint8Array], { type: ad.media.contentType });
+          const mediaUrl = URL.createObjectURL(blob);
+          return { ...ad, mediaUrl };
+        } else {
+          return { ...ad, mediaUrl: null }; // fallback if no media
+        }
+      });
+
+      setAds(adsWithUrls);
+    } catch (error) {
+      console.error("Failed to fetch ads:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAds();
+  }, []);
 
   return (
     <div className="font-sans">
       {/* Navbar */}
       <Navbar />
-<ToastContainer />
+      <ToastContainer />
       {/* Hero Section */}
+
       <section
         id="home"
         className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden"
@@ -127,6 +156,8 @@ const LandingPage = () => {
           }}
         ></div>
       </section>
+
+      <AdPopup ads={ads} />
 
       {/* Unique Section */}
       <section
@@ -462,42 +493,42 @@ const LandingPage = () => {
       >
         {/* Contact Form Container */}
         <div className="relative z-10 w-full max-w-md mx-auto p-6 md:p-12 md:ml-auto md:mr-16 bg-white rounded-2xl shadow-xl mt-10 md:mt-0">
-      <p className="text-sm text-[#40A1CB] font-medium mb-2">Contact Us</p>
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Get In Touch With Us!
-      </h2>
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Your Name"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Your Email"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-        />
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your Message"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB] h-28"
-        ></textarea>
-        <button
-          type="submit"
-          className="bg-[#40A1CB] text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
-        >
-          Send Now
-        </button>
-      </form>
-    </div>
+          <p className="text-sm text-[#40A1CB] font-medium mb-2">Contact Us</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Get In Touch With Us!
+          </h2>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+            />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+            />
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Your Message"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB] h-28"
+            ></textarea>
+            <button
+              type="submit"
+              className="bg-[#40A1CB] text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
+            >
+              Send Now
+            </button>
+          </form>
+        </div>
         {/* Background Jar Image for Desktop */}
         <div
           className="hidden md:block absolute inset-0 bg-cover bg-right bg-no-repeat z-0"
