@@ -39,6 +39,7 @@ import 'aos/dist/aos.css';
 import playstore from "./assets/play-store.svg";
 import Navbar from "../components/Navbar/Navbar";
 import AdPopup from "../components/Add/AddPopU[p";
+import CouponComm from "../components/Coupon/CouponComm";
 const LandingPage = () => {
   const screenshots = [screen1, screen2, screen3, screen4, screen5];
 
@@ -442,6 +443,15 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+
+      <section
+        className="bg-white pt-2 pb-16 px-6 md:px-14 text-center"
+        id="coupon"
+      >
+        <CouponComm />
+      </section>
+
 
       {/* App Stats Section */}
       <section

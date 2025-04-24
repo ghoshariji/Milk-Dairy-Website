@@ -32,6 +32,12 @@ const Navbar = () => {
           Contact
         </a>
         <a
+          href="#coupon"
+          className="hover:text-[#40A1CB] transition-colors duration-200"
+        >
+          Coupon
+        </a>
+        <a
           href="/login"
           className="hover:text-[#40A1CB] transition-colors duration-200"
         >
@@ -79,6 +85,15 @@ const Navbar = () => {
               className="hover:text-[#40A1CB] transition duration-200"
             >
               Contact
+            </a>
+          </li>
+          <li>
+            <a
+              href="#coupon"
+              onClick={closeMenu}
+              className="hover:text-[#40A1CB] transition duration-200"
+            >
+              Coupon
             </a>
           </li>
           <li>
