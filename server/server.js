@@ -33,7 +33,7 @@
   const sellerMilkroute = require("./routes/sellerMilkroute");
   const couponRoute = require("./routes/couponRoute");
   const getInRoute = require("./routes/getInRoute");
-
+  const adverRoute = require("./routes/adverRoute");
   const analyticsRoute = require("./routes/analyticsRoute");
 
   // Static files
@@ -51,6 +51,7 @@
   app.use("/api/coupon", couponRoute);
   app.use("/api/analytics", analyticsRoute);
   app.use("/api/get-in", getInRoute);
+  app.use("/api/add", adverRoute);
 
 
 

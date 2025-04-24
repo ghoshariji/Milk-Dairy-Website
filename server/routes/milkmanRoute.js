@@ -15,6 +15,7 @@ const {
   deleteCategory,
   getCategories,
   updateMilkRate,
+  getMilkManDetailsToSuperAdmin
 } = require("../controller/milkmanController");
 
 
@@ -51,6 +52,7 @@ router.put("/category/edit/:categoryId", authMiddleware, editCategory);
 router.delete("/category/delete/:categoryId", authMiddleware, deleteCategory);
 router.get("/category/all", authMiddleware, getCategories);
 router.post("/update-rate/:id", updateMilkRate);
+router.get("/user/:id", getMilkManDetailsToSuperAdmin);
 
 
 

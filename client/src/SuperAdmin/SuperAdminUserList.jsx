@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import Loader from "../components/Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 const SuperAdminUserList = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +16,8 @@ const SuperAdminUserList = () => {
         `${import.meta.env.VITE_SERVER}/api/auth/user/get-all-user`
       );
       const data = await response.json();
+
+      console.log(data)
       setUsers(data);
       setFilteredUsers(data);
       setLoading(false);
@@ -32,8 +35,16 @@ const SuperAdminUserList = () => {
     fetchUsers();
   }, []);
 
+  const navigate = useNavigate();
+
+const handleUserClick = (id) => {
+  navigate(`/admin-user-details/${id}`);
+};
+
   const handleSearch = (query) => {
     setSearchQuery(query);
+
+
     const filtered = users.filter(
       (user) =>
         user.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -77,6 +88,8 @@ const SuperAdminUserList = () => {
               {filteredUsers.map((user) => (
                 <div
                   key={user._id}
+                  onClick={() => handleUserClick(user._id)}
+
                   className="flex items-center border border-gray-200 p-4 rounded-lg shadow-sm"
                 >
                   <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold mr-4">

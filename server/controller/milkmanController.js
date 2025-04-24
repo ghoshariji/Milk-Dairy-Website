@@ -525,3 +525,13 @@ exports.updateMilkRate = async (req, res) => {
 
 
 
+exports.getMilkManDetailsToSuperAdmin = async(req,res) =>{
+  try {
+    const user = await Milkman.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).send("User not found");
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+}
