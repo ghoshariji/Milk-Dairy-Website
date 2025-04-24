@@ -198,9 +198,6 @@ const LandingPage = () => {
       zIndex: 1,
     }}></div>
 </section>
-
-
-
       <AdPopup ads={ads} />
 
       {/* Unique Section */}
