@@ -127,7 +127,7 @@ const AdminNav = () => {
 
                 {/* Welcome Message */}
                 <span className="text-white text-lg font-semibold">
-                  Welcome to Halo Dairy {firstName}
+                  Welcome {firstName}
                 </span>
               </div>
             </div>

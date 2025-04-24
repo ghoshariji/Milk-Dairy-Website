@@ -142,9 +142,8 @@ exports.loginUser = async (req, res) => {
     res.status(200).json({
       message: "Login successful!",
       token,
-      userType:user.userType,
-      name:user.name
-
+      userType: user.userType,
+      name: user.name,
     });
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -1081,8 +1080,6 @@ exports.getMilkManDataUser = async (req, res) => {
   }
 };
 
-
-
 exports.forgotPassword = async (req, res) => {
   const { enterCode } = req.body;
 
@@ -1110,23 +1107,28 @@ exports.forgotPassword = async (req, res) => {
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
+      host: "smtp.gmail.com", // SMTP server for Gmail
+      port: 465, // Secure port for Gmail
+      secure: true,
       auth: {
-        user: "arijitghosh1203@gmail.com",
-        pass: "sbkz nlun jawd ykki",
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
       },
     });
 
     const mailOptions = {
-      from: "no-reply@yourdomain.com",
+      from: process.env.MAIL_USER,
       to: user.email,
-      subject: "Reset Your Password - Halo Dairy",
+      subject: "Reset Your Password - Hallo Dairy",
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
           <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             <img src="https://www.dairyfoods.com/ext/resources/DF/2024/Nov/GettyImages-2150650373.jpg?height=740&t=1734040205&width=auto" alt="Dairy Farm" style="width: 100%; height: auto;" />
 
             <div style="padding: 30px;">
-              <h2 style="color: #333;">Hello ${user.name}, welcome to <strong>Halo Dairy</strong> 🐄</h2>
+              <h2 style="color: #333;">Hello ${
+                user.name
+              }, welcome to <strong>Halo Dairy</strong> 🐄</h2>
 
               <p style="font-size: 16px; color: #555;">
                 We received a request to reset your password. Click the button below to create a new one:
@@ -1163,9 +1165,6 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-
-
-
 exports.resetPassword = async (req, res) => {
   const { token } = req.params;
   const { newPassword } = req.body;
@@ -1199,4 +1198,3 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-

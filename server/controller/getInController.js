@@ -31,9 +31,6 @@ exports.replyToMessage = async (req, res) => {
   if (!email || !replyText) {
     return res.status(400).json({ error: "Email and replyText are required." });
   }
-
-  console.log(email);
-  console.log(replyText);
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail", // Using Gmail service for sending emails
