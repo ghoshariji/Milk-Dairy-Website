@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import phoneImg from "./assets/phone.png";
 import bg from "./assets/bg.png";
 import milkbg from "./assets/milkbg.png";
@@ -28,6 +28,14 @@ import milkproduct from "./assets/milkproduct.png";
 import client1 from "./assets/client1.png";
 import { toast, ToastContainer } from "react-toastify";
 
+import { motion, useInView } from "framer-motion";
+import { ShoppingCart, Store, Truck } from "lucide-react";
+
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+
 import playstore from "./assets/play-store.svg";
 import Navbar from "../components/Navbar/Navbar";
 import AdPopup from "../components/Add/AddPopU[p";
@@ -41,6 +49,36 @@ const LandingPage = () => {
     email: "",
     message: "",
   });
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,    // animation duration in ms
+      once: false,      // ❗important: repeat every scroll
+      mirror: true, 
+
+    });
+  }, []);
+  const Card = ({ Icon, title, desc, delay }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay }}
+        viewport={{ once: false, amount: 0.3 }}
+        className="flex flex-col items-center px-4">
+        <div className="bg-green-100 p-4 rounded-full mb-4">
+          <Icon className="w-8 h-8 text-[#40A1CB]" />
+        </div>
+        <h3 className="font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm text-center">{desc}</p>
+      </motion.div>
+    );
+  };
+  
+  
+  
+
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -98,64 +136,70 @@ const LandingPage = () => {
       <ToastContainer />
       {/* Hero Section */}
 
-      <section
-        id="home"
-        className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden"
-        style={{
-          backgroundImage: `url(${bg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "top center",
-        }}
-      >
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
-          {/* Text */}
-          <div className="lg:w-1/2 text-center lg:text-left z-10">
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-              <span className="text-[#40A1CB]">Milk</span> Delivery App
-            </h1>
-            <p className="text-gray-600 mt-4 max-w-md mx-auto lg:mx-0 text-base sm:text-lg">
-              To stay ahead of the curve, serve your customers through an
-              on-demand food delivery app.
-            </p>
+      <section id="home" className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden"
+  style={{
+    backgroundImage: `url(${bg})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "top center",
+  }}>
+  <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
+    
+    {/* Animated Text Section */}
+    <div
+  className="lg:w-1/2 text-center lg:text-left z-10"
+  data-aos="fade-up"
+  data-aos-duration="800"
+>
+  <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+    <span className="text-[#40A1CB]">Milk</span> Delivery App
+  </h1>
+  <p className="text-gray-600 mt-4 max-w-md mx-auto lg:mx-0 text-base sm:text-lg">
+    To stay ahead of the curve, serve your customers through an on-demand food delivery app.
+  </p>
 
-            <div className="flex flex-wrap items-center justify-center lg:justify-start mt-6 gap-4">
-              <button
-                className="text-white px-6 py-3 rounded-lg shadow transition hover:brightness-90"
-                style={{ backgroundColor: "#40A1CB" }}
-                onClick={() => navigate("/login")}
-              >
-                Get Started
-              </button>
+  <div className="flex flex-wrap items-center justify-center lg:justify-start mt-6 gap-4">
+    <button
+      className="text-white px-6 py-3 rounded-lg shadow transition hover:brightness-90"
+      style={{ backgroundColor: "#40A1CB" }}
+      onClick={() => navigate("/login")}
+    >
+      Get Started
+    </button>
+  </div>
+</div>
 
-              {/* View More button only visible on small and medium screens */}
-            </div>
-          </div>
+{/* Animated Phone Image */}
+<div
+  className="lg:w-1/2 flex justify-center mb-10 lg:mb-0 z-10"
+  data-aos="fade-left"
+  data-aos-delay="200"
+  data-aos-duration="800"
+>
+  <img
+    src={phoneImg}
+    alt="Phone Display"
+    className="w-72 sm:w-80 md:w-[30rem] lg:w-[36rem]"
+  />
+</div>
 
-          {/* Phone Image */}
-          <div className="lg:w-1/2 flex justify-center mb-10 lg:mb-0 z-10">
-            <img
-              src={phoneImg}
-              alt="Phone Display"
-              className="w-64 sm:w-72 md:w-96"
-            />
-          </div>
-        </div>
+  </div>
 
-        {/* Bottom Milk Background */}
-        <div
-          className="absolute left-0 w-full"
-          style={{
-            bottom: 0,
-            height: "478px",
-            backgroundImage: `url(${milkbg})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "bottom center",
-            zIndex: 1,
-          }}
-        ></div>
-      </section>
+  {/* Bottom Milk Background */}
+  <div
+    className="absolute left-0 w-full"
+    style={{
+      bottom: 0,
+      height: "478px",
+      backgroundImage: `url(${milkbg})`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "bottom center",
+      zIndex: 1,
+    }}></div>
+</section>
+
+
 
       <AdPopup ads={ads} />
 
@@ -169,59 +213,78 @@ const LandingPage = () => {
           backgroundPosition: "top center",
         }}
       >
-        <div className="relative z-10 max-w-6xl mx-auto text-center">
-          <p className="text-[40A1CB] text-sm mb-2 tracking-widest">
-            Hallo Dairy
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-12">
-            Why Are We Unique ?
-          </h2>
+               <div className="relative z-10 max-w-6xl mx-auto text-center">
+      <p className="text-[#40A1CB] text-sm mb-2 tracking-widest">Hallo Dairy</p>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-12">Why Are We Unique?</h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-            {/* Card 1 */}
-            <div className="flex flex-col items-center px-4">
-              <div className="bg-green-100 p-4 rounded-full mb-4">
-                <img src={screen1} alt="Icon" className="w-8 h-8" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">
-                We've Upped The Game.
-              </h3>
-              <p className="text-gray-600 text-sm text-center">
-                We carry a variety of products through our unique vendors that
-                you can't typically get delivered.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="flex flex-col items-center px-4">
-              <div className="bg-green-100 p-4 rounded-full mb-4">
-                <img src={screen3} alt="Icon" className="w-8 h-8" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">
-                Order From Our Virtual Mall Of Local Stores
-              </h3>
-              <p className="text-gray-600 text-sm text-center">
-                Order from a large variety of local stores you like and trust
-                for items you can't typically get delivered.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="flex flex-col items-center px-4">
-              <div className="bg-green-100 p-4 rounded-full mb-4">
-                <img src={screen2} alt="Icon" className="w-8 h-8" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">
-                Easy Access To Local Services
-              </h3>
-              <p className="text-gray-600 text-sm text-center">
-                Easy access to local services such as dry cleaning. We can pick
-                it up and drop it off to make your life easier.
-              </p>
-            </div>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <div data-aos="fade-up" data-aos-delay="0" className="transition duration-500 ease-in-out transform hover:scale-105">
+          <Card
+            Icon={ShoppingCart}
+            title="We've Upped The Game."
+            desc="We carry a variety of products through our unique vendors that you can't typically get delivered."
+          />
         </div>
+
+        <div data-aos="fade-up" data-aos-delay="200" className="transition duration-500 ease-in-out transform hover:scale-105">
+          <Card
+            Icon={Store}
+            title="Order From Our Virtual Mall Of Local Stores"
+            desc="Order from a large variety of local stores you like and trust for items you can't typically get delivered."
+          />
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="400" className="transition duration-500 ease-in-out transform hover:scale-105">
+          <Card
+            Icon={Truck}
+            title="Easy Access To Local Services"
+            desc="Easy access to local services such as dry cleaning. We can pick it up and drop it off to make your life easier."
+          />
+        </div>
+      </div>
+    </div>
+
+{/* VIDEO SECTION */}
+
+
+
       </section>
+
+      <section className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden">
+  <div className="max-w-6xl mx-auto text-center">
+  <p
+  className="text-[#40A1CB] text-sm tracking-widest mb-2"
+  data-aos="fade-up"
+  data-aos-duration="800"
+>
+  WATCH NOW
+</p>
+
+<h2
+  className="text-4xl font-bold text-gray-900 mb-10"
+  data-aos="fade-up"
+  data-aos-delay="200"
+  data-aos-duration="1000"
+>
+  Discover How It Works
+</h2>
+
+
+    {/* Video Container */}
+    <div className="relative inline-block">
+      <div className="relative aspect-w-16 aspect-h-9">
+        <iframe
+          className="w-full h-full"
+          src="https://www.youtube.com/embed/your-video-id" // Replace with your actual video URL
+          title="App Overview Video"
+          frameBorder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Bottom Banner Section */}
       <section
