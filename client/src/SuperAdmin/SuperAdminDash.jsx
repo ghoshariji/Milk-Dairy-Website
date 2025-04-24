@@ -1,31 +1,56 @@
 import React, { useEffect, useState } from "react";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import API from "../api";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const StatBox = ({ title, value }) => {
   return (
-    <div className="bg-[#B1D4E0] text-black p-6 rounded-2xl shadow-md w-full">
+    <motion.div
+      className="bg-[#B1D4E0] text-black p-6 rounded-2xl shadow-md w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <h4 className="text-sm font-bold mb-2">{title}</h4>
       <p className="text-3xl font-bold">{value}</p>
-    </div>
+    </motion.div>
   );
 };
 
 const StatBox1 = ({ title, value }) => {
   return (
-    <div className="bg-gray-100 text-black p-6 rounded-2xl shadow-md w-full">
+    <motion.div
+      className="bg-gray-100 text-black p-6 rounded-2xl shadow-md w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <h4 className="text-sm font-medium mb-2">{title}</h4>
       <p className="text-3xl font-bold">{value}</p>
-    </div>
+    </motion.div>
   );
 };
 
 const Box = ({ children }) => (
-  <div className="p-4 rounded-xl shadow bg-gray-100 w-full">{children}</div>
+  <motion.div
+    className="p-4 rounded-xl shadow bg-gray-100 w-full"
+    initial={{ opacity: 0, x: -100 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    {children}
+  </motion.div>
 );
 
 const Box1 = ({ children }) => (
-  <div className="p-4 rounded-xl shadow bg-[#B1D4E0] w-full">{children}</div>
+  <motion.div
+    className="p-4 rounded-xl shadow bg-[#B1D4E0] w-full"
+    initial={{ opacity: 0, x: 100 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    {children}
+  </motion.div>
 );
 
 const SuperAdminDash = () => {
@@ -47,6 +72,7 @@ const SuperAdminDash = () => {
 
     fetchStats();
   }, []);
+
   return (
     <>
       <div className="flex">
@@ -54,9 +80,9 @@ const SuperAdminDash = () => {
         {/* Sidebar */}
 
         {/* Main Content */}
-        <div className=" w-full lg:ml-64 mt-20">
-          <div className="flex-1  grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="p-4 md:p-8 ">
+        <div className="w-full lg:ml-64 mt-20">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-1 gap-6">
+            <div className="p-4 md:p-8">
               <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6">
                 <StatBox
                   title="User List (7 days)"
@@ -85,12 +111,13 @@ const SuperAdminDash = () => {
                     ))}
 
                     <div className="mt-6 text-right">
-                      <a
+                      <motion.a
                         href="/users"
                         className="inline-block px-5 py-2.5 bg-[#40A1CB] text-white rounded-lg hover:bg-[#3495b8] transition duration-300"
+                        whileHover={{ scale: 1.1 }}
                       >
                         Show All Users
-                      </a>
+                      </motion.a>
                     </div>
                   </div>
                 </Box>
@@ -109,12 +136,13 @@ const SuperAdminDash = () => {
                   </div>
 
                   <div className="mt-10 text-right">
-                    <a
+                    <motion.a
                       href="/subscriptions"
                       className="inline-block px-6 py-3 bg-[#40A1CB] text-white rounded-lg shadow-md hover:bg-[#3495b8] hover:shadow-lg transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
                     >
                       Configure Plans
-                    </a>
+                    </motion.a>
                   </div>
                 </Box1>
               </div>

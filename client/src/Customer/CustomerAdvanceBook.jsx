@@ -51,7 +51,7 @@ const CustomerAdvanceBook = () => {
       <CustomerSidebar />
       <ToastContainer />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
@@ -65,6 +65,7 @@ const CustomerAdvanceBook = () => {
               <input
                 type="text"
                 value={name}
+                placeholder="Enter Your Name..."
                 onChange={(e) => setName(e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring focus:ring-blue-300"
                 required
@@ -77,6 +78,7 @@ const CustomerAdvanceBook = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows="3"
+                placeholder="Write about product buying details, customization requests, or any specific requirements..."
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring focus:ring-blue-300"
                 required
               />
@@ -84,10 +86,11 @@ const CustomerAdvanceBook = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Price</label>
+                <label className="block text-sm font-medium text-gray-700">Quantity</label>
                 <input
                   type="number"
                   value={price}
+                  placeholder="eg : 1,2,3"
                   onChange={(e) => setPrice(e.target.value)}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring focus:ring-blue-300"
                   required
@@ -95,11 +98,12 @@ const CustomerAdvanceBook = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Dealer</label>
+                <label className="block text-sm font-medium text-gray-700">Payment Mode</label>
                 <input
                   type="text"
                   value={dealer}
                   onChange={(e) => setDealer(e.target.value)}
+                  placeholder="Oneline / Cash"
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring focus:ring-blue-300"
                   required
                 />
@@ -108,7 +112,7 @@ const CustomerAdvanceBook = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Booking Date</label>
+                <label className="block text-sm font-medium text-gray-700">Delivery Date</label>
                 <input
                   type="date"
                   value={date}
@@ -123,6 +127,7 @@ const CustomerAdvanceBook = () => {
                 <input
                   type="text"
                   value={delivery}
+                  placeholder="Home Delivery / Take In "
                   onChange={(e) => setDelivery(e.target.value)}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring focus:ring-blue-300"
                 />
@@ -133,7 +138,7 @@ const CustomerAdvanceBook = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#40A1CB] text-white py-2 rounded-md transition disabled:opacity-50"
+                className="w-full bg-[#40A1CB] hover:cursor-pointer text-white py-2 rounded-md transition disabled:opacity-50"
               >
                 {loading ? "Submitting..." : "Submit Booking"}
               </button>
