@@ -138,7 +138,7 @@ const CustomerDash = () => {
   return (
     <div className="flex">
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
@@ -336,7 +336,7 @@ const CustomerDash = () => {
                     </select>
                   </div>
                   <p className="text-2xl font-bold text-black">
-                    {monthData.totalLiters}
+                    {monthData.totalLiters?.toFixed(2)}
                     <span className="text-sm font-medium text-gray-600">
                       LTR
                     </span>
@@ -355,7 +355,7 @@ const CustomerDash = () => {
               </p>
             </div>
           ) : (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+            <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
               <Loader />
             </div>
           )}

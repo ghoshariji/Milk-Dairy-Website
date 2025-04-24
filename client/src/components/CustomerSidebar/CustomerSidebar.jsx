@@ -123,7 +123,7 @@ const CustomerSidebar = () => {
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}
                 </div>
-                <span className="text-black text-lg font-semibold">
+                <span className="text-white text-lg font-semibold">
                   Welcome {firstName}
                 </span>
               </div>
@@ -165,7 +165,7 @@ const CustomerSidebar = () => {
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                     <img src={item.icon} alt={item.label} className="w-5 h-5" />
                   </div>
-                  <span className="ml-3">{item.label}</span>
+                  <span className="ml-3 text-white">{item.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -177,7 +177,7 @@ const CustomerSidebar = () => {
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                   <img src={logoutIcon} alt="Logout" className="w-5 h-5" />
                 </div>
-                <span className="ml-3 text-black">Log out</span>
+                <span className="ml-3 text-white">Log out</span>
               </button>
             </li>
           </ul>

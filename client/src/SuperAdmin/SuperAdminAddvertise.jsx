@@ -46,6 +46,8 @@ const SuperAdminAddvertise = () => {
   const handleAddAd = async () => {
     const form = new FormData();
     setLoading(true);
+    setIsModalOpen(false);
+
     form.append("description", formData.description);
     form.append("expiryDate", formData.expiryDate);
     form.append("media", formData.media);
@@ -65,15 +67,20 @@ const SuperAdminAddvertise = () => {
     if (res.ok) {
       fetchAds();
       toast.success("Uploaded Successfully");
-      setIsModalOpen(false);
     }
   };
 
   const handleDelete = async (id) => {
-    await fetch(`${import.meta.env.VITE_SERVER}/api/ads/${id}`, {
-      method: "DELETE",
-    });
-    fetchAds();
+    try {
+      await fetch(`${import.meta.env.VITE_SERVER}/api/add/delete/${id}`, {
+        method: "DELETE",
+      });
+
+      toast.success("Deleted Successfully");
+      fetchAds();
+    } catch (error) {
+      toast.error("Internal Server Error...");
+    }
   };
 
   return (
@@ -81,7 +88,7 @@ const SuperAdminAddvertise = () => {
       <SuperAdminSidebar />
       <ToastContainer />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
@@ -124,7 +131,6 @@ const SuperAdminAddvertise = () => {
                   {new Date(ad.expiryDate).toLocaleDateString()}
                 </td>
                 <td className="p-4 space-x-2">
-                  <button className="text-blue-600">Edit</button>
                   <button
                     onClick={() => handleDelete(ad._id)}
                     className="text-red-600"
@@ -140,7 +146,7 @@ const SuperAdminAddvertise = () => {
       <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        className="fixed inset-0 z-50 overflow-y-auto"
+        className="fixed backdrop-blur-sm inset-0 z-50 overflow-y-auto"
       >
         <div className="flex items-center justify-center min-h-screen px-4">
           <Dialog.Panel className="relative bg-white rounded-xl p-6 shadow-lg w-full max-w-lg">

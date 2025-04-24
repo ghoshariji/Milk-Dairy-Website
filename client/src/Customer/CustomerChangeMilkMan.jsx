@@ -108,7 +108,7 @@ const CustomerChangeMilkMan = () => {
       <ToastContainer />
       <CustomerSidebar />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
@@ -152,7 +152,7 @@ const CustomerChangeMilkMan = () => {
                   {/* Assign button */}
                   <button
                     onClick={() => assignMilkman(milkman.name)}
-                    className="mt-4 sm:mt-0 bg-[#40A1CB] text-white px-5 py-2 rounded-lg transition self-end sm:self-center"
+                    className="mt-4 sm:mt-0 bg-[#40A1CB] text-white px-5 py-2 rounded-lg transition self-end hover:cursor-pointer sm:self-center"
                   >
                     Assign
                   </button>

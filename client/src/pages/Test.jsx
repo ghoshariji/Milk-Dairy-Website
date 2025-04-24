@@ -1,5 +1,6 @@
 import React from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
+import Loader from "../components/Loader/Loader";
 
 const Test = () => {
   return (

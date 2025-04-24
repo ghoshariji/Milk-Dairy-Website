@@ -99,7 +99,7 @@ const MilkManAddCategory = () => {
       <AdminNav />
       <ToastContainer />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}

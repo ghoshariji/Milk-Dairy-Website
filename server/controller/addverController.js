@@ -31,20 +31,29 @@ exports.createAd = async (req, res) => {
   }
 };
 
-
-
 exports.getMedia = async (req, res) => {
-    try {
-      const today = new Date();
-  
-      const activeAds = await Advert.find({
-        expiryDate: { $gte: today },
-      }); // Don't send large media buffer here
-  
-      res.status(200).json(activeAds);
-    } catch (err) {
-      console.error("Error fetching active ads:", err);
-      res.status(500).json({ message: "Server error" });
-    }
-  };
-  
+  try {
+    const today = new Date();
+
+    const activeAds = await Advert.find({
+      expiryDate: { $gte: today },
+    }); // Don't send large media buffer here
+
+    res.status(200).json(activeAds);
+  } catch (err) {
+    console.error("Error fetching active ads:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.deleteMedia = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Advert.findByIdAndDelete(id);
+    res.status(200).send({
+      message: "Deleted",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

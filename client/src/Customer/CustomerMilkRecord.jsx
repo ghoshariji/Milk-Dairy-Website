@@ -40,7 +40,7 @@ const CustomerMilkRecord = () => {
     <div className="flex">
       <CustomerSidebar />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
@@ -107,7 +107,7 @@ const CustomerMilkRecord = () => {
                     Total Litres
                   </p>
                   <p className="text-xl font-bold text-black">
-                    {milkData.totalLiters} L
+                    {milkData.totalLiters.toFixed(2)} L
                   </p>
                 </div>
                 <div className="bg-[#B1D4E0] p-4 rounded-xl">

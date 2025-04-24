@@ -216,7 +216,7 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={AddUser} alt="User List" className="w-6 h-6 rounded-full" />
+                  <img src={contact} alt="User List" className="w-6 h-6 rounded-full" />
                 </div>
                 <span className="ms-3">Addvertisement</span>
               </NavLink>

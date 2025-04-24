@@ -90,7 +90,7 @@ const MilkManProfile = () => {
       <ToastContainer />
       <div className="lg:ml-64 mt-30 p-6  min-h-screen ">
         {loading && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+          <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
             <Loader />
           </div>
         )}
@@ -147,15 +147,13 @@ const MilkManProfile = () => {
             </motion.div>
           </div>
         </motion.div>
-      </div>
-
-      <AnimatePresence>
+        <AnimatePresence>
         {isModalVisible && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 flex items-center justify-center bg-gray-300 bg-opacity-50 backdrop-blur-sm z-50"
+            className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm z-50"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 50 }}
@@ -224,6 +222,9 @@ const MilkManProfile = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
+
+      
     </>
   );
 };

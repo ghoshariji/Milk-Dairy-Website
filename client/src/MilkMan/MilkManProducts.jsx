@@ -105,105 +105,153 @@ const MilkManProducts = () => {
     }
     setLoading(false);
   };
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10; // Change this number to control the number of products per page
+  const totalPages = Math.ceil(allProducts.length / productsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const currentProducts = allProducts.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
 
   return (
     <>
       <AdminNav />
       <ToastContainer />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
-      <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
-        <motion.div
-          className="bg-white p-6 rounded-lg shadow-md"
+        <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
+          <Loader />
+        </div>
+      )}
+      <motion.div
+        className="bg-white p-6 rounded-lg shadow-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.button
+          className="bg-[#40A1CB] text-white px-4 py-2 rounded mt-4"
+          onClick={() => {
+            setIsEditMode(false);
+            setIsModalOpen(true);
+          }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }}
+        >
+          Add Product
+        </motion.button>
+
+        <motion.table
+          className="min-w-full mt-4 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
+          <thead>
+            <tr className="bg-[#40A1CB] text-white text-left text-sm uppercase tracking-wider">
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Price</th>
+              <th className="px-6 py-3">Category</th>
+              <th className="px-6 py-3">Image</th>
+              <th className="px-6 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700">
+            {currentProducts.map((product, index) => (
+              <motion.tr
+                key={product._id}
+                className="hover:bg-[#e6f5fb] border-t border-gray-200 transition-colors duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
+              >
+                <td className="px-6 py-4 font-medium">{product.name}</td>
+                <td className="px-6 py-4">{product.price}</td>
+                <td className="px-6 py-4">{product.category}</td>
+                <td className="px-6 py-4">
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-14 h-14 object-cover rounded-md border border-gray-300"
+                    />
+                  ) : (
+                    <span className="text-sm text-gray-400 italic">
+                      No Image
+                    </span>
+                  )}
+                </td>
+                <td className="px-6 py-4 space-x-2">
+                  <motion.button
+                    className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-4 py-2 rounded-md text-sm shadow-sm transition"
+                    onClick={() => {
+                      setCurrentProduct(product);
+                      setIsEditMode(true);
+                      setIsModalOpen(true);
+                    }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Edit
+                  </motion.button>
+                  <motion.button
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm shadow-sm transition"
+                    onClick={() => handleDeleteProduct(product._id)}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Delete
+                  </motion.button>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </motion.table>
+
+        {/* Pagination Controls */}
+        <div className="mt-4 flex justify-between items-center">
           <motion.button
-            className="bg-[#40A1CB] text-white px-4 py-2 rounded mt-4"
-            onClick={() => {
-              setIsEditMode(false);
-              setIsModalOpen(true);
-            }}
+            className="bg-[#40A1CB] text-white px-6 py-2 rounded-md text-sm shadow-sm transition"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            Add Product
+            Previous
           </motion.button>
-
-          <motion.table
-            className="min-w-full mt-4 bg-white border border-gray-300"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          <p className="text-sm text-gray-700">
+            Page {currentPage} of {totalPages}
+          </p>
+          <motion.button
+            className="bg-[#40A1CB] text-white px-6 py-2 rounded-md text-sm shadow-sm transition"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
           >
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border px-4 py-2">Name</th>
-                <th className="border px-4 py-2">Price</th>
-                <th className="border px-4 py-2">Category</th>
-                <th className="border px-4 py-2">Image</th>
-                <th className="border px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allProducts.map((product, index) => (
-                <motion.tr
-                  key={product._id}
-                  className="border"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.3 }}
-                >
-                  <td className="px-4 py-2">{product.name}</td>
-                  <td className="px-4 py-2">{product.price}</td>
-                  <td className="px-4 py-2">{product.category}</td>
-                  <td className="px-4 py-2">
-                    {product.image ? (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-16 h-16 object-cover rounded"
-                      />
-                    ) : (
-                      "No Image"
-                    )}
-                  </td>
-                  <td className="px-4 py-2">
-                    <motion.button
-                      className="bg-[#40A1CB] text-white px-3 py-1 rounded mr-2"
-                      onClick={() => {
-                        setCurrentProduct(product);
-                        setIsEditMode(true);
-                        setIsModalOpen(true);
-                      }}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      Edit
-                    </motion.button>
-                    <motion.button
-                      className="bg-black text-white px-3 py-1 rounded"
-                      onClick={() => handleDeleteProduct(product._id)}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      Delete
-                    </motion.button>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </motion.table>
-        </motion.div>
-      </div>
+            Next
+          </motion.button>
+        </div>
+      </motion.div>
+    </div>
+
 
       {isModalOpen && (
         <motion.div
-          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center"
+          className="fixed inset-0 backdrop-blur-sm  bg-opacity-50 flex justify-center items-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
