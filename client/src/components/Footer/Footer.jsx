@@ -1,38 +1,73 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaInstagram, FaGooglePlusG } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaGooglePlusG,
+} from "react-icons/fa";
+import logo from "../../pages/images/login.png";
+import { motion } from "framer-motion"; // Import motion
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 py-6 px-4 md:px-16 text-gray-700 text-center md:text-left">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-        {/* Logo Section */}
-        <div className="flex items-center space-x-2">
-          <img src="https://via.placeholder.com/40" alt="Logo" className="w-10 h-10" />
+    <footer className="bg-gray-100 py-6 px-4 md:px-16 text-gray-700">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-0">
+        {/* Logo & Tagline */}
+        <motion.div
+          className="flex items-center space-x-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <img src={logo} alt="Logo" className="w-12 h-12" />
           <div>
             <h2 className="text-[#40A1CB] font-bold text-lg">Hallo Dairy</h2>
-            <p className="text-xs">DELIVERY ON DEMAND</p>
+            <p className="text-[11px] italic text-gray-500">
+              Freshness at your doorstep, every single day.
+            </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Links Section */}
-        <div className="flex space-x-6 my-4 md:my-0 text-sm">
-          <a href="#" className="hover:text-green-600">About</a>
-          <a href="#" className="text-[#40A1CB] font-semibold">Terms & Conditions</a>
-          <a href="#" className="hover:text-green-600">Privacy Policy</a>
-          <a href="#" className="hover:text-green-600">Contact</a>
-        </div>
-
-        {/* Social Media Icons */}
-        <div className="flex space-x-4 text-[#40A1CB] text-lg">
-          <a href="#" className="hover:text-[#40A1CB]"><FaFacebookF /></a>
-          <a href="#" className="hover:text-[#40A1CB]"><FaTwitter /></a>
-          <a href="#" className="hover:text-[#40A1CB]"><FaInstagram /></a>
-          <a href="#" className="hover:text-[#40A1CB]"><FaGooglePlusG /></a>
-        </div>
+        {/* Social Media */}
+        <motion.div
+          className="flex space-x-5 text-[#40A1CB] text-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          <motion.a
+            href="#"
+            className="hover:scale-110 transition duration-300"
+            whileHover={{ scale: 1.1, rotate: 15 }}
+          >
+            <FaFacebookF />
+          </motion.a>
+          <motion.a
+            href="https://www.instagram.com/foxteach_offical/?hl=en"
+            className="hover:scale-110 transition duration-300"
+            whileHover={{ scale: 1.1, rotate: 15 }}
+          >
+            <FaInstagram />
+          </motion.a>
+          <motion.a
+            href="mailto:official.foxteach@gmail.com"
+            className="hover:scale-110 transition duration-300"
+            whileHover={{ scale: 1.1, rotate: 15 }}
+          >
+            <FaGooglePlusG />
+          </motion.a>
+        </motion.div>
       </div>
-      
-      {/* Copyright Text */}
-      <p className="text-sm text-gray-500 mt-4 text-center">Copyright &copy; 2021 Deonde.</p>
+
+      {/* Footer Text */}
+      <motion.div
+        className="mt-6 border-t border-gray-200 pt-4 text-center text-sm text-gray-500"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+      >
+        &copy; 2025 Hallo Dairy. All rights reserved.
+      </motion.div>
     </footer>
   );
 };
