@@ -3,6 +3,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import logo from "../../pages/images/login.png";
+import AOS from "aos"; // Import AOS
+import "aos/dist/aos.css"; // Import AOS styles
 
 const CouponComm = () => {
   const [coupons, setCoupons] = useState([]);
@@ -10,6 +12,13 @@ const CouponComm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Initialize AOS
+    AOS.init({
+      duration: 1000,
+      easing: "ease-in-out",
+      once: true, // Only animate once per scroll
+    });
+
     axios
       .get(`${import.meta.env.VITE_SERVER}/api/coupon/get`)
       .then((response) => {
@@ -29,8 +38,8 @@ const CouponComm = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen">
-      <h2 className="text-2xl font-bold text-center mb-6">Available Coupons</h2>
+    <div className="p-6 ">
+      <h2 className="text-4xl font-bold text-center mb-6">Available Coupons</h2>
 
       {loading ? (
         <div className="text-center">Loading...</div>
@@ -45,6 +54,8 @@ const CouponComm = () => {
               className={`rounded-xl overflow-hidden shadow-md relative ${
                 index % 2 === 0 ? "bg-white text-black" : "bg-black text-white"
               }`}
+              data-aos="fade-up" // AOS scroll animation
+              data-aos-delay={index * 100} // Stagger the animations
             >
               <div className="p-4 space-y-4 flex flex-col items-center text-center">
                 <h3 className="text-3xl font-bold">10% Off</h3>

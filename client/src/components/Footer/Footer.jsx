@@ -10,7 +10,7 @@ import { motion } from "framer-motion"; // Import motion
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 py-6 px-4 md:px-16 text-gray-700">
+    <footer className="bg-gray-200 py-6 px-4 md:px-16 text-gray-700">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-0">
         {/* Logo & Tagline */}
         <motion.div
