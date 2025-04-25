@@ -23,6 +23,7 @@ import downloadIcon from "./assets/download.png";
 import starIcon from "./assets/start.png";
 import userIcon from "./assets/usergole.png";
 import smileIcon from "./assets/happy.png";
+import { FaArrowUp } from "react-icons/fa";
 
 import milkproduct from "./assets/milkproduct.png";
 import client1 from "./assets/client1.png";
@@ -71,7 +72,6 @@ const clientReviews = [
   },
 ];
 const LandingPage = () => {
-
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -84,12 +84,12 @@ const LandingPage = () => {
       },
     },
   };
-  
+
   const childVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
-  
+
   const screenshots = [screen1, screen2, screen3, screen4, screen5];
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
 
@@ -194,6 +194,32 @@ const LandingPage = () => {
     fetchAds();
   }, []);
 
+  const [showButton, setShowButton] = useState(false);
+
+  // Function to handle scroll and show/hide the button
+  const handleScroll = () => {
+    if (window.scrollY > 300) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  };
+
+  // Function to scroll back to the top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div className="font-sans">
       {/* Navbar */}
@@ -267,6 +293,16 @@ const LandingPage = () => {
         ></div>
       </section>
       <AdPopup ads={ads} />
+
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-[#40A1CB] text-white p-4 hover:cursor-pointer rounded-full shadow-lg transition-all hover:bg-[#3690b5]"
+          style={{ zIndex: 999 }} // Ensure it stays on top of other elements
+        >
+          <FaArrowUp className="w-6 h-6" />
+        </button>
+      )}
 
       {/* Unique Section */}
       <section
@@ -753,98 +789,101 @@ const LandingPage = () => {
       </section>
 
       <section
-  id="contact"
-  className="relative w-full min-h-screen bg-gray-100 overflow-hidden flex flex-col md:flex-row items-center justify-center"
->
-  {/* Contact Form Container */}
-  <motion.div
-    variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.3 }}
-    className="relative z-10 w-full max-w-md mx-auto p-6 md:p-12 md:ml-auto md:mr-16 bg-white rounded-2xl shadow-xl mt-10 md:mt-0"
-  >
-    <motion.p variants={childVariants} className="text-sm text-[#40A1CB] font-medium mb-2">
-      Contact Us
-    </motion.p>
-    <motion.h2 variants={childVariants} className="text-2xl font-bold text-gray-800 mb-6">
-      Get In Touch With Us!
-    </motion.h2>
-    <motion.form
-      className="space-y-4"
-      onSubmit={handleSubmit}
-    >
-      <motion.input
-        variants={childVariants}
-        whileFocus={{ scale: 1.02 }}
-        type="text"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Your Name"
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-      />
-      <motion.input
-        variants={childVariants}
-        whileFocus={{ scale: 1.02 }}
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Your Email"
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
-      />
-      <motion.textarea
-        variants={childVariants}
-        whileFocus={{ scale: 1.02 }}
-        name="message"
-        value={formData.message}
-        onChange={handleChange}
-        placeholder="Your Message"
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB] h-28"
-      ></motion.textarea>
-      <motion.button
-        variants={childVariants}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="bg-[#40A1CB] text-white px-6 py-2 rounded-md hover:cursor-pointer transition"
+        id="contact"
+        className="relative w-full min-h-screen bg-gray-100 overflow-hidden flex flex-col md:flex-row items-center justify-center"
       >
-        Send Now
-      </motion.button>
-    </motion.form>
-  </motion.div>
+        {/* Contact Form Container */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="relative z-10 w-full max-w-md mx-auto p-6 md:p-12 md:ml-auto md:mr-16 bg-white rounded-2xl shadow-xl mt-10 md:mt-0"
+        >
+          <motion.p
+            variants={childVariants}
+            className="text-sm text-[#40A1CB] font-medium mb-2"
+          >
+            Contact Us
+          </motion.p>
+          <motion.h2
+            variants={childVariants}
+            className="text-2xl font-bold text-gray-800 mb-6"
+          >
+            Get In Touch With Us!
+          </motion.h2>
+          <motion.form className="space-y-4" onSubmit={handleSubmit}>
+            <motion.input
+              variants={childVariants}
+              whileFocus={{ scale: 1.02 }}
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+            />
+            <motion.input
+              variants={childVariants}
+              whileFocus={{ scale: 1.02 }}
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB]"
+            />
+            <motion.textarea
+              variants={childVariants}
+              whileFocus={{ scale: 1.02 }}
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Your Message"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#40A1CB] h-28"
+            ></motion.textarea>
+            <motion.button
+              variants={childVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#40A1CB] text-white px-6 py-2 rounded-md hover:cursor-pointer transition"
+            >
+              Send Now
+            </motion.button>
+          </motion.form>
+        </motion.div>
 
-  {/* Background Jar Image for Desktop */}
-  <motion.div
-    className="hidden md:block absolute inset-0 bg-cover bg-right bg-no-repeat z-0"
-    style={{ backgroundImage: `url(${jarbg})`, backgroundSize: "cover" }}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 0.2 }}
-    transition={{ duration: 1.5 }}
-  ></motion.div>
+        {/* Background Jar Image for Desktop */}
+        <motion.div
+          className="hidden md:block absolute inset-0 bg-cover bg-right bg-no-repeat z-0"
+          style={{ backgroundImage: `url(${jarbg})`, backgroundSize: "cover" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.2 }}
+          transition={{ duration: 1.5 }}
+        ></motion.div>
 
-  {/* Background Jar Image for Mobile (below form) */}
-  <motion.img
-    src={jarbg}
-    alt="Milk Jar"
-    className="block md:hidden w-full object-cover mt-8"
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    transition={{ duration: 1 }}
-    viewport={{ once: true }}
-  />
+        {/* Background Jar Image for Mobile (below form) */}
+        <motion.img
+          src={jarbg}
+          alt="Milk Jar"
+          className="block md:hidden w-full object-cover mt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+        />
 
-  {/* Milk Wave Image at Bottom */}
-  <motion.img
-    src={milkwave}
-    alt="Milk Wave"
-    className="absolute bottom-0 w-full z-10"
-    initial={{ y: 100, opacity: 0 }}
-    whileInView={{ y: 0, opacity: 1 }}
-    transition={{ duration: 1.2, delay: 0.3 }}
-    viewport={{ once: true }}
-  />
-</section>
+        {/* Milk Wave Image at Bottom */}
+        <motion.img
+          src={milkwave}
+          alt="Milk Wave"
+          className="absolute bottom-0 w-full z-10"
+          initial={{ y: 100, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.3 }}
+          viewport={{ once: true }}
+        />
+      </section>
       <Footer />
     </div>
   );
