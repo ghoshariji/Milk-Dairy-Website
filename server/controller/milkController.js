@@ -4,7 +4,6 @@ const SellerMilkRecord = require("../modal/sellMilkModalRecord");
 const jwt = require("jsonwebtoken");
 const User = require("../modal/userModal");
 
-
 // Create a new milk record
 exports.bulkUpdateMilk = async (req, res) => {
   try {
@@ -56,7 +55,7 @@ exports.bulkUpdateMilk = async (req, res) => {
 // Manual Milk Update
 exports.manualUpdateMilk = async (req, res) => {
   const { userId, date, milkQuantity } = req.body;
-  console.log(date)
+  console.log(date);
   const milkmanId = req.user.userId; // Get the milkmanId from the decoded JWT token
 
   try {
@@ -221,14 +220,14 @@ exports.deleteMilkRecord = async (req, res) => {
   try {
     const { userId, date } = req.body; // Extract userId and date from request body
 
-    console.log(req.body.date +"delete date");
+    console.log(req.body.date + "delete date");
     // Convert the date to the same format used in your DB
     const todayDate = new Date();
     todayDate.setMinutes(
       todayDate.getMinutes() - todayDate.getTimezoneOffset()
     );
     const formattedDate = todayDate.toISOString().split("T")[0];
-    console.log(formattedDate)
+    console.log(formattedDate);
     if (date !== formattedDate) {
       return res.status(400).json({
         message: "Date mismatch. Only today's records can be deleted.",
@@ -292,4 +291,57 @@ exports.sellMilkToday = async (req, res) => {
   }
 };
 
+exports.milkManMilkRecord = async (req, res) => {
+  const { id } = req.params; // User ID from the URL parameter
+  const { fromDate, toDate } = req.query; // fromDate and toDate from query params
 
+  try {
+    // Extract token from Authorization header
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Decode the token to get the userId and milkmanId
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const milkmanId = decoded.userId; // Assuming milkmanId is saved in the token
+
+    // Parse the dates from the query parameters
+    const startDate = new Date(fromDate);
+    const endDate = new Date(toDate);
+
+    // Validate the userId and milkmanId
+    const milkRecords = await MilkRecord.find({
+      userId: id, // From the URL params
+      milkmanId: milkmanId, // From the decoded token
+      date: { $gte: startDate, $lte: endDate },
+    });
+
+    if (milkRecords.length === 0) {
+      return res
+        .status(202)
+        .json({ message: "No records found for the given period" });
+    }
+
+    // Process and return the data
+    const totalLitres = milkRecords.reduce((acc, record) => acc + record.kg, 0);
+    const totalAmount = milkRecords.reduce(
+      (acc, record) => acc + record.kg * record.rate,
+      0
+    );
+    const avgRate = totalAmount / totalLitres || 0;
+
+    return res.json({
+      success: true,
+      totalLitres,
+      totalAmount,
+      avgRate,
+      milkRecords,
+    });
+  } catch (error) {
+    console.error("Error fetching milk records:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

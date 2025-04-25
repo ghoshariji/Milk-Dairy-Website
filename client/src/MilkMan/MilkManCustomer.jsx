@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const MilkManCustomer = () => {
   const [isBuyer, setIsBuyer] = useState(true);
@@ -8,7 +10,9 @@ const MilkManCustomer = () => {
   const itemsPerPage = 5;
   const [buyers, setCustomers] = useState([]);
   const [sellers, setSellers] = useState([]);
-
+  const navigate = useNavigate()
+  const [customerTotal,setCustomerTotal] = useState(0)
+  const [sellerTotal,setSellerTotal] = useState(0)
   useEffect(() => {
     const validateToken = async () => {
       try {
@@ -21,6 +25,9 @@ const MilkManCustomer = () => {
 
         if (response.data.success) {
           const user = response.data.user;
+          console.log(response.data.user)
+          setCustomerTotal(user.customer.length)
+          setSellerTotal(user.seller.length)
           setCustomers(user.customer || []);
           setSellers(user.seller || []);
         } else {
@@ -48,8 +55,8 @@ const MilkManCustomer = () => {
         <div className="max-w-4xl mx-auto">
           {/* Toggle Switch */}
           <div className="flex justify-center items-center gap-4 mb-8">
-            <span className="text-lg font-medium text-gray-700">
-              {isBuyer && "Buyer"}
+            <span className="text-2xl font-bold text-gray-700">
+              {isBuyer && `Buyer (${customerTotal})`}
             </span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -62,8 +69,8 @@ const MilkManCustomer = () => {
                 <div className="absolute w-6 h-6 bg-white rounded-full top-0.5 left-0.5 peer-checked:translate-x-7 transform transition-all duration-300 shadow"></div>
               </div>
             </label>
-            <span className="text-lg font-medium text-gray-700">
-              {!isBuyer && "Seller"}
+            <span className="text-2xl font-bold text-gray-700">
+              {!isBuyer && `Seller (${sellerTotal})`}
             </span>
           </div>
 
@@ -79,18 +86,28 @@ const MilkManCustomer = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedData.map((person, index) => (
-                  <tr key={index} className="border-b hover:bg-gray-100">
-                    <td className="py-3 px-4">
-                      <div className="w-10 h-10 bg-[#40A1CB] text-white flex items-center justify-center rounded-full font-bold">
-                        {person.name?.[0] || "?"}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">{person.name}</td>
-                    <td className="py-3 px-4">{person.enterCode}</td>
-                    <td className="py-3 px-4">{person.phone}</td>
-                  </tr>
-                ))}
+                <AnimatePresence>
+                  {paginatedData.map((person, index) => (
+                    <motion.tr
+                      key={person.id || index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="border-b hover:bg-gray-100 hover:cursor-pointer "
+                      onClick={() => navigate(`/milkman-customer-details/${person._id}`)}
+                    >
+                      <td className="py-3 px-4">
+                        <div className="w-10 h-10 bg-[#40A1CB] text-white flex items-center justify-center rounded-full font-bold">
+                          {person.name?.[0] || "?"}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">{person.name}</td>
+                      <td className="py-3 px-4">{person.enterCode}</td>
+                      <td className="py-3 px-4">{person.phone}</td>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               </tbody>
             </table>
           </div>
@@ -100,7 +117,7 @@ const MilkManCustomer = () => {
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-full transition  ${
+              className={`px-4 py-2 rounded-full transition hover:cursor-pointer  ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                   : "bg-[#40A1CB] text-white hover:bg-[#40A1CB]"
@@ -116,7 +133,7 @@ const MilkManCustomer = () => {
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-full transition  ${
+              className={`px-4 py-2 rounded-full transition hover:cursor-pointer   ${
                 currentPage === totalPages
                   ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                   : "bg-[#40A1CB] text-white hover:bg-[#40A1CB]"

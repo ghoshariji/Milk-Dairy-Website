@@ -55,6 +55,7 @@ import CustomerNotification from "./Customer/CustomerNotification";
 import GetInTouch from "./SuperAdmin/GetInTouch";
 import SuperAdminUserDet from "./SuperAdmin/SuperAdminUserDet";
 import SuperAdminAddvertise from "./SuperAdmin/SuperAdminAddvertise";
+import MilkManCustomerDetails from "./MilkMan/MilkManCustomerDetails";
 const App = () => {
   return (
     <Routes>
@@ -78,6 +79,7 @@ const App = () => {
       <Route path="/milkman-subscription" element={<MilkManSubs />} />
       <Route path="/milkman-update-milk" element={<MilkManUpdateMilk />} />
       <Route path="/milkman-walltet" element={<MilkmanWallet />} />
+      <Route path="/milkman-customer-details/:id" element={<MilkManCustomerDetails />} />
 
 
 

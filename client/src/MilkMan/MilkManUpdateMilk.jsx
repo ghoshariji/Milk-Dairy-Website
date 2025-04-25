@@ -254,7 +254,7 @@ const MilkManUpdateMilk = () => {
       {modalVisible && (
         <AnimatePresence>
           <motion.div
-            className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 backdrop-blur-sm bg-gray-500 bg-opacity-40"
+            className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 backdrop-blur-sm bg-opacity-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
