@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import API from "../api";
 import { motion } from "framer-motion"; // Import Framer Motion
+import Authentication from "../utils/Authentication";
 
 const StatBox = ({ title, value }) => {
   return (
@@ -78,6 +79,7 @@ const SuperAdminDash = () => {
       <div className="flex">
         <SuperAdminSidebar />
         {/* Sidebar */}
+      <Authentication />
 
         {/* Main Content */}
         <div className="w-full lg:ml-64 mt-20">

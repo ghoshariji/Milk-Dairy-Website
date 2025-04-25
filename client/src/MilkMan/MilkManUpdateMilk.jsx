@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Trash2 } from "lucide-react"; // or "react-icons/fi" -> FiTrash2
 import Loader from "../components/Loader/Loader";
 import { motion, AnimatePresence } from "framer-motion";
+import Authentication from "../utils/Authentication";
 
 const MilkManUpdateMilk = () => {
   const [searchText, setSearchText] = useState("");
@@ -119,6 +120,8 @@ const MilkManUpdateMilk = () => {
     <>
       <AdminNav />
       <ToastContainer />
+            <Authentication />
+      
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />

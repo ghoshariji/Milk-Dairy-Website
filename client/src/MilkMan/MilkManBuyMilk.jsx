@@ -4,6 +4,7 @@ import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import { motion } from "framer-motion"; // For animations
 import { FiShoppingCart, FiTag, FiCheckCircle } from "react-icons/fi";
+import Authentication from "../utils/Authentication";
 const MilkManBuyMilk = () => {
   const [newUser, setNewUser] = useState({
     enterCode: "",
@@ -57,6 +58,8 @@ const MilkManBuyMilk = () => {
     <div className="min-h-screen bg-gray-50">
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       <div className="flex justify-center items-center py-10 px-4 mt-17 ml-27">
         <motion.div
           className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg"

@@ -5,6 +5,7 @@ import API from "../api";
 import { motion } from "framer-motion";
 import Loader from "../components/Loader/Loader";
 import { toast, ToastContainer } from "react-toastify";
+import Authentication from "../utils/Authentication";
 
 const MilkManAddCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -98,6 +99,8 @@ const MilkManAddCategory = () => {
       {/* Sidebar */}
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />

@@ -4,6 +4,7 @@ import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
 import { motion } from "framer-motion"; // Import motion from framer-motion
+import Authentication from "../utils/Authentication";
 
 const MilkManProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -125,6 +126,8 @@ const MilkManProducts = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

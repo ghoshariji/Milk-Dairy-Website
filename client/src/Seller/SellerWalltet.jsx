@@ -1,6 +1,7 @@
 import React from 'react';
 import SellerSideBar from '../components/SellerSidebar/SellerSidebar';
 import { FaArrowUp, FaArrowDown, FaFilter } from 'react-icons/fa';
+import Authentication from '../utils/Authentication';
 
 const transactions = [
   {
@@ -25,6 +26,7 @@ const SellerWallet = () => {
   return (
     <div className="flex">
       <SellerSideBar />
+      <Authentication />
 
       <div className="lg:ml-64 w-full mt-20 p-4 bg-gray-100 min-h-screen">
         <div className="max-w-md mx-auto space-y-6">

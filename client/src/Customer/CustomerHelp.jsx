@@ -5,6 +5,7 @@ import API from '../api';
 import Loader from '../components/Loader/Loader';
 import { toast, ToastContainer } from 'react-toastify';
 import CustomerSidebar from '../components/CustomerSidebar/CustomerSidebar';
+import Authentication from '../utils/Authentication';
 
 const CustomerHelp = () => {
   const [formData, setFormData] = useState({
@@ -73,6 +74,8 @@ const CustomerHelp = () => {
     <div className="flex min-h-screen bg-gray-100">
       <CustomerSidebar />
       <ToastContainer />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

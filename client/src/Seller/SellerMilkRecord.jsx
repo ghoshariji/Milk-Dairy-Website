@@ -3,6 +3,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import API from "../api";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const SellerMilkRecord = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -39,6 +40,8 @@ const SellerMilkRecord = () => {
   return (
     <div className="flex">
       <SellerSideBar />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />

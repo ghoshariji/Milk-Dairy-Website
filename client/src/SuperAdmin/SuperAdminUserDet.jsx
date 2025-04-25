@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Loader from "../components/Loader/Loader";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
+import Authentication from "../utils/Authentication";
 
 const SuperAdminUserDet = () => {
   const { userId } = useParams();
@@ -43,6 +44,8 @@ const SuperAdminUserDet = () => {
   return (
     <>
       <SuperAdminSidebar />
+            <Authentication />
+      
       <div className="lg:ml-64 mt-20 p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

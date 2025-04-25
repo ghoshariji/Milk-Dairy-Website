@@ -5,6 +5,7 @@ import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { motion } from "framer-motion";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const infoItems = [
   {
@@ -60,6 +61,8 @@ const SellerMilkman = () => {
           <Loader />
         </div>
       )}
+            <Authentication />
+
       <div className="w-full lg:w-64">
         <CustomerSidebar />
       </div>

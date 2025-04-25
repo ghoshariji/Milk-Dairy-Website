@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import Authentication from "../utils/Authentication";
 const GetInTouch = () => {
   const [messages, setMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,6 +92,8 @@ const GetInTouch = () => {
   return (
     <div>
       <SuperAdminSidebar />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />

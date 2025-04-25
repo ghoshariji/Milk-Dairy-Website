@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api"; // Adjust the path if needed
+import Authentication from "../utils/Authentication";
 
 const CustomerSuccessPage = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const CustomerSuccessPage = () => {
 
   return (
     <div className="flex items-center justify-center h-screen ">
+            <Authentication />
+
       <div className="bg-white p-8 rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.15)] text-center transition-all duration-300">
         <h2 className="text-2xl font-bold text-[#40A1CB] mb-4">
           Thank you, {name}!

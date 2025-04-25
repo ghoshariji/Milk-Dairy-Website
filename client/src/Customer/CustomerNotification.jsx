@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import API from "../api";
 import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { FaCheckCircle, FaTimesCircle, FaClock } from "react-icons/fa"; // Example icons
+import Authentication from "../utils/Authentication";
 
 const CustomerNotification = () => {
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ const CustomerNotification = () => {
     <div className="flex">
       {/* Header */}
       <CustomerSidebar />
+      <Authentication />
+
       <div className="p-4 w-full lg:ml-64 mt-20 bg-white min-h-screen">
         {/* Notification List */}
         <div className="mt-6 space-y-4">

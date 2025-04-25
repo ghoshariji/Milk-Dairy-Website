@@ -29,6 +29,7 @@ import {
   CurrencyDollarIcon,
   CalendarIcon,
 } from "@heroicons/react/24/solid";
+import Authentication from "../utils/Authentication";
 
 // Register chart components
 ChartJS.register(
@@ -260,10 +261,13 @@ const MilkManDashboard = () => {
   };
   const [showNote, setShowNote] = useState(true);
 
+
   return (
     <div className="flex">
       {/* Sidebar */}
       <AdminNav />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

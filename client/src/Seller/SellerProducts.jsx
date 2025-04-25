@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import API from "../api";
+import Authentication from "../utils/Authentication";
 
 const SellerProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -35,6 +36,7 @@ const SellerProducts = () => {
   return (
     <div className="flex">
       <SellerSideBar />
+      <Authentication />
 
       <div className="lg:ml-64 w-full mt-20 p-4 bg-gray-100 min-h-screen">
         <h2 className="text-xl font-semibold mb-4">Your Products</h2>

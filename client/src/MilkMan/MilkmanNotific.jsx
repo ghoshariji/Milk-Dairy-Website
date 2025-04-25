@@ -4,6 +4,7 @@ import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
 import { motion, AnimatePresence } from "framer-motion";
+import Authentication from "../utils/Authentication";
 
 const MilkmanNotific = () => {
   const [mergedData, setMergedData] = useState([]);
@@ -100,6 +101,7 @@ const MilkmanNotific = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      <Authentication />
 
       <div className="lg:ml-64 mt-20">
         <div className="min-h-screen flex flex-col items-center bg-gray-50 p-8">

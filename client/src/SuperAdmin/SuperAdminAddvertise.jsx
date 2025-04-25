@@ -3,6 +3,7 @@ import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import Loader from "../components/Loader/Loader";
 import { Dialog } from "@headlessui/react";
 import { toast, ToastContainer } from "react-toastify";
+import Authentication from "../utils/Authentication";
 
 const SuperAdminAddvertise = () => {
   const [ads, setAds] = useState([]);
@@ -105,6 +106,8 @@ const SuperAdminAddvertise = () => {
     <div>
       <SuperAdminSidebar />
       <ToastContainer />
+            <Authentication />
+      
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

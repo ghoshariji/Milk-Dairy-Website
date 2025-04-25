@@ -18,6 +18,7 @@ import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import Loader from "../components/Loader/Loader";
 import API from "../api";
 import MilkRecordModal from "../components/SellerCusMilkRecordModal";
+import Authentication from "../utils/Authentication";
 
 const SellerDash = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -173,6 +174,8 @@ const SellerDash = () => {
         </div>
       )}
       <SellerSideBar />
+      <Authentication />
+
       <div className="p-4 w-full lg:ml-64 mt-20 bg-white min-h-screen">
         {/* Weekly Trend Line Chart */}
 

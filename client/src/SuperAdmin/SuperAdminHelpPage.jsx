@@ -3,6 +3,7 @@ import API from "../api";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import Loader from "../components/Loader/Loader";
 import { motion } from "framer-motion"; // Import Framer Motion
+import Authentication from "../utils/Authentication";
 
 const SuperAdminHelpPage = () => {
   const [helpData, setHelpData] = useState([]);
@@ -73,6 +74,8 @@ const SuperAdminHelpPage = () => {
   return (
     <div className="flex">
       <SuperAdminSidebar />
+      <Authentication />
+
       {/* Sidebar */}
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">

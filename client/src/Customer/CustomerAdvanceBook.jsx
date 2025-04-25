@@ -3,6 +3,7 @@ import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const CustomerAdvanceBook = () => {
   const [name, setName] = useState("");
@@ -50,6 +51,7 @@ const CustomerAdvanceBook = () => {
     <div className="flex min-h-screen bg-gray-100">
       <CustomerSidebar />
       <ToastContainer />
+      <Authentication />
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

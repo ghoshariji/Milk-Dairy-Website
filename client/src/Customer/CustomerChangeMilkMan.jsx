@@ -5,6 +5,7 @@ import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import SellerSideBar from "../components/SellerSidebar/SellerSidebar";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const CustomerChangeMilkMan = () => {
   const [milkmanList, setMilkmanList] = useState([]);
@@ -107,6 +108,8 @@ const CustomerChangeMilkMan = () => {
     <div className="flex min-h-screen bg-gray-100">
       <ToastContainer />
       <CustomerSidebar />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />

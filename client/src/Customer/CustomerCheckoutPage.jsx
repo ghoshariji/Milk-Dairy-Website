@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const CustomerCheckoutPage = () => {
   const navigate = useNavigate();
@@ -86,6 +87,8 @@ const CustomerCheckoutPage = () => {
   return (
     <div className="p-4 max-w-xl mx-auto">
       <ToastContainer />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

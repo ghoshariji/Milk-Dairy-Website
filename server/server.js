@@ -35,6 +35,7 @@
   const getInRoute = require("./routes/getInRoute");
   const adverRoute = require("./routes/adverRoute");
   const analyticsRoute = require("./routes/analyticsRoute");
+  const authRoute = require("./routes/authRoute");
 
   // Static files
   app.use(express.static(path.join(__dirname, "./sampleFileUpload")));
@@ -52,6 +53,7 @@
   app.use("/api/analytics", analyticsRoute);
   app.use("/api/get-in", getInRoute);
   app.use("/api/add", adverRoute);
+  app.use("/api/auth/security", authRoute);
 
 
 

@@ -4,6 +4,7 @@ import API from "../api";
 import { Toaster, toast } from "react-hot-toast";
 import upArrow from "../image/upArrow.jpg";
 import downArrow from "../image/downArrow.jpg";
+import Authentication from "../utils/Authentication";
 
 const MilkmanSetRate = () => {
   const [buffaloFactor, setBuffaloFactor] = useState(0);
@@ -50,6 +51,8 @@ const MilkmanSetRate = () => {
   return (
     <>
       <AdminNav />
+      <Authentication />
+
       <Toaster position="top-right" />
       <div className="min-h-screen  to-white p-6 max-w-4xl mx-auto mr-40 mt-20">
 

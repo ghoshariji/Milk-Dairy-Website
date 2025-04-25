@@ -4,6 +4,7 @@ import CustomerSidebar from "../components/CustomerSidebar/CustomerSidebar";
 import { toast, ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const CustomerProfile = () => {
   const [profile, setProfile] = useState({
@@ -106,6 +107,7 @@ const CustomerProfile = () => {
     <div className="flex min-h-screen bg-gray-50">
       <CustomerSidebar />
       <ToastContainer />
+      <Authentication />
 
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">

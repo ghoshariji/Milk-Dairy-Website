@@ -3,6 +3,7 @@ import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
+import Authentication from "../utils/Authentication";
 
 const MilkmanSellMilk = () => {
   const [formData, setFormData] = useState({
@@ -116,6 +117,8 @@ const MilkmanSellMilk = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
           <Loader />

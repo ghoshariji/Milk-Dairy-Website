@@ -11,6 +11,7 @@ import {
   FaEye,
 } from "react-icons/fa";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const CustomerProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -68,6 +69,8 @@ const CustomerProducts = () => {
     <div className="flex">
       <Toaster position="top-right" />
       <CustomerSidebar />
+      <Authentication />
+
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />

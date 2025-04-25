@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import Loader from "../components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import Authentication from "../utils/Authentication";
 
 const SuperAdminUserList = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,6 +50,8 @@ const SuperAdminUserList = () => {
   return (
     <div className="flex">
       <SuperAdminSidebar />
+      <Authentication />
+
       {/* Sidebar */}
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">

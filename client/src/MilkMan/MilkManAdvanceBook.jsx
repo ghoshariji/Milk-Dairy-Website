@@ -4,6 +4,7 @@ import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
 import { motion, AnimatePresence } from "framer-motion";
+import Authentication from "../utils/Authentication";
 
 const MilkManAdvanceBook = () => {
   const [loading, setLoading] = useState(false);
@@ -102,6 +103,8 @@ const MilkManAdvanceBook = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       <div className="lg:ml-64 mt-20">
         <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4 sm:px-8 py-8">
           {loading && (

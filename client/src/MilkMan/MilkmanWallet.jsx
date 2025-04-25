@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AdminNav from "../components/Sidebar/Sidebar";
 import { Toaster, toast } from "react-hot-toast";
+import Authentication from "../utils/Authentication";
 
 const MilkmanWallet = () => {
   const [transactions, setTransactions] = useState([
@@ -62,6 +63,8 @@ const MilkmanWallet = () => {
   return (
     <>
       <AdminNav />
+      <Authentication />
+
       <Toaster position="top-right" />
       <div className="min-h-screen bg-white to-white p-6 max-w-4xl mx-auto mt-22 mr-40">
         <div className="bg-[#40A1CB] text-white p-6 rounded-xl shadow-md text-center">

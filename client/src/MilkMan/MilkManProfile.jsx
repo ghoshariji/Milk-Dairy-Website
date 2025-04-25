@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Loader from "../components/Loader/Loader";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Phone } from "lucide-react";
+import Authentication from "../utils/Authentication";
 
 const MilkManProfile = () => {
   const [name, setName] = useState("");
@@ -88,6 +89,8 @@ const MilkManProfile = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       <div className="lg:ml-64 mt-30 p-6  min-h-screen ">
         {loading && (
           <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">

@@ -3,6 +3,7 @@ import AdminNav from "../components/Sidebar/Sidebar";
 import API from "../api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Authentication from "../utils/Authentication";
 
 const MilkManCustomer = () => {
   const [isBuyer, setIsBuyer] = useState(true);
@@ -51,6 +52,8 @@ const MilkManCustomer = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <AdminNav />
+      <Authentication />
+
       <main className="w-full p-6 lg:ml-64 mt-20">
         <div className="max-w-4xl mx-auto">
           {/* Toggle Switch */}

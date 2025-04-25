@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import API from "../api";
 import MilkRecordModal from "../components/SellerCusMilkRecordModal";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const CustomerDash = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -143,6 +144,8 @@ const CustomerDash = () => {
         </div>
       )}
       <CustomerSidebar />
+      <Authentication />
+
       <div className="p-4 w-full lg:ml-64 mt-20 bg-white min-h-screen">
         {/* Weekly Trend Line Chart */}
 

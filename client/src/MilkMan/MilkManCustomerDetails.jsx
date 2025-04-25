@@ -6,6 +6,7 @@ import AdminNav from "../components/Sidebar/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../components/Loader/Loader";
+import Authentication from "../utils/Authentication";
 
 const months = [
   "January",
@@ -186,6 +187,8 @@ const MilkManCustomerDetails = () => {
     <>
       <AdminNav />
       <ToastContainer />
+      <Authentication />
+
       {(loading || updating) && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-white/50 backdrop-blur-sm">
           <Loader />

@@ -4,6 +4,7 @@ import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import Loader from "../components/Loader/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
+import Authentication from "../utils/Authentication";
 
 const SuperAdminSubs = () => {
   const [discount, setDiscount] = useState("");
@@ -106,6 +107,8 @@ const SuperAdminSubs = () => {
     <div className="flex">
       <SuperAdminSidebar />
       <ToastContainer />
+      <Authentication />
+
       {/* Sidebar */}
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">

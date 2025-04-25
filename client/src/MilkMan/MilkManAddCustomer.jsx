@@ -13,6 +13,7 @@ import {
   FaKey,
   FaLock,
 } from "react-icons/fa";
+import Authentication from "../utils/Authentication";
 
 const MilkManAddUser = () => {
   const [userType, setUserType] = useState("Customer");
@@ -130,6 +131,8 @@ const MilkManAddUser = () => {
             <Loader />
           </div>
         )}
+
+<Authentication />
 
         <div className="flex flex-grow items-center justify-center px-4 py-10 sm:px-6 lg:px-8 lg:ml-8">
           <motion.div
