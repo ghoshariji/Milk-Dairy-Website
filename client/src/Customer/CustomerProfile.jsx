@@ -57,7 +57,7 @@ const CustomerProfile = () => {
         setLoading(false);
 
         console.error("Error fetching profile:", error);
-        alert("Failed to fetch profile.");
+        toast.error("Failed to fetch profile.");
       }
     };
 

@@ -83,11 +83,14 @@ const SellerSideBar = () => {
                 </svg>
               </button>
               <Link to="/seller-dashboard" className="ml-2">
-              <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
+                <img src={currentLogo} alt="Logo" className="w-[100%] h-14" />
               </Link>
             </div>
             <div className="hidden lg:block">
-              <div className="flex items-center space-x-4">
+              <div
+                className="flex items-center space-x-4 hover:cursor-pointer"
+                onClick={() => navigate("/seller-profile")}
+              >
                 {/* Profile Icon Circle */}
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}

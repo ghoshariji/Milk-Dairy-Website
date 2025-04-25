@@ -119,7 +119,7 @@ const CustomerSidebar = () => {
               </Link>
             </div>
             <div className="hidden lg:block">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 hover:cursor-pointer" onClick={() => navigate("/customer-profile")}>
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}
                 </div>

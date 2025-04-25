@@ -70,7 +70,7 @@ const SellerDash = () => {
     const endDate = new Date().toISOString().split("T")[0];
 
     try {
-      const response = await API.get("/api/auth/user/records-seller", {
+      const response = await API.get("/api/auth/user/records", {
         params: {
           from: startDate,
           to: endDate,
@@ -292,7 +292,7 @@ const SellerDash = () => {
                 </h2>
                 <div className="flex items-end gap-1 mt-2">
                   <span className="text-4xl font-bold text-black">
-                    {todayMilk.totalLiters.toFixed(2)}
+                    {todayMilk.totalLiters?.toFixed(2)}
                   </span>
                   <span className="text-lg text-gray-600">LTR</span>
                 </div>

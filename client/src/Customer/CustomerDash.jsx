@@ -30,28 +30,29 @@ const CustomerDash = () => {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const fetchWeekData = async () => {
-    const selecDate = new Date(selectedDate).toISOString().split("T")[0];
+    // Format selected date as YYYY-MM-DD to send to backend
+    const selecDate = new Date(selectedDate).toISOString().split("T")[0]; // Extract only YYYY-MM-DD
+  
     try {
       const response = await API.get(
-        `/api/auth/user/getMilkRecord-seller?date=${selecDate}`
+        `/api/auth/user/getMilkRecord-seller?date=${selecDate}` // Pass date as query parameter
       );
-      console.log(response.data.data);
-      setMilkData(response.data.data[0]);
-      setIsModalOpen(true);
+      console.log(response.data);  // Debugging log
+      setMilkData(response.data.data[0]);  // Assuming data is an array, so take the first record
+      setIsModalOpen(true);  // Open modal to display milk data
     } catch (error) {
       console.error("Error fetching milk data:", error);
     }
   };
-
+  
   const fetchTodayMilk = async () => {
     const startDate = new Date().toISOString().split("T")[0];
 
     const endDate = new Date().toISOString().split("T")[0];
 
     try {
-      const response = await API.get("/api/auth/user/records-seller", {
+      const response = await API.get("/api/auth/user/records", {
         params: {
           from: startDate,
           to: endDate,
