@@ -24,6 +24,7 @@ const MilkManAdvanceBook = () => {
       setLoading(true);
 
       const response = await API.get(`/api/auth/user/getadvanceMilkman`);
+      console.log(response.data);
       setLoading(false);
 
       const reversedOrders = response.data.orders.reverse(); // Reverse the array
@@ -144,7 +145,18 @@ const MilkManAdvanceBook = () => {
                         transition={{ duration: 0.3 }}
                         className="flex justify-between items-center bg-white shadow-md rounded-lg p-4 hover:bg-gray-100 transition-all duration-300"
                       >
-                        <span className="text-lg text-gray-800">
+                        <span className="flex items-center text-lg text-gray-800">
+                          {notif.isSeen === false && (
+                            <motion.div
+                              className="w-4 h-4 rounded-full bg-red-500 mr-2"
+                              animate={{ rotate: 360 }}
+                              transition={{
+                                loop: Infinity,
+                                duration: 1,
+                                ease: "linear",
+                              }}
+                            />
+                          )}
                           {notif.name} - {notif.description}
                           <span className="text-sm text-gray-500 ml-2">
                             {new Date(notif.date).toLocaleDateString()}

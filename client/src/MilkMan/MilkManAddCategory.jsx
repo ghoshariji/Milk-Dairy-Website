@@ -111,12 +111,12 @@ const MilkManAddCategory = () => {
         className="p-6 w-full lg:ml-64 mt-20"
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold hover:text-[#2b91ba] transition duration-300">
+          <h2 className="text-3xl font-bold hover:text-[#40A1CB] text-[#40A1CB] transition duration-300">
             Manage Categories
           </h2>
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-4 py-2 rounded transition"
+            className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-4 py-2 rounded transition  hover:cursor-pointer"
             onClick={() => setModalOpen(true)}
           >
             Add Category
@@ -156,14 +156,14 @@ const MilkManAddCategory = () => {
                         setEditModalOpen(true);
                       }}
                     >
-                      <FiEdit size={20} color="#40A1CB" />
+                      <FiEdit size={20} color="#40A1CB" className="hover:cursor-pointer" />
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       className="text-red-500 hover:text-red-700 transition"
                       onClick={() => deleteCategory(category._id)}
                     >
-                      <FiTrash2 size={20} />
+                      <FiTrash2 size={20} className="hover:cursor-pointer" />
                     </motion.button>
                   </td>
                 </motion.tr>
@@ -196,14 +196,14 @@ const MilkManAddCategory = () => {
               <div className="flex justify-end">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
-                  className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-4 py-2 rounded mr-2 transition"
+                  className="bg-[#40A1CB] hover:bg-[#3185a7]  hover:cursor-pointer text-white px-4 py-2 rounded mr-2 transition"
                   onClick={addCategory}
                 >
                   Save
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition"
+                  className="bg-gray-500 hover:bg-gray-600  hover:cursor-pointer text-white px-4 py-2 rounded transition"
                   onClick={() => setModalOpen(false)}
                 >
                   Cancel
@@ -243,14 +243,14 @@ const MilkManAddCategory = () => {
               <div className="flex justify-between">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
-                  className="bg-[#40A1CB] hover:bg-[#3185a7] text-white px-6 py-2 rounded-lg transition"
+                  className="bg-[#40A1CB] hover:bg-[#3185a7]  hover:cursor-pointer text-white px-6 py-2 rounded-lg transition"
                   onClick={editCategory}
                 >
                   Update
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition"
+                  className="bg-gray-500 hover:bg-gray-600  hover:cursor-pointer text-white px-6 py-2 rounded-lg transition"
                   onClick={() => {
                     setEditModalOpen(false);
                     setSelectedCategory(null);

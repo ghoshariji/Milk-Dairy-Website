@@ -100,7 +100,7 @@ const MilkManProfile = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="bg-gray-50 p-8 rounded-xl shadow-xl w-full max-w-3xl mx-auto"
         >
-          <h3 className="text-2xl font-semibold text-[#40A1CB] text-center mb-6">
+          <h3 className="text-4xl font-bold text-[#40A1CB] text-center mb-6">
             Milkman Profile
           </h3>
 

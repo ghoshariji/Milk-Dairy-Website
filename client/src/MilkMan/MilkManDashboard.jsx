@@ -16,6 +16,8 @@ import { ArrowPathIcon } from "@heroicons/react/24/outline"; // refresh icon
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Loader from "../components/Loader/Loader";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import {
   UserIcon,
   CheckCircleIcon,
@@ -256,6 +258,8 @@ const MilkManDashboard = () => {
     await fetchMilkData();
     await fetchdataMilkSBuyMilk();
   };
+  const [showNote, setShowNote] = useState(true);
+
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -266,50 +270,85 @@ const MilkManDashboard = () => {
         </div>
       )}
       {/* Main Content */}
-      <div className="p-6 w-full lg:ml-64 mt-20">
+      <div className="p-6 w-full lg:ml-64 mt-20 ">
         <div className="container mx-auto ">
+          {showNote && (
+            <div className="col-span-1 mb-5 relative bg-white  rounded-lg p-4 shadow-sm">
+              <button
+                className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition"
+                onClick={() => setShowNote(false)}
+                title="Close"
+              >
+                <XMarkIcon
+                  className="h-5 w-5 hover:cursor-pointer"
+                  color="red"
+                />
+              </button>
+              <p id="note" name="note" className="text-gray-700 text-sm">
+                <span className="font-semibold text-red-500">"Buy Milk"</span>{" "}
+                refers to the quantity of milk you have purchased today from
+                your suppliers.{" "}
+                <span className="font-semibold text-red-500">"Sell Milk"</span>{" "}
+                represents the amount of milk you have sold to your customers.
+                This note helps track the daily milk intake and distribution for
+                better inventory and sales management.
+                <span className="font-semibold text-red-500">
+                  {" "}
+                  - Powered By Hallo Dairy
+                </span>
+              </p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Notification Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="bg-gray-100 p-6 rounded-xl shadow-lg"
+              whileHover={{ scale: 1.05 }} // Adds a slight scale effect on hover
+              className="bg-gray-100 p-6 rounded-xl shadow-lg hover:bg-gray-200 transition-all"
             >
               <h2 className="text-black text-2xl font-bold">Today Buy Milk</h2>
               <p className="mt-3 text-black text-xl">{totals.totalKg} kg</p>
             </motion.div>
+
             {/* Orders Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="bg-[#40A1CB] p-6 rounded-xl shadow-lg"
+              whileHover={{ scale: 1.05 }} // Slight scale on hover
+              className="bg-[#40A1CB] p-6 rounded-xl shadow-lg hover:bg-[#348AA1] transition-all"
             >
               <h2 className="text-white text-2xl font-bold">Today Sell Milk</h2>
               <p className="mt-3 text-white text-xl">{milkData} kg</p>
             </motion.div>
+
             {/* Feedback Section */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="bg-gray-100 p-6 rounded-xl shadow-lg"
+              whileHover={{ scale: 1.05 }} // Slightly scales up the element on hover
+              className="bg-gray-100 p-6 rounded-xl shadow-lg hover:bg-gray-200 transition-all"
             >
               <h2 className="text-black text-2xl font-bold">
-                Product New Order
+                New Advance Booking
               </h2>
               <p className="mt-3 text-black text-xl font-semibold">
                 {seenCOunt}
               </p>
             </motion.div>
+
             {/* Revenue Section */}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="bg-[#40A1CB] p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-white/10"
+              whileHover={{ scale: 1.05 }} // Slight scaling effect on hover
+              className="bg-[#40A1CB] p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-white/10 hover:shadow-[0_20px_40px_rgba(0,0,0,0.25)] transition-all"
             >
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-white text-2xl font-bold tracking-wide drop-shadow-sm">
@@ -321,7 +360,7 @@ const MilkManDashboard = () => {
                   className="text-white hover:text-white/90 transition duration-200"
                   title="Refresh Notifications"
                 >
-                  <ArrowPathIcon className="h-6 w-6" />
+                  <ArrowPathIcon className="h-6 w-6 hover:cursor-pointer" />
                 </motion.button>
               </div>
 
@@ -336,7 +375,7 @@ const MilkManDashboard = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.4, delay: index * 0.1 }}
-                        className="mt-4 text-white/90 flex space-x-3 items-start"
+                        className="mt-4 text-white/90 flex space-x-3 items-start hover:bg-white/10 transition-all rounded-lg"
                       >
                         <span className="font-bold">{index + 1}.</span>
                         <div className="flex flex-col space-y-2 text-sm">
@@ -390,7 +429,7 @@ const MilkManDashboard = () => {
                 >
                   <button
                     onClick={handleAddMoreClick}
-                    className="bg-white text-[#40A1CB] hover:bg-gray-100 font-semibold px-5 py-2 rounded-xl shadow-md transition duration-200"
+                    className="bg-white text-[#40A1CB] hover:cursor-pointer font-semibold px-5 py-2 rounded-xl shadow-md transition duration-200"
                   >
                     Show More
                   </button>
@@ -402,7 +441,8 @@ const MilkManDashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="bg-gray-100 p-6 rounded-2xl shadow-lg border border-gray-200"
+              whileHover={{ scale: 1.05 }} // Scaling effect on hover for the container
+              className="bg-gray-100 p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all"
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-black text-2xl font-bold">
@@ -411,10 +451,10 @@ const MilkManDashboard = () => {
                 <motion.button
                   whileTap={{ rotate: 180 }}
                   onClick={handleRefresh}
-                  className="text-black hover:text-[#2b91ba] transition"
+                  className="text-black hover:text-[#2b91ba] transition duration-200 "
                   title="Refresh Bookings"
                 >
-                  <ArrowPathIcon className="h-5 w-5" />
+                  <ArrowPathIcon className="h-5 w-5 hover:cursor-pointer" />
                 </motion.button>
               </div>
 
@@ -429,7 +469,7 @@ const MilkManDashboard = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className="mt-4 text-black flex space-x-3 items-start"
+                        className="mt-4 text-black flex space-x-3 items-start hover:bg-gray-200 transition-all rounded-lg"
                       >
                         <span className="font-bold">{index + 1}.</span>
                         <div className="flex flex-col space-y-2 text-sm">
@@ -470,7 +510,7 @@ const MilkManDashboard = () => {
               >
                 <button
                   onClick={handleAddMoreClick}
-                  className="px-5 py-2 bg-[#40A1CB] text-white rounded-xl shadow-md hover:bg-[#2b91ba] transition"
+                  className="px-5 py-2 bg-[#40A1CB] mt-8 hover:cursor-pointer text-white rounded-xl shadow-md hover:bg-[#2b91ba] transition duration-200"
                 >
                   Show More
                 </button>

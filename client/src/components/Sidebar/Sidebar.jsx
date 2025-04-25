@@ -37,12 +37,10 @@ const AdminNav = () => {
 
   const [currentLogo, setCurrentLogo] = useState(logo);
 
-  const [seenCOunt, setSeenCount] = useState('');
+  const [seenCOunt, setSeenCount] = useState("");
   const fetchData = async () => {
     try {
-      const data = await API.get(
-        '/api/auth/user/getNotificationCount',
-      );
+      const data = await API.get("/api/auth/user/getNotificationCount");
       setSeenCount(data.data);
     } catch (error) {}
   };
@@ -73,7 +71,7 @@ const AdminNav = () => {
   };
   useEffect(() => {
     fetchAdvanceBook();
-    fetchData()
+    fetchData();
   }, []);
   useEffect(() => {
     const updateLogo = () => {
@@ -119,7 +117,7 @@ const AdminNav = () => {
               </Link>
             </div>
             <div className="hidden lg:block">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 hover:cursor-pointer" onClick={() => navigate("/milkman-profile")}> 
                 {/* Profile Icon Circle */}
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}
@@ -288,7 +286,13 @@ const AdminNav = () => {
                     className="w-6 h-6 rounded-full"
                   />
                 </div>
-                <span className="ms-3">Products Order's ({countOrder})</span>
+                <span
+                  className={`ms-3 ${
+                    countOrder > 0 ? "text-red-500  animate-blink" : ""
+                  }`}
+                >
+                  Products Order's {countOrder > 0 && `(${countOrder})`}
+                </span>
               </NavLink>
             </li>
             <li>
@@ -309,7 +313,13 @@ const AdminNav = () => {
                     className="w-6 h-6 rounded-full"
                   />
                 </div>
-                <span className="ms-3">Advance Booking ({seenCOunt})</span>
+                <span
+                  className={`ms-3 ${
+                    seenCOunt > 0 ? "text-red-500  animate-blink" : ""
+                  }`}
+                >
+                  Advance Booking {seenCOunt > 0 ? `(${seenCOunt})` : ""}
+                </span>
               </NavLink>
             </li>
             <li>

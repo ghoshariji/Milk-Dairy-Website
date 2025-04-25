@@ -42,6 +42,7 @@ const MilkmanNotific = () => {
   const fetchAcceptNotification = async () => {
     try {
       const response = await API.get("/api/order/fetch-orders-accept-reject");
+      console.log(response.data)
       setAcceptOrder(response.data.orders);
     } catch (error) {
       console.error(

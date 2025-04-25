@@ -75,7 +75,7 @@ const MilkManHelpAndSupp = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Submit Feedback
+            Help & Support
           </motion.h2>
 
           {message && (
@@ -159,7 +159,7 @@ const MilkManHelpAndSupp = () => {
             {/* Submit Button */}
             <motion.button
               type="submit"
-              className="w-full bg-[#40A1CB] text-white py-3 rounded-lg hover:bg-[#3495bc] font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95"
+              className="w-full bg-[#40A1CB] text-white py-3 rounded-lg hover:bg-[#3495bc] font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95 hover:cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.3 }}

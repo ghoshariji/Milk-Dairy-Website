@@ -119,7 +119,7 @@ const MilkManBuyMilk = () => {
 
             <motion.button
               onClick={handleAddUser}
-              className="w-full bg-[#40A1CB] text-white font-medium py-3 rounded-xl hover:bg-[#3185a7] transition-all duration-300"
+              className="w-full bg-[#40A1CB] text-white hover:cursor-pointer font-medium py-3 rounded-xl hover:bg-[#3185a7] transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 200 }}
             >
