@@ -6,6 +6,7 @@ import login12 from "../../pages/images/login.png";
 import smalllogo from "../../pages/images/login.png";
 import Loader from "../../components/Loader/Loader";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -36,15 +37,15 @@ const Login = () => {
       const response = await axios.post(apiUrl, post, config);
       setLoading(false);
 
-      console.log(response.data)
+      console.log(response.data);
 
       if (response.data.message === "Login successful!") {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("name",response.data.name)
+        localStorage.setItem("name", response.data.name);
         toast.success("Login successful!");
 
-        console.log(post.enterCode)
-        console.log(role)
+        console.log(post.enterCode);
+        console.log(role);
         setTimeout(() => {
           if (role === "milkman") {
             if (post.enterCode == 98) {
@@ -58,7 +59,6 @@ const Login = () => {
             navigate("/seller-dashboard");
           }
         }, 2000);
-        
       } else {
         toast.error(response.data.message || "Invalid credentials!");
       }
@@ -99,33 +99,54 @@ const Login = () => {
 
       <div className="flex flex-col md:flex-row min-h-screen justify-center items-center bg-white px-4 py-6">
         {/* Left Image for all screen sizes */}
-        <div className="flex-1 flex justify-center items-center hidden md:block ml-24">
-          {" "}
-          {/* Added ml-10 to add margin on the left */}
+        {/* Desktop Image with animation */}
+        {/* Desktop Image with slide-in from left */}
+        <motion.div
+          className="flex-1 flex justify-center items-center hidden md:block ml-24"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <img
             src={login12}
             alt="Login Visual"
             className="w-3/4 lg:w-2/3 xl:w-1/2 object-contain"
           />
-        </div>
+        </motion.div>
 
-        {/* Mobile Logo */}
-        <div className="md:hidden w-full flex justify-center items-center mt-4">
+        {/* Mobile Logo with slide-in from top */}
+        <motion.div
+          className="md:hidden w-full flex justify-center items-center mt-4"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <img
             src={smalllogo}
             alt="Small Logo"
             className="w-1/2 max-w-xs object-contain"
           />
-        </div>
+        </motion.div>
 
         {/* Login Form */}
-        <div className="flex-1 flex flex-col items-center w-full px-4 sm:px-8 md:px-12 lg:px-20 py-8">
-          <div className="w-full max-w-md">
+        <motion.div
+          className="flex-1 flex flex-col items-center w-full px-4 sm:px-8 md:px-12 lg:px-20 py-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div
+            className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl"
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.4 }}
+          >
             <form onSubmit={login}>
-              <div className="mb-4">
+              {/* Enter Code */}
+              <div className="mb-6">
                 <label
                   htmlFor="enterCode"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-base font-semibold text-gray-700 mb-1"
                 >
                   Enter Code*
                 </label>
@@ -135,112 +156,120 @@ const Login = () => {
                   name="enterCode"
                   value={post.enterCode}
                   onChange={handleInput}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 w-full px-4 py-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-[#40A1CB] focus:border-[#40A1CB] transition"
                   placeholder="Enter your code"
                   required
                 />
               </div>
 
+              {/* Password */}
               <div className="mb-6 relative">
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-base font-semibold text-gray-700 mb-1"
                 >
                   Password*
                 </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  value={post.password}
-                  onChange={handleInput}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={togglePasswordVisibility}
-                  className="absolute right-3 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                >
-                  {showPassword ? (
-                    <FaEyeSlash className="w-5 h-5" />
-                  ) : (
-                    <FaEye className="w-5 h-5" />
-                  )}
-                </button>
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Select Role:
-                </label>
-                <div className="flex space-x-4">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="customer"
-                      checked={role === "customer"}
-                      onChange={() => setRole("customer")}
-                      className="mr-2"
-                    />
-                    Customer
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="seller"
-                      checked={role === "seller"}
-                      onChange={() => setRole("seller")}
-                      className="mr-2"
-                    />
-                    Seller
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="milkman"
-                      checked={role === "milkman"}
-                      onChange={() => setRole("milkman")}
-                      className="mr-2"
-                    />
-                    Milkman
-                  </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    value={post.password}
+                    onChange={handleInput}
+                    className="mt-1 w-full px-4 py-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-[#40A1CB] focus:border-[#40A1CB] transition"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <motion.button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-[#40A1CB] focus:outline-none sm:right-4"
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash className="w-5 h-5 sm:w-6 sm:h-6" />
+                    ) : (
+                      <FaEye className="w-5 h-5 sm:w-6 sm:h-6" />
+                    )}
+                  </motion.button>
                 </div>
               </div>
 
-              <button
+              {/* Role Selection */}
+              <div className="mb-6">
+                <label className="block text-base font-semibold text-gray-700 mb-2">
+                  Select Role:
+                </label>
+                <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-3 sm:space-y-0">
+                  {["customer", "seller", "milkman"].map((r) => (
+                    <label
+                      key={r}
+                      className="flex items-center text-base cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="role"
+                        value={r}
+                        checked={role === r}
+                        onChange={() => setRole(r)}
+                        className="mr-2 accent-[#40A1CB] w-5 h-5"
+                      />
+                      {r.charAt(0).toUpperCase() + r.slice(1)}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <motion.button
                 type="submit"
-                className="w-full py-2 px-4 bg-[#40A1CB] text-white rounded-md hover:bg-[#3693b7] transition"
+                className="w-full py-3 px-4 text-lg font-medium bg-[#40A1CB] text-white rounded-lg hover:bg-[#3693b7] transition"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Log in
-              </button>
+              </motion.button>
             </form>
 
-            <div className="mt-4 text-center space-y-2">
+            {/* Footer Links */}
+            <div className="mt-6 text-center space-y-3">
               <Link to="/register">
-                <p className="text-sm text-[#40A1CB] hover:underline">
+                <motion.p
+                  className="text-base text-[#40A1CB] hover:underline cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                >
                   Don't have an account? Register
-                </p>
+                </motion.p>
               </Link>
-              <p
-                className="text-sm text-[#40A1CB] hover:underline cursor-pointer"
+              <motion.p
+                className="text-base text-[#40A1CB] hover:underline cursor-pointer"
                 onClick={() => setShowModal(true)}
+                whileHover={{ scale: 1.02 }}
               >
                 Forgot Password?
-              </p>
+              </motion.p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Forgot Password Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
-          <div className="bg-white rounded-2xl p-6 w-96 shadow-xl border border-gray-200">
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div
+            className="bg-white rounded-2xl p-6 w-96 shadow-xl border border-gray-200"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
             <h2 className="text-xl font-bold mb-4 text-gray-800">
               Reset Password
             </h2>
@@ -265,8 +294,8 @@ const Login = () => {
                 Send Link
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </>
   );
