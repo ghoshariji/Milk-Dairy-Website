@@ -97,7 +97,6 @@ const MilkManUpdateMilk = () => {
           date: formattedDate,
         },
       });
-      console.log(response);
 
       if (response.status === 200) {
         // Remove the deleted user from both lists

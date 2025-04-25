@@ -26,7 +26,6 @@ const MilkManCustomer = () => {
 
         if (response.data.success) {
           const user = response.data.user;
-          console.log(response.data.user)
           setCustomerTotal(user.customer.length)
           setSellerTotal(user.seller.length)
           setCustomers(user.customer || []);

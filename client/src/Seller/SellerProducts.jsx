@@ -10,7 +10,6 @@ const SellerProducts = () => {
     try {
       const res = await API.get("/api/milkman/product/getCustomerProduct");
       setAllProducts(res.data.products || []);
-      console.log(res.data.products);
     } catch (error) {
       console.error("Error fetching products:", error.message);
     }

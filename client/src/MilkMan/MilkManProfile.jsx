@@ -34,7 +34,6 @@ const MilkManProfile = () => {
   const fetchData = async () => {
     try {
       const { data } = await API.get("/api/auth/user/get-milkman");
-      console.log(data);
       if (data && data.milkman) {
         setName(data.milkman.name);
         setEmail(data.milkman.email);

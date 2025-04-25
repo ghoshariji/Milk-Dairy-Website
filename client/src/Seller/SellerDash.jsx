@@ -56,7 +56,6 @@ const SellerDash = () => {
       const response = await API.get(
         `/api/auth/user/getMilkRecord-seller?date=${selecDate}`
       );
-      console.log(response.data.data);
       setMilkData(response.data.data[0]);
       setIsModalOpen(true);
     } catch (error) {
@@ -76,7 +75,6 @@ const SellerDash = () => {
           to: endDate,
         },
       });
-      console.log(response.data);
       setTodayMilk(response.data);
     } catch (error) {
       console.error("Error fetching today milk:", error);
@@ -92,7 +90,6 @@ const SellerDash = () => {
       const response = await API.get("/api/auth/user/monthly-records-seller", {
         params: { month: selectedMonth, year: selectedYear },
       });
-      console.log(response.data);
       setMonthData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -155,7 +152,6 @@ const SellerDash = () => {
     const fetchMilkMen = async () => {
       try {
         const response = await API.get("/api/auth/user/get-milkman-data-user");
-        console.log(response.data);
         setMilkMen(response.data);
       } catch (error) {
         console.error("Error fetching milkmen:", error);

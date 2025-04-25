@@ -51,9 +51,7 @@ const SellerChangeMilkMan = () => {
           `/api/auth/milkman/get-all/${latitude}/${longitude}`
         );
         setLoading(false);
-        console.log(res);
         if (res.status === 200) {
-          console.log(res.data.milkmen);
           setMilkmanList(res.data.milkmen);
           setFilteredList(res.data.milkmen);
         } else {

@@ -38,7 +38,6 @@ const CustomerDash = () => {
       const response = await API.get(
         `/api/auth/user/getMilkRecord-seller?date=${selecDate}` // Pass date as query parameter
       );
-      console.log(response.data);  // Debugging log
       setMilkData(response.data.data[0]);  // Assuming data is an array, so take the first record
       setIsModalOpen(true);  // Open modal to display milk data
     } catch (error) {
@@ -58,7 +57,6 @@ const CustomerDash = () => {
           to: endDate,
         },
       });
-      console.log(response.data);
       setTodayMilk(response.data);
     } catch (error) {
       console.error("Error fetching today milk:", error);
@@ -74,7 +72,6 @@ const CustomerDash = () => {
       const response = await API.get("/api/auth/user/monthly-records-seller", {
         params: { month: selectedMonth, year: selectedYear },
       });
-      console.log(response.data);
       setMonthData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -126,7 +123,6 @@ const CustomerDash = () => {
     const fetchMilkMen = async () => {
       try {
         const response = await API.get("/api/auth/user/get-milkman-data-user");
-        console.log(response.data);
         setMilkMen(response.data);
       } catch (error) {
         console.error("Error fetching milkmen:", error);

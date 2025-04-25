@@ -37,15 +37,11 @@ const Login = () => {
       const response = await axios.post(apiUrl, post, config);
       setLoading(false);
 
-      console.log(response.data);
 
       if (response.data.message === "Login successful!") {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("name", response.data.name);
         toast.success("Login successful!");
-
-        console.log(post.enterCode);
-        console.log(role);
         setTimeout(() => {
           if (role === "milkman") {
             if (post.enterCode == 98) {

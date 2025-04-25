@@ -37,24 +37,24 @@ const Footer = () => {
         >
           <motion.a
             href="#"
-            className="hover:scale-110 transition duration-300"
+            className="hover:scale-110 transition duration-300 hover:cursor-pointer"
             whileHover={{ scale: 1.1, rotate: 15 }}
           >
-            <FaFacebookF />
+            <FaFacebookF size={30}/>
           </motion.a>
           <motion.a
             href="https://www.instagram.com/foxteach_offical/?hl=en"
-            className="hover:scale-110 transition duration-300"
+            className="hover:scale-110 transition duration-300 hover:cursor-pointer"
             whileHover={{ scale: 1.1, rotate: 15 }}
           >
-            <FaInstagram />
+            <FaInstagram size={30}/>
           </motion.a>
           <motion.a
             href="mailto:official.foxteach@gmail.com"
-            className="hover:scale-110 transition duration-300"
+            className="hover:scale-110 transition duration-300 hover:cursor-pointer"
             whileHover={{ scale: 1.1, rotate: 15 }}
           >
-            <FaGooglePlusG />
+            <FaGooglePlusG size={30}/>
           </motion.a>
         </motion.div>
       </div>

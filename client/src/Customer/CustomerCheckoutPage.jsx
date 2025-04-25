@@ -39,7 +39,6 @@ const CustomerCheckoutPage = () => {
     try {
       setLoading(true);
       e.preventDefault();
-      console.log("Order Info:", { ...form, cartItems });
       const products = JSON.parse(localStorage.getItem("customerCart")) || [];
       const token = localStorage.getItem("token");
       const orderData = {

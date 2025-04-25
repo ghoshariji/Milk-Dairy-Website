@@ -127,7 +127,6 @@ const MilkManDashboard = () => {
         // Fetch milkman notifications
         const data = await API.get("/api/order/get-milkman-notification");
         orderData = data.data.data;
-        console.log(data.data.data);
         setNotificationData(orderData); // Set the notifications data separately
       } catch (error) {
         console.log("Error fetching milkman notifications:", error);
@@ -142,7 +141,6 @@ const MilkManDashboard = () => {
           },
         });
         advanceBookingProducts = response.data.orders;
-        console.log(advanceBookingProducts);
         setAdvanceBookingData(advanceBookingProducts); // Set the advance booking data separately
       } catch (error) {
         console.error("Error fetching advance booking data:", error);

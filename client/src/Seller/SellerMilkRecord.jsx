@@ -28,7 +28,6 @@ const SellerMilkRecord = () => {
           to: toDate,
         },
       });
-      console.log(response.data);
       setMilkData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);

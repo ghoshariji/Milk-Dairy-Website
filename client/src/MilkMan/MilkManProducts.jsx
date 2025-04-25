@@ -30,7 +30,6 @@ const MilkManProducts = () => {
       setLoading(true);
       const { data } = await API.get("/api/milkman/product");
       setAllProducts(data.products);
-      console.log(data.products);
       setLoading(false);
     } catch (error) {
       setLoading(false);

@@ -37,7 +37,6 @@ const SuperAdminProfile = () => {
     try {
       setLoading(true);
       const { data } = await API.get("/api/auth/user/get-milkman");
-      console.log(data);
       setLoading(false);
       if (data && data.milkman) {
         setName(data.milkman.name);

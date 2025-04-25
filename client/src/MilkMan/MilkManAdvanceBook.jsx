@@ -25,7 +25,6 @@ const MilkManAdvanceBook = () => {
       setLoading(true);
 
       const response = await API.get(`/api/auth/user/getadvanceMilkman`);
-      console.log(response.data);
       setLoading(false);
 
       const reversedOrders = response.data.orders.reverse(); // Reverse the array

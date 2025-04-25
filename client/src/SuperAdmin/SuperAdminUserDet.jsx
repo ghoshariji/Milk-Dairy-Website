@@ -16,7 +16,6 @@ const SuperAdminUserDet = () => {
         `${import.meta.env.VITE_SERVER}/api/auth/milkman/user/${userId}`
       );
       const data = await res.json();
-      console.log(data);
       setUser(data);
     } catch (error) {
       console.error("Error fetching user details:", error);

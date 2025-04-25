@@ -24,7 +24,6 @@ const MilkmanNotific = () => {
       try {
         const data = await API.get("/api/order/get-milkman-notification");
         orderData = data.data.data;
-        console.log(orderData);
       } catch (error) {
         console.log("Error fetching milkman notifications:", error);
       }
@@ -43,7 +42,6 @@ const MilkmanNotific = () => {
   const fetchAcceptNotification = async () => {
     try {
       const response = await API.get("/api/order/fetch-orders-accept-reject");
-      console.log(response.data)
       setAcceptOrder(response.data.orders);
     } catch (error) {
       console.error(

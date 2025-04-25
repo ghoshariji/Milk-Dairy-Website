@@ -60,7 +60,6 @@ const AdminNav = () => {
         const data = await API.get("/api/order/get-milkman-notification");
         orderData = data.data.data;
         setCountOrder(orderData.length);
-        console.log(orderData);
       } catch (error) {
         console.log("Error fetching milkman notifications:", error);
       }

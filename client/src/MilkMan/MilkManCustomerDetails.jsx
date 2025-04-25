@@ -119,7 +119,6 @@ const MilkManCustomerDetails = () => {
         }
       );
       setLoading(false);
-      console.log(response.data);
       setMilkData(response.data);
     } catch (error) {
       setLoading(false);
@@ -168,8 +167,6 @@ const MilkManCustomerDetails = () => {
         },
       });
 
-      console.log(fromDate.toISOString());
-      console.log(response.data);
       // handle the response
       if (response.data.success) {
         setTotalLitres(response.data.totalLitres || 0);

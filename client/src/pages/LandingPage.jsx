@@ -158,7 +158,6 @@ const LandingPage = () => {
         formData
       );
       toast.success("We will get back to you soon...");
-      console.log("Response:", response.data);
       // Clear form
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {

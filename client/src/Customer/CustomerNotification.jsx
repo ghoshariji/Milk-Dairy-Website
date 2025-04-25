@@ -28,7 +28,6 @@ const CustomerNotification = () => {
     const fetchData = async () => {
       try {
         const res = await API.get("/api/auth/user/get-notification");
-        console.log(res.data);
         setNotifications(res.data);
       } catch (err) {
         console.error("Error fetching notifications", err);
