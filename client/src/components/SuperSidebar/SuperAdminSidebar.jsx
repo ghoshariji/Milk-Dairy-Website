@@ -9,6 +9,8 @@ import smallLogo from "../../pages/images/login.png";
 import logoout from "../../assetss/icons/logout.png";
 import event from "../../assetss/icons/calendar.png";
 import test from "../../assetss/icons/faqs.png";
+import API from "../../api";
+import { motion } from "framer-motion";
 
 const SuperAdminSidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,7 +31,26 @@ const SuperAdminSidebar = () => {
     localStorage.removeItem("name");
     navigate("/login");
   };
+  const [unreadCount, setUnreadCount] = useState(0);
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await API.get("/api/help/all");
+      setLoading(false);
+
+      // Calculate the number of unread chats
+      const unreadChats = response.data.filter((chat) => chat.unread);
+      setUnreadCount(unreadChats.length);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching help data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   useEffect(() => {
     const adminStatus = localStorage.getItem("admin");
     const name = localStorage.getItem("name");
@@ -70,7 +91,11 @@ const SuperAdminSidebar = () => {
                 onClick={toggleSidebar}
                 className="inline-flex items-center p-2 text-sm text-white rounded-lg sm:hidden md:block lg:hidden hover:bg-[#3184A6]"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     clipRule="evenodd"
                     fillRule="evenodd"
@@ -87,11 +112,16 @@ const SuperAdminSidebar = () => {
                 />
               </Link>
             </div>
-            <div className="flex items-center space-x-4">
+            <div
+              className="flex items-center space-x-4 hover:cursor-pointer"
+              onClick={() => navigate("/admin-profile")}
+            >
               <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#40A1CB] font-bold text-lg">
                 {firstName?.charAt(0).toUpperCase()}
               </div>
-              <span className="text-white text-lg font-semibold">Welcome {firstName}</span>
+              <span className="text-white text-lg font-semibold">
+                Welcome {firstName}
+              </span>
             </div>
           </div>
         </div>
@@ -121,7 +151,11 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={dashboard} alt="Dashboard" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={dashboard}
+                    alt="Dashboard"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
                 <span className="ms-3">Dashboard</span>
               </NavLink>
@@ -140,9 +174,21 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={test} alt="Help & Support" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={test}
+                    alt="Help & Support"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
-                <span className="ms-3">Help & Support</span>
+                <motion.span
+                  className={`ms-3 ${unreadCount > 0 ? "blink" : ""}`} // Conditionally apply 'blink' class
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ color: unreadCount > 0 ? "red" : "white" }}
+                >
+                  Help & Support {unreadCount > 0 ? unreadCount : null}
+                </motion.span>
               </NavLink>
             </li>
 
@@ -159,7 +205,11 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={user} alt="Profile" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={user}
+                    alt="Profile"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
                 <span className="ms-3">Profile</span>
               </NavLink>
@@ -179,12 +229,16 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={event} alt="Subscription" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={event}
+                    alt="Subscription"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
                 <span className="ms-3">Subscription</span>
               </NavLink>
             </li>
-        
+
             <li>
               <NavLink
                 to="/admin-user-list"
@@ -198,7 +252,11 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={AddUser} alt="User List" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={AddUser}
+                    alt="User List"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
                 <span className="ms-3">User List</span>
               </NavLink>
@@ -216,7 +274,11 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={contact} alt="User List" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={contact}
+                    alt="User List"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
                 <span className="ms-3">Addvertisement</span>
               </NavLink>
@@ -246,10 +308,14 @@ const SuperAdminSidebar = () => {
             <li>
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
+                className="flex w-full items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105 hover:cursor-pointer"
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img src={logoout} alt="Logout" className="w-6 h-6 rounded-full" />
+                  <img
+                    src={logoout}
+                    alt="Logout"
+                    className="w-6 h-6 rounded-full"
+                  />
                 </div>
                 <span className="ms-3">Log out</span>
               </button>

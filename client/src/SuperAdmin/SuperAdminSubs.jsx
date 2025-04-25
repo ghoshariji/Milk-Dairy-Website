@@ -117,7 +117,7 @@ const SuperAdminSubs = () => {
       {/* Main Content */}
       <main className="flex-1 p-6 bg-white">
         <motion.h1
-          className="text-2xl font-bold mb-4 text-[#40A1CB]"
+          className="text-3xl font-bold mb-4 text-[#40A1CB]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -166,7 +166,7 @@ const SuperAdminSubs = () => {
         <motion.button
           onClick={generateCoupon}
           disabled={loading}
-          className="bg-[#40A1CB] text-white px-4 py-2 rounded mb-6"
+          className="bg-[#40A1CB] text-white px-4 py-2 rounded mb-6 hover:cursor-pointer"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.2 }}
         >
@@ -203,7 +203,7 @@ const SuperAdminSubs = () => {
               <div className="flex gap-2 mt-4">
                 <motion.button
                   onClick={() => deleteCoupon(item._id)}
-                  className="border border-[#40A1CB] text-[#40A1CB] px-4 py-1 rounded"
+                  className="border border-[#40A1CB] text-[#40A1CB] px-4 py-1 rounded hover:cursor-pointer"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -211,7 +211,7 @@ const SuperAdminSubs = () => {
                 </motion.button>
                 <motion.button
                   onClick={() => copyToClipboard(item.code)}
-                  className="bg-[#40A1CB] text-white px-4 py-1 rounded"
+                  className="bg-[#40A1CB] text-white px-4 py-1 rounded hover:cursor-pointer"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >

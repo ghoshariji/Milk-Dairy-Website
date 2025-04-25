@@ -85,7 +85,7 @@ const SuperAdminDash = () => {
             <div className="p-4 md:p-8">
               <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6">
                 <StatBox
-                  title="User List (7 days)"
+                  title="User Created List (7 days)"
                   value={stats.milkmenCreated ? stats.milkmenCreated : "0"}
                 />
                 <StatBox1
@@ -138,7 +138,7 @@ const SuperAdminDash = () => {
                   <div className="mt-10 text-right">
                     <motion.a
                       href="/subscriptions"
-                      className="inline-block px-6 py-3 bg-[#40A1CB] text-white rounded-lg shadow-md hover:bg-[#3495b8] hover:shadow-lg transition-all duration-300"
+                      className="inline-block px-6 py-3 bg-[#40A1CB] mt-10 text-white rounded-lg shadow-md hover:bg-[#3495b8] hover:shadow-lg transition-all duration-300"
                       whileHover={{ scale: 1.05 }}
                     >
                       Configure Plans

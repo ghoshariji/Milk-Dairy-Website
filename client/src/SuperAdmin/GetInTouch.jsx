@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import SuperAdminSidebar from "../components/SuperSidebar/SuperAdminSidebar";
 import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
@@ -120,7 +119,7 @@ const GetInTouch = () => {
           <div className="flex justify-end mb-4">
             <button
               onClick={handleExport}
-              className="bg-[#40A1CB] text-white px-4 py-2 rounded "
+              className="bg-[#40A1CB] text-white px-4 py-2 rounded hover:cursor-pointer"
             >
               Export as XLSX
             </button>
@@ -146,7 +145,7 @@ const GetInTouch = () => {
                     <td className="py-3 px-6">
                       <button
                         onClick={() => handleReply(msg.email)}
-                        className="bg-[#40A1CB] text-white px-3 py-1 rounded"
+                        className="bg-[#40A1CB] text-white px-3 py-1 rounded hover:cursor-pointer"
                       >
                         Reply
                       </button>
@@ -160,7 +159,7 @@ const GetInTouch = () => {
             <div className="flex justify-center mt-6 space-x-2">
               <button
                 onClick={handlePrev}
-                className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+                className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50 hover:cursor-pointer"
                 disabled={currentPage === 1}
               >
                 Prev
@@ -170,7 +169,7 @@ const GetInTouch = () => {
               </span>
               <button
                 onClick={handleNext}
-                className="bg-[#40A1CB] text-white px-3 py-1 rounded disabled:opacity-50"
+                className="bg-[#40A1CB] text-white px-3 py-1 rounded disabled:opacity-50 hover:cursor-pointer"
                 disabled={currentPage === totalPages}
               >
                 Next
@@ -180,8 +179,14 @@ const GetInTouch = () => {
         </motion.div>
 
         {showModal && (
-          <div className="fixed inset-0  bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
+          <div className="fixed inset-0 bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
+            <motion.div
+              className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+            >
               <h2 className="text-xl font-semibold mb-4">Reply to User</h2>
               <textarea
                 autoFocus
@@ -194,18 +199,18 @@ const GetInTouch = () => {
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                  className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 hover:cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={sendReply}
-                  className="bg-[#40A1CB] text-white px-4 py-2 rounded hover:bg-[#368fb4]"
+                  className="bg-[#40A1CB] text-white px-4 py-2 rounded hover:bg-[#368fb4] hover:cursor-pointer"
                 >
                   Send
                 </button>
               </div>
-            </div>
+            </motion.div>
           </div>
         )}
       </div>

@@ -14,6 +14,11 @@ const SuperAdminAddvertise = () => {
     media: null,
   });
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [adsPerPage] = useState(5); // Number of ads per page
+
+  // Fetch ads with media handling
   const fetchAds = async () => {
     setLoading(true);
     try {
@@ -27,7 +32,7 @@ const SuperAdminAddvertise = () => {
           const mediaUrl = URL.createObjectURL(blob);
           return { ...ad, mediaUrl };
         } else {
-          return { ...ad, mediaUrl: null }; // fallback if no media
+          return { ...ad, mediaUrl: null };
         }
       });
 
@@ -43,6 +48,7 @@ const SuperAdminAddvertise = () => {
     fetchAds();
   }, []);
 
+  // Handle Add Advertisement
   const handleAddAd = async () => {
     const form = new FormData();
     setLoading(true);
@@ -57,19 +63,24 @@ const SuperAdminAddvertise = () => {
       alert("Video must be 20 seconds or less.");
       return;
     }
-    setLoading(true);
 
-    const res = await fetch(`${import.meta.env.VITE_SERVER}/api/add`, {
-      method: "POST",
-      body: form,
-    });
-    setLoading(false);
-    if (res.ok) {
-      fetchAds();
-      toast.success("Uploaded Successfully");
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/api/add`, {
+        method: "POST",
+        body: form,
+      });
+      if (res.ok) {
+        fetchAds();
+        toast.success("Uploaded Successfully");
+      }
+    } catch (error) {
+      toast.error("Error uploading advertisement.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Handle Delete Advertisement
   const handleDelete = async (id) => {
     try {
       await fetch(`${import.meta.env.VITE_SERVER}/api/add/delete/${id}`, {
@@ -83,66 +94,104 @@ const SuperAdminAddvertise = () => {
     }
   };
 
+  // Pagination Logic
+  const indexOfLastAd = currentPage * adsPerPage;
+  const indexOfFirstAd = indexOfLastAd - adsPerPage;
+  const currentAds = ads.slice(indexOfFirstAd, indexOfLastAd);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div>
       <SuperAdminSidebar />
       <ToastContainer />
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
       <div className="lg:ml-64 mt-20 bg-gray-100 min-h-screen p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">All Advertisements</h2>
+        <div className="flex justify-between items-center mb-4 flex-wrap">
+          <h2 className="text-xl font-bold w-full sm:w-auto">
+            All Advertisements
+          </h2>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#40A1CB] text-white px-4 py-2 rounded-lg shadow"
+            className="bg-[#40A1CB] text-white px-4 py-2 rounded-lg shadow mt-2 sm:mt-0"
           >
             + Add Advertisement
           </button>
         </div>
 
-        <table className="w-full bg-white rounded-xl shadow overflow-hidden">
-          <thead className="bg-[#40A1CB] text-white">
-            <tr>
-              <th className="p-4">Media</th>
-              <th className="p-4">Description</th>
-              <th className="p-4">Expiry Date</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ads.map((ad) => (
-              <tr key={ad._id} className="border-t">
-                <td className="p-4">
-                  {ad.mediaType === "video" ? (
-                    <video src={ad.mediaUrl} className="w-32 h-20" controls />
-                  ) : (
-                    <img
-                      src={ad.mediaUrl}
-                      className="w-32 h-20 object-cover"
-                      alt="Ad"
-                    />
-                  )}
-                </td>
-                <td className="p-4">{ad.description}</td>
-                <td className="p-4">
-                  {new Date(ad.expiryDate).toLocaleDateString()}
-                </td>
-                <td className="p-4 space-x-2">
-                  <button
-                    onClick={() => handleDelete(ad._id)}
-                    className="text-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
+        {/* Table with scrollable on smaller screens */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white rounded-xl shadow">
+            <thead className="bg-[#40A1CB] text-white">
+              <tr>
+                <th className="p-4 text-left">Media</th>
+                <th className="p-4 text-left">Description</th>
+                <th className="p-4 text-left">Expiry Date</th>
+                <th className="p-4 text-left">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentAds.map((ad) => (
+                <tr
+                  key={ad._id}
+                  className="border-t hover:bg-[#f1f5f9]" // Hover effect
+                >
+                  <td className="p-4">
+                    {ad.mediaType === "video" ? (
+                      <video src={ad.mediaUrl} className="w-32 h-20" controls />
+                    ) : (
+                      <img
+                        src={ad.mediaUrl}
+                        className="w-32 h-20 object-cover"
+                        alt="Ad"
+                      />
+                    )}
+                  </td>
+                  <td className="p-4">{ad.description}</td>
+                  <td className="p-4">
+                    {new Date(ad.expiryDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4 space-x-2">
+                    <button
+                      onClick={() => handleDelete(ad._id)}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-6 flex-wrap">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-[#40A1CB] text-white rounded-lg disabled:bg-gray-400 mb-2 sm:mb-0"
+          >
+            Prev
+          </button>
+          <span className="mx-4 text-lg mb-2 sm:mb-0">
+            Page {currentPage} of {Math.ceil(ads.length / adsPerPage)}
+          </span>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === Math.ceil(ads.length / adsPerPage)}
+            className="px-4 py-2 bg-[#40A1CB] text-white rounded-lg disabled:bg-gray-400 mb-2 sm:mb-0"
+          >
+            Next
+          </button>
+        </div>
       </div>
+
+      {/* Modal for Adding Advertisement */}
       <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}

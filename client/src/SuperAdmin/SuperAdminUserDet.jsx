@@ -11,9 +11,11 @@ const SuperAdminUserDet = () => {
 
   const fetchUserDetails = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/api/auth/milkman/user/${userId}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER}/api/auth/milkman/user/${userId}`
+      );
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       setUser(data);
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -48,23 +50,50 @@ const SuperAdminUserDet = () => {
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-8"
         >
-          <h2 className="text-3xl font-bold text-[#40A1CB] mb-6">User Details</h2>
+          <h2 className="text-3xl font-bold text-[#40A1CB] mb-6">
+            User Details
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800">
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Phone:</strong> {user.phone}</p>
-            <p><strong>UPI ID:</strong> {user.upiId}</p>
-            <p><strong>Village:</strong> {user.village}</p>
-            <p><strong>Enter Code:</strong> {user.enterCode}</p>
-            <p><strong>Subscription Code:</strong> {user.subcriptionCode}</p>
-            <p><strong>Buy Milk:</strong> {user.buyMilk || "N/A"}</p>
-            <p><strong>Sell Milk:</strong> {user.sellMilk || "N/A"}</p>
-            <p><strong>Customers:</strong> {user.customer?.length || 0}</p>
-            <p><strong>Sellers:</strong> {user.seller?.length || 0}</p>
-            <p><strong>Products:</strong> {user.products?.length || 0}</p>
-            <p><strong>Category Products:</strong> {user.categoryProduct?.map(c => c.name).join(", ") || "N/A"}</p>
-            <p><strong>Location:</strong> {`Lat: ${user.location?.latitude}, Lng: ${user.location?.longitude}`}</p>
-            <p><strong>Accuracy:</strong> {user.location?.accuracy} meters</p>
+            <p>
+              <strong>Name:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Phone:</strong> {user.phone}
+            </p>
+            <p>
+              <strong>UPI ID:</strong> {user.upiId}
+            </p>
+            <p>
+              <strong>Village:</strong> {user.village}
+            </p>
+            <p>
+              <strong>Enter Code:</strong> {user.enterCode}
+            </p>
+            <p>
+              <strong>Subscription Code:</strong> {user.subcriptionCode}
+            </p>
+            <p>
+              <strong>Buy Milk:</strong> {user.buyMilk || "N/A"}
+            </p>
+            <p>
+              <strong>Sell Milk:</strong> {user.sellMilk || "N/A"}
+            </p>
+            <p>
+              <strong>Customers:</strong> {user.customer?.length || 0}
+            </p>
+            <p>
+              <strong>Sellers:</strong> {user.seller?.length || 0}
+            </p>
+            <p>
+              <strong>Products:</strong> {user.products?.length || 0}
+            </p>
+            <p>
+              <strong>Category Products:</strong>{" "}
+              {user.categoryProduct?.map((c) => c.name).join(", ") || "N/A"}
+            </p>
           </div>
         </motion.div>
       </div>

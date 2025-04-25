@@ -10,7 +10,7 @@ const SuperAdminHelpPage = () => {
   const [searchText, setSearchText] = useState("");
 
   const [loading, setLoading] = useState(false);
-  
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -36,7 +36,14 @@ const SuperAdminHelpPage = () => {
       );
       setLoading(false);
 
-      if (response.ok) fetchData();
+      if (response.ok) {
+        // Show success message
+
+        // Reload the page to fetch the latest data
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after a short delay to show the toast
+        }, 1000); // Delay in milliseconds
+      }
     } catch (error) {
       setLoading(false);
       console.error("Error updating seen status:", error);
@@ -81,7 +88,7 @@ const SuperAdminHelpPage = () => {
             placeholder="Search complain..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full mb-4 p-2 border-2 border-gray-300 rounded-lg"
+            className="w-full mb-4 p-2 border-2 border-gray-500 rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -109,7 +116,7 @@ const SuperAdminHelpPage = () => {
                 <motion.div
                   key={chat._id}
                   onClick={() => setSelectedChat(chat)}
-                  className="bg-white p-4 rounded shadow flex justify-between items-start cursor-pointer"
+                  className="bg-gray-100 p-4 rounded-xl shadow-xl hover:shadow-3xl flex justify-between items-start cursor-pointer hover:bg-gray-100 transition-all"
                   initial={{ opacity: 0, x: -100 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3 }}
@@ -119,12 +126,12 @@ const SuperAdminHelpPage = () => {
                       {chat.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">{chat.name}</p>
-                      <p className="text-sm text-gray-600">{chat.feedback}</p>
+                      <p className="font-semibold text-black">{chat.name}</p>
+                      <p className="text-sm text-gray-800">{chat.feedback}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-500">{displayTime}</p>
+                    <p className="text-sm text-gray-800">{displayTime}</p>
                     {chat.unread && (
                       <motion.span
                         className="inline-block w-6 h-6 bg-red-500 text-white rounded-full text-center font-bold"
@@ -142,60 +149,59 @@ const SuperAdminHelpPage = () => {
 
           {/* Modal for selected chat with smooth opening and closing */}
           {selectedChat && (
-  <motion.div
-    className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.3 }}
-  >
-    <motion.div
-      className="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-md shadow-2xl border border-gray-200"
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
-      <h2 className="text-2xl font-bold text-center text-[#40A1CB] mb-6">
-        💬 Chat Details
-      </h2>
+            <motion.div
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                className="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-md shadow-2xl border border-gray-200"
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <h2 className="text-2xl font-bold text-center text-[#40A1CB] mb-6">
+                  💬 Chat Details
+                </h2>
 
-      <div className="space-y-4 text-sm sm:text-base text-gray-700">
-        <div className="flex justify-between">
-          <strong>Name:</strong>
-          <span>{selectedChat.name}</span>
-        </div>
-        <div className="flex justify-between">
-          <strong>Phone:</strong>
-          <a
-            href={`tel:${selectedChat.phone}`}
-            className="text-[#40A1CB] hover:underline"
-          >
-            {selectedChat.phone}
-          </a>
-        </div>
-        <div className="flex justify-between">
-          <strong>User Type:</strong>
-          <span className="capitalize">{selectedChat.type}</span>
-        </div>
-        <div>
-          <strong>Feedback:</strong>
-          <p className="mt-1 text-gray-600 border border-gray-200 rounded-lg p-2 bg-gray-50">
-            {selectedChat.feedback}
-          </p>
-        </div>
-      </div>
+                <div className="space-y-4 text-sm sm:text-base text-gray-700">
+                  <div className="flex justify-between">
+                    <strong>Name:</strong>
+                    <span>{selectedChat.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <strong>Phone:</strong>
+                    <a
+                      href={`tel:${selectedChat.phone}`}
+                      className="text-[#40A1CB] hover:underline"
+                    >
+                      {selectedChat.phone}
+                    </a>
+                  </div>
+                  <div className="flex justify-between">
+                    <strong>User Type:</strong>
+                    <span className="capitalize">{selectedChat.type}</span>
+                  </div>
+                  <div>
+                    <strong>Feedback:</strong>
+                    <p className="mt-1 text-gray-600 border border-gray-200 rounded-lg p-2 bg-gray-50">
+                      {selectedChat.feedback}
+                    </p>
+                  </div>
+                </div>
 
-      <div className="mt-6 flex justify-center">
-        <button
-          className="bg-[#40A1CB] hover:bg-[#3692b7] text-white px-6 py-2 rounded-lg shadow-md transition"
-          onClick={() => handleSeenCall(selectedChat._id)}
-        >
-          Close
-        </button>
-      </div>
-    </motion.div>
-  </motion.div>
-)}
-
+                <div className="mt-6 flex justify-center">
+                  <button
+                    className="bg-[#40A1CB] hover:bg-[#3692b7] hover:cursor-pointer text-white px-6 py-2 rounded-lg shadow-md transition"
+                    onClick={() => handleSeenCall(selectedChat._id)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>

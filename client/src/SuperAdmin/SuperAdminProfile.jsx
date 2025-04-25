@@ -18,6 +18,7 @@ const SuperAdminProfile = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   const createImageUrl = (imageData, contentType) => {
     try {
       const typedArray = new Uint8Array(imageData);
@@ -30,6 +31,7 @@ const SuperAdminProfile = () => {
       return null;
     }
   };
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -86,28 +88,28 @@ const SuperAdminProfile = () => {
     setLoading(false);
     setModalVisible(false);
   };
+
   return (
     <>
       <SuperAdminSidebar />
       <ToastContainer />
-      {/* Sidebar */}
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50  bg-opacity-50 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 backdrop-blur-md">
           <Loader />
         </div>
       )}
       <div className="lg:ml-64 mt-20 p-6 bg-gray-100 min-h-screen">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
           <motion.h3
-            className="text-2xl font-semibold text-[#40A1CB] mb-6"
+            className="text-3xl font-bold text-[#40A1CB] mb-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            Milkman Profile
+            Super Admin Profile
           </motion.h3>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex flex-col sm:flex-row items-center sm:space-x-6 space-y-4 sm:space-y-0">
             <motion.img
               src={profilePhoto ? profilePhoto : "Loading"}
               alt="Profile"
@@ -116,9 +118,8 @@ const SuperAdminProfile = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             />
-
             <motion.div
-              className="ml-4 space-y-4"
+              className="ml-4 sm:ml-6 space-y-4"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
@@ -133,7 +134,7 @@ const SuperAdminProfile = () => {
                 <strong>Phone:</strong> {mobileNo}
               </p>
               <motion.button
-                className="mt-4 bg-[#40A1CB] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#3185a7] transition duration-300"
+                className="mt-4 bg-[#40A1CB] text-white hover:cursor-pointer px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#3185a7] transition duration-300"
                 onClick={() => setModalVisible(true)}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -159,7 +160,7 @@ const SuperAdminProfile = () => {
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <motion.h3
-              className="text-2xl font-semibold text-center mb-6"
+              className="text-2xl font-bold text-center mb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.2 }}
@@ -201,7 +202,6 @@ const SuperAdminProfile = () => {
                 transition={{ duration: 0.3, delay: 0.5 }}
               />
 
-              {/* Image Upload */}
               <motion.label
                 className="block"
                 initial={{ opacity: 0 }}
@@ -222,7 +222,7 @@ const SuperAdminProfile = () => {
 
             <div className="flex justify-end mt-6 space-x-3">
               <motion.button
-                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition"
+                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md hover:cursor-pointer transition"
                 onClick={() => setModalVisible(false)}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -230,7 +230,7 @@ const SuperAdminProfile = () => {
                 Cancel
               </motion.button>
               <motion.button
-                className="bg-[#40A1CB] hover:bg-[#368bb0] text-white px-4 py-2 rounded-md transition"
+                className="bg-[#40A1CB] hover:bg-[#368bb0] text-white px-4 py-2 hover:cursor-pointer rounded-md transition"
                 onClick={handleSave}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
