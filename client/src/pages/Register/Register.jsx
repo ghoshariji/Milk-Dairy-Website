@@ -452,6 +452,8 @@
 
 // export default Register;
 
+
+
 import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaTwitter, FaGoogle } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
