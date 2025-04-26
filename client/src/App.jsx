@@ -56,6 +56,7 @@ import GetInTouch from "./SuperAdmin/GetInTouch";
 import SuperAdminUserDet from "./SuperAdmin/SuperAdminUserDet";
 import SuperAdminAddvertise from "./SuperAdmin/SuperAdminAddvertise";
 import MilkManCustomerDetails from "./MilkMan/MilkManCustomerDetails";
+import SuperAdminManageSubs from "./SuperAdmin/SuperAdminManageSubs";
 const App = () => {
   return (
     <Routes>
@@ -92,6 +93,7 @@ const App = () => {
       <Route path="/admin-get-in-touch" element={<GetInTouch />} />
       <Route path="/admin-user-details/:userId" element={<SuperAdminUserDet />} />
       <Route path="/admin-addvertisement" element={<SuperAdminAddvertise />} />
+      <Route path="/admin-manage-subscription" element={<SuperAdminManageSubs />} />
 
 
 

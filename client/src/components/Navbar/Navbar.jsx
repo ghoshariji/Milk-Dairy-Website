@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+  const navigate = useNavigate()
 
   return (
     <header className="w-full bg-white shadow px-6 py-4 flex justify-between items-center relative z-30">
       {/* Logo */}
-      <div className="text-xl sm:text-2xl font-extrabold text-[#40A1CB]">
+      <div className="text-xl sm:text-2xl font-extrabold text-[#40A1CB] hover:cursor-pointer" onClick={()=> navigate("/")} >
         Hallo Dairy
       </div>
 

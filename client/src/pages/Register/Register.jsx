@@ -585,7 +585,22 @@ const Register = () => {
     );
     setFilteredMilkmen(filtered);
   }, [searchText]);
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
+  const [subscriptions, setSubscriptions] = useState([]);
 
+  const fetchSubscriptions = async () => {
+    setLoading(true);
+    try {
+      const response = await API.get("/api/subscription");
+      setSubscriptions(response.data);
+    } catch (error) {
+      console.error("Error fetching subscriptions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="relative w-full h-screen overflow-hidden">
       <div

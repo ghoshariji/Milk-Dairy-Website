@@ -36,6 +36,7 @@
   const adverRoute = require("./routes/adverRoute");
   const analyticsRoute = require("./routes/analyticsRoute");
   const authRoute = require("./routes/authRoute");
+  const subscriptionRoute = require("./routes/subscriptionRoute");
 
   // Static files
   app.use(express.static(path.join(__dirname, "./sampleFileUpload")));
@@ -54,6 +55,7 @@
   app.use("/api/get-in", getInRoute);
   app.use("/api/add", adverRoute);
   app.use("/api/auth/security", authRoute);
+  app.use("/api/subscription", subscriptionRoute);
 
 
 
