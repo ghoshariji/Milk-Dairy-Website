@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
 import register12 from "../../pages/images/login.png";
 import { motion } from "framer-motion";
+import API from "../../api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -131,7 +132,22 @@ const Register = () => {
     );
     setFilteredMilkmen(filtered);
   }, [searchText]);
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
+  const [subscriptions, setSubscriptions] = useState([]);
 
+  const fetchSubscriptions = async () => {
+    setLoading(true);
+    try {
+      const response = await API.get("/api/subscription");
+      setSubscriptions(response.data);
+    } catch (error) {
+      console.error("Error fetching subscriptions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <ToastContainer />
@@ -357,7 +373,40 @@ const Register = () => {
                 </button>
               </div>
             )}
-
+            {role === "milkman" && (
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Choose Subscription Plan
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {subscriptions.length > 0 ? (
+                    subscriptions.map((subscription) => (
+                      <div
+                        key={subscription._id}
+                        onClick={() =>
+                          setForm({ ...form, subscriptionId: subscription._id })
+                        }
+                        className={`border rounded-lg p-4 cursor-pointer transition-all duration-300 ${
+                          form.subscriptionId === subscription._id
+                            ? "border-[#40A1CB] bg-[#e8f6fb]"
+                            : "border-gray-300 hover:border-[#40A1CB]"
+                        }`}
+                      >
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {subscription.subscriptionType}
+                        </h3>
+                        <p className="text-gray-600">Rs.{subscription.price}</p>
+                        <p className="text-sm text-gray-500 mt-2">
+                          {subscription.description || "No description"}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No subscriptions available.</p>
+                  )}
+                </div>
+              </div>
+            )}
             {/* Select Role */}
             <div className="mt-4">
               <label className="text-sm font-medium text-gray-700">
