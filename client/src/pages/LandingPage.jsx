@@ -18,11 +18,9 @@ import screen2 from "./assets/screen2.png";
 import screen3 from "./assets/screen2.png";
 import screen4 from "./assets/screen2.png";
 import screen5 from "./assets/screen2.png";
+import { ShoppingCart, Truck, Star } from "lucide-react";
+import { FaFacebookF, FaInstagram, FaGooglePlusG } from "react-icons/fa";
 
-import downloadIcon from "./assets/download.png";
-import starIcon from "./assets/start.png";
-import userIcon from "./assets/usergole.png";
-import smileIcon from "./assets/happy.png";
 import { FaArrowUp } from "react-icons/fa";
 
 import milkproduct from "./assets/milkproduct.png";
@@ -30,7 +28,7 @@ import client1 from "./assets/client1.png";
 import { toast, ToastContainer } from "react-toastify";
 
 import { motion, useInView } from "framer-motion";
-import { ShoppingCart, Store, Truck } from "lucide-react";
+import { Store } from "lucide-react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -236,24 +234,25 @@ const LandingPage = () => {
           backgroundPosition: "top center",
         }}
       >
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between min-h-screen px-4 sm:px-8 md:px-16 lg:px-24">
           {/* Animated Text Section */}
           <div
-            className="lg:w-1/2 text-center lg:text-left z-10"
+            className="w-full lg:w-1/2 text-center lg:text-left z-10"
             data-aos="fade-up"
             data-aos-duration="800"
           >
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+            <p className="text-[50px] sm:text-[60px] md:text-[80px] lg:text-[80px] xl:text-[70px] font-bold leading-tight">
               <span className="text-[#40A1CB]">Milk</span> Delivery App
-            </h1>
-            <p className="text-gray-600 mt-4 max-w-md mx-auto lg:mx-0 text-base sm:text-lg">
+            </p>
+
+            <p className="text-gray-600 mt-6 max-w-md sm:max-w-lg md:max-w-xl mx-auto lg:mx-0 text-base sm:text-lg md:text-xl">
               To stay ahead of the curve, serve your customers through an
               on-demand food delivery app.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center lg:justify-start mt-6 gap-4">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start mt-8 gap-6">
               <button
-                className="text-white px-6 py-3 rounded-lg shadow transition hover:brightness-90"
+                className="text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg shadow-lg transition hover:brightness-90 text-base sm:text-lg"
                 style={{ backgroundColor: "#40A1CB" }}
                 onClick={() => navigate("/login")}
               >
@@ -264,7 +263,7 @@ const LandingPage = () => {
 
           {/* Animated Phone Image */}
           <div
-            className="lg:w-1/2 flex justify-center mb-10 lg:mb-0 z-10"
+            className="w-full lg:w-1/2 flex justify-center mb-10 lg:mb-0 z-10"
             data-aos="fade-left"
             data-aos-delay="200"
             data-aos-duration="800"
@@ -272,7 +271,7 @@ const LandingPage = () => {
             <img
               src={phoneImg}
               alt="Phone Display"
-              className="w-72 sm:w-80 md:w-[30rem] lg:w-[36rem]"
+              className="w-60 sm:w-80 md:w-[28rem] lg:w-[34rem] xl:w-[40rem]"
             />
           </div>
         </div>
@@ -333,6 +332,44 @@ const LandingPage = () => {
                 desc="With our cutting-edge Milkman app, we provide fresh, premium-quality dairy products sourced directly from trusted vendors. Experience seamless delivery, personalized milk management, and an extensive product catalog, all tailored to your needs. From farm to table, we ensure you get only the best."
               />
             </div>
+            {/* Card 1 */}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="0"
+              className="transition duration-500 ease-in-out transform hover:scale-105"
+            >
+              <Card
+                Icon={ShoppingCart}
+                title="Revolutionizing Dairy Management"
+                desc="With our cutting-edge Milkman app, enjoy premium-quality dairy products from trusted farms. Seamless delivery, personalized milk schedules, and a wide product range — all at your fingertips."
+              />
+            </div>
+
+            {/* Card 2 */}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="100"
+              className="transition duration-500 ease-in-out transform hover:scale-105"
+            >
+              <Card
+                Icon={Truck}
+                title="Fast & Fresh Delivery"
+                desc="Our smart logistics ensure your milk and dairy essentials arrive fresh and on time every day. Real-time tracking, flexible delivery slots, and zero-hassle service guaranteed."
+              />
+            </div>
+
+            {/* Card 3 */}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="200"
+              className="transition duration-500 ease-in-out transform hover:scale-105"
+            >
+              <Card
+                Icon={Star}
+                title="Premium Quality Assurance"
+                desc="Every drop of milk is tested and quality-checked before it reaches you. Trust in our farm-to-home promise for the purest, healthiest, and tastiest dairy experience."
+              />
+            </div>
 
             <div
               data-aos="fade-up"
@@ -369,10 +406,9 @@ const LandingPage = () => {
         style={{ backgroundImage: `url(${thought})` }}
       >
         {/* Overlay */}
-
         <div className="relative z-10 px-6 lg:px-10 flex flex-col lg:flex-row items-center lg:items-start justify-between h-full pt-10 lg:pt-20">
           {/* Left Content */}
-          <div className="max-w-xl text-white text-center lg:text-left mt-30 lg:ml-10">
+          <div className="max-w-xl text-white text-center lg:text-left mt-15 lg:ml-10 lg:mt-24">
             <h1 className="text-5xl text-[#40A1CB] lg:text-5xl font-bold mb-6">
               The Innovative Way To Shop
             </h1>
@@ -381,17 +417,54 @@ const LandingPage = () => {
               recommendations, and convenient home delivery – all at your
               fingertips. Join today and start shopping smarter!
             </p>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.yourapp.dairy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={playstore}
-                alt="Get it on Google Play"
-                className="w-40 mx-auto lg:mx-0 mt-4"
-              />
-            </a>
+
+            {/* Google Play Button + Social Icons in one row */}
+            <div className="flex items-center justify-center lg:justify-start space-x-6 mt-6">
+              {/* Google Play Button */}
+              <a
+                href="https://play.google.com/store/apps/details?id=com.yourapp.dairy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={playstore}
+                  alt="Get it on Google Play"
+                  className="w-40"
+                />
+              </a>
+
+              {/* Social Icons */}
+              <motion.div
+                className="flex space-x-4 text-[#40A1CB] text-xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+              >
+                <motion.a
+                  href="#"
+                  className="hover:scale-110 transition duration-300 hover:cursor-pointer"
+                  whileHover={{ scale: 1.1, rotate: 15 }}
+                >
+                  <FaFacebookF size={28} />
+                </motion.a>
+                <motion.a
+                  href="https://www.instagram.com/foxteach_offical/?hl=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition duration-300 hover:cursor-pointer"
+                  whileHover={{ scale: 1.1, rotate: 15 }}
+                >
+                  <FaInstagram size={28} />
+                </motion.a>
+                <motion.a
+                  href="mailto:official.foxteach@gmail.com"
+                  className="hover:scale-110 transition duration-300 hover:cursor-pointer"
+                  whileHover={{ scale: 1.1, rotate: 15 }}
+                >
+                  <FaGooglePlusG size={28} />
+                </motion.a>
+              </motion.div>
+            </div>
           </div>
 
           {/* Phone Image (responsive placement) */}
@@ -883,7 +956,6 @@ const LandingPage = () => {
           viewport={{ once: true }}
         />
       </section>
-      <Footer />
     </div>
   );
 };
