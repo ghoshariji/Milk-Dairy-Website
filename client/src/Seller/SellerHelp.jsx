@@ -18,10 +18,7 @@ const SellerHelp = () => {
   const [successMsg, setSuccessMsg] = useState('');
 
   const handleInputChange = (field, value) => {
-    if (field === 'feedback') {
-      const words = value.trim().split(/\s+/);
-      if (words.length > 20) return;
-    }
+
 
     if (field === 'phone') {
       if (!/^\d{0,10}$/.test(value)) {
@@ -130,9 +127,6 @@ const SellerHelp = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               rows={4}
             />
-            <p className="text-sm text-gray-500">
-              Words: {formData.feedback.trim().split(/\s+/).filter(Boolean).length}/20
-            </p>
           </div>
 
           <button
