@@ -15,7 +15,6 @@ import {
 } from "react-icons/fa";
 import Authentication from "../utils/Authentication";
 
-
 const MilkManAddUser = () => {
   const [userType, setUserType] = useState("Customer");
   const [newUser, setNewUser] = useState({
