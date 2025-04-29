@@ -4,6 +4,24 @@ import dashboard from "../../assetss/icons/Dashboard.png";
 import logo from "../../pages/images/login.png";
 import smallLogo from "../../pages/images/login.png";
 import API from "../../api";
+import {
+  FaHome,
+  FaPlusSquare,
+  FaRegCalendarAlt,
+  FaUserPlus,
+  FaShoppingCart,
+  FaUsers,
+  FaHandsHelping,
+  FaBell,
+  FaCalendarAlt,
+  FaBoxOpen,
+  FaUser,
+  FaCartPlus,
+  FaDollarSign,
+  FaSyncAlt,
+  FaWallet,
+  FaSignOutAlt,
+} from "react-icons/fa"; // Importing icons
 
 const AdminNav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -116,7 +134,10 @@ const AdminNav = () => {
               </Link>
             </div>
             <div className="hidden lg:block">
-              <div className="flex items-center space-x-4 hover:cursor-pointer" onClick={() => navigate("/milkman-profile")}> 
+              <div
+                className="flex items-center space-x-4 hover:cursor-pointer"
+                onClick={() => navigate("/milkman-profile")}
+              >
                 {/* Profile Icon Circle */}
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}
@@ -141,6 +162,7 @@ const AdminNav = () => {
       >
         <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-black dark:border-gray-900">
           <ul className="space-y-2 font-medium">
+            {/* Sidebar links */}
             <li>
               <NavLink
                 to="/milkman-dashboard"
@@ -153,15 +175,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaHome className="w-5 h-5" color="black" />
                 </div>
                 <span className="ms-3">Dashboard</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-add-category"
@@ -174,15 +193,30 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaPlusSquare className="w-5 h-5" color="black" />
                 </div>
                 <span className="ms-3">Add Category</span>
               </NavLink>
             </li>
+
+            <li>
+              <NavLink
+                to="/milkman-set-rate-global"
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
+                    isActive
+                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
+                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
+                  }`
+                }
+              >
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <FaRegCalendarAlt className="w-5 h-5" color="black" />
+                </div>
+                <span className="ms-3">Today Set Rate</span>
+              </NavLink>
+            </li>
+
             <li>
               <NavLink
                 to="/milkman-add-customer"
@@ -195,15 +229,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaUserPlus className="w-5 h-5" color="black" />
                 </div>
                 <span className="ms-3">Add Customer/Seller</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-buy-milk"
@@ -216,15 +247,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaShoppingCart className="w-5 h-5" color="black" />
                 </div>
                 <span className="ms-3">Buy Milk</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-customer"
@@ -237,15 +265,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaUsers className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Customer</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-help"
@@ -258,15 +283,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaHandsHelping className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Help & Support</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-notification"
@@ -279,21 +301,18 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaBell className="w-5 h-5 text-black" />
                 </div>
                 <span
                   className={`ms-3 ${
-                    countOrder > 0 ? "text-red-500  animate-blink" : ""
+                    countOrder > 0 ? "text-red-500 animate-blink" : ""
                   }`}
                 >
                   Products Order's {countOrder > 0 && `(${countOrder})`}
                 </span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-advance-book"
@@ -306,21 +325,18 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaCalendarAlt className="w-5 h-5 text-black" />
                 </div>
                 <span
                   className={`ms-3 ${
-                    seenCOunt > 0 ? "text-red-500  animate-blink" : ""
+                    seenCOunt > 0 ? "text-red-500 animate-blink" : ""
                   }`}
                 >
-                  Advance Booking {seenCOunt > 0 ? `(${seenCOunt})` : ""}
+                  Advance Booking {seenCOunt > 0 && `(${seenCOunt})`}
                 </span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-products"
@@ -333,15 +349,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaBoxOpen className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Products</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-profile"
@@ -354,15 +367,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaUser className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Profile</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-sell-milk"
@@ -375,15 +385,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaCartPlus className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Sell Milk</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-set-rate"
@@ -396,15 +403,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaDollarSign className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Set Rate</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-subscription"
@@ -417,15 +421,12 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaSyncAlt className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Subscription</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/milkman-update-milk"
@@ -438,18 +439,15 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaBoxOpen className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Update Milk</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
-                to="/milkman-walltet"
+                to="/milkman-wallet"
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
                     isActive
@@ -459,11 +457,7 @@ const AdminNav = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaWallet className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Wallet</span>
               </NavLink>
@@ -474,11 +468,7 @@ const AdminNav = () => {
                 className="w-full text-left flex items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaSignOutAlt className="w-5 h-5 text-black" />
                 </div>
                 <span className="ms-3">Logout</span>
               </button>

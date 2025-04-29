@@ -129,8 +129,13 @@ const SuperAdminHelpPage = () => {
                       {chat.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-semibold text-black">{chat.name}</p>
+                      <p className="font-semibold text-black">
+                        {chat.name} - {chat.phone}
+                      </p>
                       <p className="text-sm text-gray-800">{chat.feedback}</p>
+                      <p className="text-sm text-gray-800">
+                        UserType : {chat.type}
+                      </p>
                     </div>
                   </div>
                   <div className="text-right">

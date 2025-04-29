@@ -11,7 +11,16 @@ import event from "../../assetss/icons/calendar.png";
 import test from "../../assetss/icons/faqs.png";
 import API from "../../api";
 import { motion } from "framer-motion";
-
+import {
+  FaTachometerAlt,
+  FaHeadset,
+  FaUser,
+  FaClipboard,
+  FaRegUser,
+  FaBullhorn,
+  FaEnvelope,
+  FaSignOutAlt,
+} from "react-icons/fa";
 const SuperAdminSidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -151,11 +160,7 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Dashboard"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaTachometerAlt className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Dashboard</span>
               </NavLink>
@@ -174,11 +179,7 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={test}
-                    alt="Help & Support"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaHeadset className="w-6 h-6 text-black" />
                 </div>
                 <motion.span
                   className={`ms-3 ${unreadCount > 0 ? "blink" : ""}`} // Conditionally apply 'blink' class
@@ -205,11 +206,7 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={user}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaUser className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Profile</span>
               </NavLink>
@@ -229,15 +226,12 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={event}
-                    alt="Subscription"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaClipboard className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Coupon</span>
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/admin-manage-subscription"
@@ -251,11 +245,7 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={event}
-                    alt="Subscription"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaRegUser className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Manage Subscription</span>
               </NavLink>
@@ -274,33 +264,7 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={AddUser}
-                    alt="User List"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">User List</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/admin-addvertisement"
-                onClick={handleNavClick}
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={contact}
-                    alt="User List"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaBullhorn className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Addvertisement</span>
               </NavLink>
@@ -318,26 +282,19 @@ const SuperAdminSidebar = () => {
                 }
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaEnvelope className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Get In Touch</span>
               </NavLink>
             </li>
+
             <li>
               <button
                 onClick={handleLogout}
                 className="flex w-full items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105 hover:cursor-pointer"
               >
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={logoout}
-                    alt="Logout"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <FaSignOutAlt className="w-6 h-6 text-black" />
                 </div>
                 <span className="ms-3">Log out</span>
               </button>

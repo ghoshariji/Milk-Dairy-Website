@@ -54,6 +54,25 @@ const MilkManBuyMilk = () => {
     }
   };
 
+  const [milkRates, setMilkRates] = useState([]);
+
+  const token = localStorage.getItem("token");
+
+  const fetchMilkRates = async () => {
+    try {
+      const { data } = await API.get(`/api/milk-rate/user?token=${token}`);
+      setMilkRates(data.data || []);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch milk rates"
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchMilkRates();
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminNav />
