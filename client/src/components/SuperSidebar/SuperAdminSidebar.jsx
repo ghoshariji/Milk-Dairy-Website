@@ -250,10 +250,28 @@ const SuperAdminSidebar = () => {
                 <span className="ms-3">Manage Subscription</span>
               </NavLink>
             </li>
-
             <li>
               <NavLink
                 to="/admin-user-list"
+                onClick={handleNavClick}
+                className={({ isActive }) =>
+                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
+                    isActive
+                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
+                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
+                  }`
+                }
+              >
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <FaUser className="w-6 h-6 text-black" />
+                </div>
+                <span className="ms-3">User List</span>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/admin-addvertisement"
                 onClick={handleNavClick}
                 className={({ isActive }) =>
                   `flex items-center p-2 rounded-lg transition duration-300 transform ${
