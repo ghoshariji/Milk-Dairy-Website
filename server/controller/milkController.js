@@ -55,7 +55,6 @@ exports.bulkUpdateMilk = async (req, res) => {
 // Manual Milk Update
 exports.manualUpdateMilk = async (req, res) => {
   const { userId, date, milkQuantity } = req.body;
-  console.log(date);
   const milkmanId = req.user.userId; // Get the milkmanId from the decoded JWT token
 
   try {
@@ -94,7 +93,6 @@ exports.manualUpdateMilk = async (req, res) => {
 
 exports.getMilkRecords = async (req, res) => {
   try {
-    console.log("Fetching milk record");
 
     // Extract token from headers
     const token = req.headers.authorization?.split(" ")[1];
@@ -120,12 +118,9 @@ exports.getMilkRecords = async (req, res) => {
 
     // Get date from request query
     const { date } = req.query;
-    console.log(date);
     if (!date) {
       return res.status(400).json({ message: "Date is required" });
     }
-
-    console.log("Requested Date:", date);
 
     // Fetch milk records for the given date
     const records = await MilkRecord.find({ milkmanId, date }).populate(
@@ -133,7 +128,6 @@ exports.getMilkRecords = async (req, res) => {
       "_id name enterCode milkQuantity phone"
     );
 
-    console.log(records);
     // Extract updated customer IDs
     const updatedCustomerIds = new Set(
       records.map((record) => record.userId._id.toString())
@@ -147,8 +141,6 @@ exports.getMilkRecords = async (req, res) => {
       (customer) => !updatedCustomerIds.has(customer._id.toString())
     );
 
-    console.log(updatedCustomers);
-    console.log(notUpdatedCustomers);
     res.status(200).json({
       updatedCustomers: updatedCustomers.map((customer) => ({
         _id: customer._id,
@@ -166,7 +158,6 @@ exports.getMilkRecords = async (req, res) => {
       })),
     });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ message: "Error fetching milk records", error: error.message });
@@ -220,14 +211,12 @@ exports.deleteMilkRecord = async (req, res) => {
   try {
     const { userId, date } = req.body; // Extract userId and date from request body
 
-    console.log(req.body.date + "delete date");
     // Convert the date to the same format used in your DB
     const todayDate = new Date();
     todayDate.setMinutes(
       todayDate.getMinutes() - todayDate.getTimezoneOffset()
     );
     const formattedDate = todayDate.toISOString().split("T")[0];
-    console.log(formattedDate);
     if (date !== formattedDate) {
       return res.status(400).json({
         message: "Date mismatch. Only today's records can be deleted.",

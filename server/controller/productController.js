@@ -147,7 +147,6 @@ exports.getProductById = async (req, res) => {
 // Update a product
 exports.updateProduct = async (req, res) => {
   try {
-    console.log(req.body)
     const { name, price, description, category } = req.body;
     const updatedData = { name, price, description, category };
 
@@ -208,8 +207,6 @@ exports.deleteProduct = async (req, res) => {
 
 exports.getCustomerProduct = async (req, res) => {
   try {
-    console.log("Fetching customer products...");
-
     // Extract token
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {

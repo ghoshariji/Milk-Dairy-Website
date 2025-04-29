@@ -20,7 +20,6 @@ exports.registerMilkman = async (req, res) => {
     location,
   } = req.body;
 
-console.log(req.body)
   try {
     // Validate location data
     if (
@@ -85,7 +84,6 @@ console.log(req.body)
 exports.loginMilkman = async (req, res) => {
   const { enterCode, password } = req.body;
 
-  console.log(req.body)
   try {
     // Find milkman by enterCode
     const milkman = await Milkman.findOne({ enterCode });
@@ -179,9 +177,7 @@ exports.getAllMilkmen = async (req, res) => {
 
 
 exports.updateMilkman = async (req, res) => {
-  console.log(req.body)
   const { name, email, phone } = req.body;
-  console.log("Request Body:", req.body); // Debugging log to ensure correct data is coming
 
   try {
     // Extract token from the Authorization header
@@ -208,7 +204,6 @@ exports.updateMilkman = async (req, res) => {
 
     // If an image file is uploaded, save it in the required format
     if (req.file) {
-      console.log("File uploaded:", req.file); // Debugging log to check if file is uploaded
       milkman.profileImage = {
         data: req.file.buffer, // Buffer data of the uploaded image
         contentType: req.file.mimetype, // MIME type (e.g., 'image/jpeg')
@@ -235,11 +230,9 @@ exports.updateMilkman = async (req, res) => {
 // Controller to fetch Milkman data
 exports.getMilkmanData = async (req, res) => {
   try {
-    console.log("Come");
     // Extract the token from the Authorization header
     const token = req.header("Authorization")?.split(" ")[1]; // Assuming token is sent as 'Bearer <token>'
 
-    console.log(token);
     if (!token) {
       return res.status(401).json({ message: "Authorization token missing" });
     }
@@ -247,7 +240,6 @@ exports.getMilkmanData = async (req, res) => {
     // Decode the token to get the user ID
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Replace 'your_jwt_secret' with your JWT secret key
 
-    console.log(decoded);
     // Use the user ID from the decoded token to find the Milkman
     const milkman = await Milkman.findById(decoded.userId);
 
@@ -265,10 +257,7 @@ exports.getMilkmanData = async (req, res) => {
 // Function to get customer data by ID
 exports.getCustomerById = async (req, res) => {
   try {
-    console.log("Come");
     const customerId = req.params.id; // Get the customer ID from URL params
-
-    console.log(customerId);
     // Find the customer by ID in the database
     const customer = await User.findById(customerId).select(
       "-password -profileImage"
@@ -371,7 +360,6 @@ exports.rejectOrder = async (req, res) => {
 
 exports.markAsSeen = async (req, res) => {
   try {
-    console.log("COme");
     // Get Authorization token
     const token = req.header("Authorization")?.split(" ")[1];
 

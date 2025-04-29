@@ -350,8 +350,6 @@ exports.getUserProfile = async (req, res) => {
 // Define the multer storage configuration
 exports.updateProfile = async (req, res) => {
   try {
-    console.log("Received File:", req.file); // Debugging log
-
     const token = req.headers["authorization"]?.split(" ")[1]; // Extract token
     if (!token) {
       return res
@@ -486,7 +484,6 @@ exports.getNotificationCustomer = async (req, res) => {
     // Find orders for the user and sort by date in descending order
     const orders = await advancebookModal.find({ userId }).sort({ date: -1 });
 
-    console.log(orders);
     res.status(200).json(orders);
   } catch (error) {
     console.error("Error fetching notifications:", error);
@@ -499,7 +496,6 @@ exports.getAdvance = async (req, res) => {
     // Check if Authorization header exists
     const token = req.header("Authorization")?.split(" ")[1]; // Assuming token is sent as 'Bearer <token>'
 
-    console.log(token);
     if (!token) {
       return res.status(401).json({ message: "Authorization token missing" });
     }
@@ -553,15 +549,12 @@ exports.getMilkmanData = async (req, res) => {
     // Extract the token from the Authorization header
     const token = req.header("Authorization")?.split(" ")[1]; // Assuming token is sent as 'Bearer <token>'
 
-    console.log(token);
     if (!token) {
       return res.status(401).json({ message: "Authorization token missing" });
     }
 
     // Decode the token to get the user ID
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Replace 'your_jwt_secret' with your JWT secret key
-
-    console.log(decoded);
     // Use the user ID from the decoded token to find the Milkman
     const milkman = await Milkman.findById(decoded.userId);
 
@@ -641,7 +634,6 @@ exports.getMilkRecords = async (req, res) => {
 // Get milk records based on user and date range
 exports.getMilkRecordsBulk = async (req, res) => {
   try {
-    console.log("Come");
     // Extract token from headers
     const token = req.headers.authorization.split(" ")[1];
 
@@ -656,8 +648,6 @@ exports.getMilkRecordsBulk = async (req, res) => {
     // Extract dates from query params
     const { from, to } = req.query;
 
-    console.log(from);
-    console.log(to);
     if (!from || !to) {
       return res.status(200).json({ message: "Please provide date range" });
     }
@@ -688,7 +678,6 @@ exports.getMilkRecordsBulk = async (req, res) => {
       avgRate,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
@@ -774,7 +763,6 @@ exports.getMilkRecordsSeller = async (req, res) => {
 // Get milk records based on user and date range
 exports.getMilkRecordsBulkSeller = async (req, res) => {
   try {
-    console.log("Come daily milk bulk");
     // Extract token from headers
     const token = req.headers.authorization.split(" ")[1];
 
@@ -786,12 +774,9 @@ exports.getMilkRecordsBulkSeller = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
-    console.log(userId);
     // Extract dates from query params
     const { from, to } = req.query;
 
-    console.log(from);
-    console.log(to);
     if (!from || !to) {
       return res.status(200).json({ message: "Please provide date range" });
     }
@@ -810,7 +795,6 @@ exports.getMilkRecordsBulkSeller = async (req, res) => {
       },
     });
 
-    console.log(records);
     // Calculate total liters and price
     let totalLiters = 0,
       totalPrice = 0,
@@ -824,8 +808,6 @@ exports.getMilkRecordsBulkSeller = async (req, res) => {
     const avgRate =
       records.length > 0 ? (totalRate / records.length).toFixed(2) : 0;
 
-    console.log(totalLiters);
-    console.log(totalPrice);
     res.status(200).json({
       records,
       totalLiters,
@@ -896,8 +878,6 @@ exports.milkRecordsFromMilkman = async (req, res) => {
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
-
-    console.log(user);
     const isSeller = user.userType === "seller";
     const MilkRecordModel = isSeller ? sellerMilkModal : milkModal;
 
@@ -970,8 +950,6 @@ exports.getAllMilkManSuperAdmin = async (req, res) => {
 
 exports.getMonthDashboard = async (req, res) => {
   try {
-    console.log("Fetching Monthly Dashboard Data");
-
     // Check for authorization header
     if (!req.headers.authorization) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -1050,7 +1028,6 @@ exports.getMonthDashboard = async (req, res) => {
 
 exports.getMilkManDataUser = async (req, res) => {
   try {
-    console.log("Come");
     const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Authorization token missing" });
@@ -1103,7 +1080,6 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     const resetLink = `${CLIENT_URL}/reset-password/${token}`;
-    //console.log(resetLink);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

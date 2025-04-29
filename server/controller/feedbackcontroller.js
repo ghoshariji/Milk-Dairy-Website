@@ -30,7 +30,6 @@ exports.createBuyerFeedback = async (req, res) => {
 // Create feedback for milkman
 exports.createMilkmanFeedback = async (req, res) => {
   try {
-    console.log("Come");
     const feedback = new Feedback({ ...req.body, type: "milkman" });
     await feedback.save();
     res

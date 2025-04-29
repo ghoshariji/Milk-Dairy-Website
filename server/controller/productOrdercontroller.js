@@ -18,11 +18,9 @@ const verifyToken = (req) => {
 // Add Order
 exports.addOrder = async (req, res) => {
   try {
-    console.log("Processing Order...");
 
     // Extract user ID from token
     const userId = verifyToken(req);
-    console.log(userId);
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
     // Fetch user details
@@ -109,10 +107,7 @@ exports.editOrder = async (req, res) => {
 
 exports.getTodayProductData = async (req, res) => {
   try {
-    console.log('Come')
     const milkmanId = verifyToken(req);
-
-    console.log(milkmanId + 'fetch product')
     // Get today's date in YYYY-MM-DD format
     const today = new Date();
     today.setMinutes(today.getMinutes() - today.getTimezoneOffset()); // Adjust for timezone
@@ -149,7 +144,6 @@ exports.getTodayProductData = async (req, res) => {
 
 exports.createOrder = async (req, res) => {
   try {
-    console.log(req.body);
 
     // Extract token and decode user info
     const token = req.headers.authorization?.split(" ")[1];
@@ -204,7 +198,6 @@ exports.createOrder = async (req, res) => {
 
 exports.fetchMilkManNotification = async (req, res) => {
   try {
-    console.log("Come fetchMilkManNotification")
     const token = req.headers.authorization?.split(' ')[1]; // Extract token safely
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized: No token provided' });
@@ -223,8 +216,6 @@ exports.fetchMilkManNotification = async (req, res) => {
       .populate('userId', 'name phone') // Populate user details
       .populate('products.productId', 'name price') // Populate product details
       .lean(); // Convert mongoose docs to plain objects for faster response
-
-      console.log(pendingOrders)
     res.status(200).json({ success: true, data: pendingOrders });
   } catch (error) {
     console.error('Error fetching pending orders:', error);
