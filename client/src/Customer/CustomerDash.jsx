@@ -33,18 +33,18 @@ const CustomerDash = () => {
   const fetchWeekData = async () => {
     // Format selected date as YYYY-MM-DD to send to backend
     const selecDate = new Date(selectedDate).toISOString().split("T")[0]; // Extract only YYYY-MM-DD
-  
+
     try {
       const response = await API.get(
         `/api/auth/user/getMilkRecord-seller?date=${selecDate}` // Pass date as query parameter
       );
-      setMilkData(response.data.data[0]);  // Assuming data is an array, so take the first record
-      setIsModalOpen(true);  // Open modal to display milk data
+      setMilkData(response.data.data[0]); // Assuming data is an array, so take the first record
+      setIsModalOpen(true); // Open modal to display milk data
     } catch (error) {
       console.error("Error fetching milk data:", error);
     }
   };
-  
+
   const fetchTodayMilk = async () => {
     const startDate = new Date().toISOString().split("T")[0];
 
@@ -108,10 +108,7 @@ const CustomerDash = () => {
   useEffect(() => {
     const loadAll = async () => {
       setLoading(true);
-      await Promise.all([
-        fetchTodayMilk(),
-        fetchMonthData(),
-      ]);
+      await Promise.all([fetchTodayMilk(), fetchMonthData()]);
       setLoading(false);
     };
     loadAll();
@@ -263,7 +260,6 @@ const CustomerDash = () => {
                   </span>
                   <span className="text-lg text-gray-600">LTR</span>
                 </div>
-
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-600">
