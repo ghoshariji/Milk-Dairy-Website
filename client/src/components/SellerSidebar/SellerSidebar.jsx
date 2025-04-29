@@ -10,6 +10,16 @@ import logoout from "../../assetss/icons/logout.png";
 import event from "../../assetss/icons/calendar.png";
 import test from "../../assetss/icons/faqs.png";
 import faq from "../../assetss/icons/review.png";
+import {
+  FaHome,
+  FaBook,
+  FaWallet,
+  FaHistory,
+  FaUser,
+  FaCog,
+  FaPhoneAlt,
+  FaSignOutAlt,
+} from "react-icons/fa"; // Import React Icons
 
 const SellerSideBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -59,6 +69,22 @@ const SellerSideBar = () => {
       window.removeEventListener("resize", updateLogo);
     };
   }, []);
+  const navItems = [
+    { path: "/seller-dashboard", label: "Dashboard", icon: FaHome },
+    { path: "/seller-milk-record", label: "Milk Record", icon: FaBook },
+    { path: "/seller-wallet", label: "Wallet", icon: FaWallet },
+    {
+      path: "/seller-payment-history",
+      label: "Payment History",
+      icon: FaHistory,
+    },
+    { path: "/seller-profile", label: "Profile", icon: FaUser },
+    { path: "/seller-payments", label: "Payment Options", icon: FaCog },
+    { path: "/seller-milkman", label: "Your Milkman", icon: FaBook }, // Choose the appropriate icon
+    { path: "/seller-change-milkman", label: "Change Milkman", icon: FaCog },
+    { path: "/seller-help", label: "Help & Support", icon: FaPhoneAlt },
+    { path: "/seller-logout", label: "Log Out", icon: FaSignOutAlt },
+  ];
 
   return (
     <div>
@@ -115,231 +141,25 @@ const SellerSideBar = () => {
       >
         <div className="h-full px-3 pb-4 overflow-y-auto dark:bg-black dark:border-gray-900">
           <ul className="space-y-2 font-medium">
-            <li>
-              <NavLink
-                to="/seller-dashboard"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Dashboard</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-milk-record"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Milk Record</span>
-              </NavLink>
-            </li>
-            {/* <li>
-              <NavLink
-                to="/seller-products"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Products</span>
-              </NavLink>
-            </li> */}
-            <li>
-              <NavLink
-                to="/seller-wallet"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Wallet</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-payment-history"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Payment History</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-profile"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Profile</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-payments"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Payment Options</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-milkman"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Your Milkman</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-change-milkman"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Change Milkman</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/seller-help"
-                className={({ isActive }) =>
-                  `flex items-center p-2 rounded-lg transition duration-300 transform ${
-                    isActive
-                      ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
-                      : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-                  }`
-                }
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Help & Support</span>
-              </NavLink>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout} // Define this function to handle logout
-                className="flex w-full items-center p-2 rounded-lg transition duration-300 transform text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
-              >
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <img
-                    src={dashboard}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full"
-                  />
-                </div>
-                <span className="ms-3">Log out</span>
-              </button>
-            </li>
+            {navItems.map((item) => (
+              <li key={item.path}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded-lg transition duration-300 transform ${
+                      isActive
+                        ? "bg-[#B1D4E0] text-gray-900 dark:text-black"
+                        : "text-gray-900 dark:text-white hover:bg-[#40A1CB] dark:hover:bg-[#005F7F] hover:scale-105"
+                    }`
+                  }
+                >
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <item.icon className="w-6 h-6 text-gray-800" />
+                  </div>
+                  <span className="ms-3">{item.label}</span>
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
       </aside>

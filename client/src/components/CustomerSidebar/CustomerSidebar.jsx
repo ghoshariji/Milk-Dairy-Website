@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
-import dashboard from "../../assetss/icons/Dashboard.png";
-import milkIcon from "../../assetss/icons/calendar.png";
-import productIcon from "../../assetss/icons/faqs.png";
-import walletIcon from "../../assetss/icons/review.png";
-import paymentHistoryIcon from "../../assetss/icons/contact-list.png";
-import profileIcon from "../../assetss/icons/user.png";
-import paymentOptionIcon from "../../assetss/icons/add-user.png";
-import milkmanIcon from "../../assetss/icons/user.png";
-import changeMilkmanIcon from "../../assetss/icons/add-user.png";
-import supportIcon from "../../assetss/icons/faqs.png";
-import bookingIcon from "../../assetss/icons/calendar.png";
 import logoutIcon from "../../assetss/icons/logout.png";
+import {
+  FaHome,
+  FaGlassMartiniAlt,
+  FaWallet,
+  FaHistory,
+  FaUser,
+  FaCog,
+  FaShoppingCart,
+  FaPhoneAlt,
+  FaBell,
+} from "react-icons/fa"; // Example imports
 
 import logo from "../../pages/images/login.png";
 import smallLogo from "../../pages/images/login.png";
@@ -56,38 +55,34 @@ const CustomerSidebar = () => {
   const firstName = userName ? userName.split(" ")[0] : "User";
 
   const navItems = [
-    { path: "/customer-dashboard", label: "Dashboard", icon: dashboard },
-    { path: "/customer-milk-record", label: "Milk Record", icon: milkIcon },
-    { path: "/customer-products", label: "Products", icon: productIcon },
-    { path: "/customer-wallet", label: "Wallet", icon: walletIcon },
+    { path: "/customer-dashboard", label: "Dashboard", icon: FaHome },
+    {
+      path: "/customer-milk-record",
+      label: "Milk Record",
+      icon: FaGlassMartiniAlt,
+    }, // Updated icon
+    { path: "/customer-products", label: "Products", icon: FaShoppingCart },
+    { path: "/customer-wallet", label: "Wallet", icon: FaWallet },
     {
       path: "/customer-payment-history",
       label: "Payment History",
-      icon: paymentHistoryIcon,
+      icon: FaHistory,
     },
-    { path: "/customer-profile", label: "Profile", icon: profileIcon },
+    { path: "/customer-profile", label: "Profile", icon: FaUser },
+    { path: "/customer-payments", label: "Payment Options", icon: FaCog },
     {
-      path: "/customer-payments",
-      label: "Payment Options",
-      icon: paymentOptionIcon,
-    },
-    { path: "/customer-milkman", label: "Your Milkman", icon: milkmanIcon },
-    {
-      path: "/customer-change-milkman",
-      label: "Change Milkman",
-      icon: changeMilkmanIcon,
-    },
-    { path: "/customer-help", label: "Help & Support", icon: supportIcon },
+      path: "/customer-milkman",
+      label: "Your Milkman",
+      icon: FaGlassMartiniAlt,
+    }, // Updated icon
+    { path: "/customer-change-milkman", label: "Change Milkman", icon: FaCog },
+    { path: "/customer-help", label: "Help & Support", icon: FaPhoneAlt },
     {
       path: "/customer-advance-book",
       label: "Advance Booking",
-      icon: bookingIcon,
+      icon: FaShoppingCart,
     },
-    {
-      path: "/customer-notification",
-      label: "Notification",
-      icon: bookingIcon,
-    },
+    { path: "/customer-notification", label: "Notification", icon: FaBell },
   ];
 
   return (
@@ -119,7 +114,10 @@ const CustomerSidebar = () => {
               </Link>
             </div>
             <div className="hidden lg:block">
-              <div className="flex items-center space-x-4 hover:cursor-pointer" onClick={() => navigate("/customer-profile")}>
+              <div
+                className="flex items-center space-x-4 hover:cursor-pointer"
+                onClick={() => navigate("/customer-profile")}
+              >
                 <div className="w-10 h-10 rounded-full bg-[#40A1CB] flex items-center justify-center text-white font-bold text-lg">
                   {firstName?.charAt(0).toUpperCase()}
                 </div>
@@ -142,12 +140,11 @@ const CustomerSidebar = () => {
 
       {/* Sidebar */}
       <aside
-  className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform dark:bg-black dark:border-gray-900 bg-white 
+        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform dark:bg-black dark:border-gray-900 bg-white 
   ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
   lg:translate-x-0`}
-  aria-label="Sidebar"
->
-
+        aria-label="Sidebar"
+      >
         <div className="h-full px-3 pb-4 overflow-y-auto">
           <ul className="space-y-2 font-medium text-black">
             {navItems.map((item) => (
@@ -163,7 +160,7 @@ const CustomerSidebar = () => {
                   }
                 >
                   <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                    <img src={item.icon} alt={item.label} className="w-5 h-5" />
+                    <item.icon className="w-5 h-5 text-gray-800" />
                   </div>
                   <span className="ml-3 text-white">{item.label}</span>
                 </NavLink>

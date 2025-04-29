@@ -143,7 +143,7 @@ const CustomerDash = () => {
       <CustomerSidebar />
       <Authentication />
 
-      <div className="p-4 w-full lg:ml-64 mt-20 bg-white min-h-screen">
+      <div className="p-4 w-full lg:ml-64 mt-20 bg-white">
         {/* Weekly Trend Line Chart */}
 
         {/* Graphs Row */}
