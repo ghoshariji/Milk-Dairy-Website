@@ -22,7 +22,7 @@ const Navbar = () => {
           Home
         </a>
         <a
-          href="#about"
+          href="#yt"
           className="hover:text-[#40A1CB] transition-colors duration-200"
         >
           About
@@ -73,7 +73,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#about"
+              href="#yt"
               onClick={closeMenu}
               className="hover:text-[#40A1CB] transition duration-200"
             >

@@ -19,7 +19,7 @@ import screen3 from "./assets/screen2.png";
 import screen4 from "./assets/screen2.png";
 import screen5 from "./assets/screen2.png";
 import { ShoppingCart, Truck, Star } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaGooglePlusG } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaGooglePlusG, FaYoutube } from "react-icons/fa";
 
 import { FaArrowUp } from "react-icons/fa";
 
@@ -445,7 +445,7 @@ const LandingPage = () => {
                   className="hover:scale-110 transition duration-300 hover:cursor-pointer"
                   whileHover={{ scale: 1.1, rotate: 15 }}
                 >
-                  <FaFacebookF size={28} />
+                  <FaFacebookF size={28} className="cursor-pointer transition" />
                 </motion.a>
                 <motion.a
                   href="https://www.instagram.com/foxteach_offical/?hl=en"
@@ -454,14 +454,14 @@ const LandingPage = () => {
                   className="hover:scale-110 transition duration-300 hover:cursor-pointer"
                   whileHover={{ scale: 1.1, rotate: 15 }}
                 >
-                  <FaInstagram size={28} />
+                  <FaInstagram size={28} className="cursor-pointer transition" />
                 </motion.a>
                 <motion.a
                   href="mailto:official.foxteach@gmail.com"
                   className="hover:scale-110 transition duration-300 hover:cursor-pointer"
                   whileHover={{ scale: 1.1, rotate: 15 }}
                 >
-                  <FaGooglePlusG size={28} />
+                  <FaYoutube size={30} className="cursor-pointer transition" />
                 </motion.a>
               </motion.div>
             </div>
@@ -692,7 +692,7 @@ const LandingPage = () => {
       >
         <CouponComm />
       </section>
-      <section className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden">
+      <section className="relative px-6 md:px-10 py-16 md:py-20 bg-white overflow-hidden" id="yt">
         <div className="max-w-6xl mx-auto text-center">
           <p
             className="text-[#40A1CB] text-lg font-bold tracking-widest mb-2"
