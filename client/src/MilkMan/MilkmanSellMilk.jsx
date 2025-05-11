@@ -4,6 +4,7 @@ import API from "../api";
 import { toast, ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
 import Authentication from "../utils/Authentication";
+import Loader from "../components/Loader/Loader";
 
 const MilkmanSellMilk = () => {
   const [formData, setFormData] = useState({

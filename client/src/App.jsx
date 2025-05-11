@@ -61,6 +61,7 @@ import MilkManSetRateGlobal from "./MilkMan/MilkManSetRateGlobal";
 import UserMilkManSupport from "./Customer/UserMilkManSupport";
 import UserMilkManSellerSupport from "./Seller/UserMilkManSellerSupport";
 import UserSUpportMilkMan from "./MilkMan/UserSUpportMilkMan";
+import MilkManPayMentGenerate from "./MilkMan/MilkManPayMentGenerate";
 const App = () => {
   return (
     <Routes>
@@ -88,6 +89,7 @@ const App = () => {
       <Route path="/milkman-set-rate-global" element={<MilkManSetRateGlobal />} />
       <Route path="/user-milkman-support" element={<UserMilkManSupport />} />
       <Route path="/milkman-user-support" element={<UserSUpportMilkMan />} />
+      <Route path="/milkman-user-payment" element={<MilkManPayMentGenerate />} />
 
 
 

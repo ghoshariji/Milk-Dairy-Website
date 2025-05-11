@@ -14,6 +14,7 @@ import {
   FaLock,
 } from "react-icons/fa";
 import Authentication from "../utils/Authentication";
+import Loader from "../components/Loader/Loader";
 
 
 const MilkManAddUser = () => {
@@ -100,6 +101,7 @@ const MilkManAddUser = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLoading(false);
+      console.log(response.data)
 
       toast.success(response.data.message || `User added as ${userType}!`);
       setNewUser({
