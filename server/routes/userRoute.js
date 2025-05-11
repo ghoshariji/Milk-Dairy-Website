@@ -24,7 +24,9 @@ const {
   getMonthDashboard,
   getMilkManDataUser,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  getAllSeenByUser,
+  getAllSeenByUserMilkMan
 } = require("../controller/userController");
 const upload = require("../middleware/multer"); // Import multer middleware
 const authMiddleware = require("../middleware/authMiddleware");
@@ -67,4 +69,7 @@ router.get("/get-milkman-data-user", getMilkManDataUser);
 
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
+router.get('/get-all-complain',  getAllSeenByUser);
+router.get('/milkman', getAllSeenByUserMilkMan);
+
 module.exports = router;

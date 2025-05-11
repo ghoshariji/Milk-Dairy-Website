@@ -9,7 +9,7 @@ const Feedback = require("../modal/helpModal");
 const sellerMilkModal = require("../modal/sellMilkModalRecord");
 const sellMilkModalRecord = require("../modal/sellMilkModalRecord");
 const SECRET_KEY = process.env.JWT_SECRET;
-
+const Seen = require("../modal/userMilkManSupportModal");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
@@ -1172,5 +1172,58 @@ exports.resetPassword = async (req, res) => {
   } catch (err) {
     console.error("Error resetting password:", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+exports.getAllSeenByUser = async (req, res) => {
+  try {
+    // Extract token from the Authorization header
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized: No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1]; // Get token from the header
+
+    // Decode the token to get the userId
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Make sure you have the JWT_SECRET defined
+    const userId = decoded.userId; // Assuming the token has a field `userId`
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is missing" });
+    }
+
+    console.log("User ID from decoded token:", userId); // Debugging
+
+    // Fetch complaints for the decoded userId
+    const data = await Seen.find({ userId }).sort({ time: -1 });
+    console.log("Fetched complaints:", data); // Debugging
+    res.json(data);
+  } catch (err) {
+    console.log("Error:", err); // Debugging
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllSeenByUserMilkMan = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized: No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const data = await Seen.find({ milkmanId: userId })
+      .populate("userId", "name enterCode") // 🟢 Fetch name and entercode from User model
+      .sort({ time: -1 });
+
+    res.json(data);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: err.message });
   }
 };

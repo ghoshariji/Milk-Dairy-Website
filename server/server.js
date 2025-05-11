@@ -38,6 +38,7 @@
   const authRoute = require("./routes/authRoute");
   const subscriptionRoute = require("./routes/subscriptionRoute");
   const milkmanSetRateRoute = require("./routes/milkmanSetRateRoute");
+  const userMilkManSuppRoute = require("./routes/userMilkManSuppRoute");
 
   // Static files
   app.use(express.static(path.join(__dirname, "./sampleFileUpload")));
@@ -58,6 +59,7 @@
   app.use("/api/auth/security", authRoute);
   app.use("/api/subscription", subscriptionRoute);
   app.use("/api/milk-rate", milkmanSetRateRoute);
+  app.use("/api/usermilkman-support", userMilkManSuppRoute);
 
 
 

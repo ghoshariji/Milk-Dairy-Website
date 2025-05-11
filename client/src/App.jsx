@@ -58,6 +58,9 @@ import SuperAdminAddvertise from "./SuperAdmin/SuperAdminAddvertise";
 import MilkManCustomerDetails from "./MilkMan/MilkManCustomerDetails";
 import SuperAdminManageSubs from "./SuperAdmin/SuperAdminManageSubs";
 import MilkManSetRateGlobal from "./MilkMan/MilkManSetRateGlobal";
+import UserMilkManSupport from "./Customer/UserMilkManSupport";
+import UserMilkManSellerSupport from "./Seller/UserMilkManSellerSupport";
+import UserSUpportMilkMan from "./MilkMan/UserSUpportMilkMan";
 const App = () => {
   return (
     <Routes>
@@ -83,6 +86,8 @@ const App = () => {
       <Route path="/milkman-walltet" element={<MilkmanWallet />} />
       <Route path="/milkman-customer-details/:id" element={<MilkManCustomerDetails />} />
       <Route path="/milkman-set-rate-global" element={<MilkManSetRateGlobal />} />
+      <Route path="/user-milkman-support" element={<UserMilkManSupport />} />
+      <Route path="/milkman-user-support" element={<UserSUpportMilkMan />} />
 
 
 
@@ -116,6 +121,7 @@ const App = () => {
       <Route path="/seller-milkman" element={<SellerMilkMan />} />
       <Route path="/seller-change-milkman" element={<SellerChangeMilkMan />} />
       <Route path="/seller-help" element={<SellerHelp />} />
+      <Route path="/seller-milkman-support" element={<UserMilkManSellerSupport />} />
 
 
 

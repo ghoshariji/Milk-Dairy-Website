@@ -83,6 +83,7 @@ const CustomerSidebar = () => {
       icon: FaShoppingCart,
     },
     { path: "/customer-notification", label: "Notification", icon: FaBell },
+    { path: "/user-milkman-support", label: "MilkMan Support", icon: FaPhoneAlt },
   ];
 
   return (
