@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logoutIcon from "../../assetss/icons/logout.png";
 import {
   FaHome,
@@ -11,10 +11,15 @@ import {
   FaShoppingCart,
   FaPhoneAlt,
   FaBell,
+  FaCreditCard,
+  FaDownload,
+  FaCheckCircle,
+  FaHourglassHalf,
 } from "react-icons/fa"; // Example imports
 
 import logo from "./logo_new.png";
 import smallLogo from "./logo_new.png";
+import API from "../../api";
 
 const CustomerSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,6 +56,7 @@ const CustomerSidebar = () => {
     window.addEventListener("resize", updateLogo);
     return () => window.removeEventListener("resize", updateLogo);
   }, []);
+  const location = useLocation();
 
   const firstName = userName ? userName.split(" ")[0] : "User";
 
@@ -83,8 +89,30 @@ const CustomerSidebar = () => {
       icon: FaShoppingCart,
     },
     { path: "/customer-notification", label: "Notification", icon: FaBell },
-    { path: "/user-milkman-support", label: "MilkMan Support", icon: FaPhoneAlt },
+    {
+      path: "/user-milkman-support",
+      label: "MilkMan Support",
+      icon: FaPhoneAlt,
+    },
   ];
+
+  const [bill, setBill] = useState(false);
+  const fetchPaymentData = async () => {
+    try {
+      const response = await API.get("/api/milkman/payment/get-user");
+      console.log(response.data.billgenerated);
+      if (response.data.success) {
+        setBill(response.data.billgenerated);
+      } else {
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchPaymentData();
+  }, []);
 
   return (
     <>
@@ -167,6 +195,30 @@ const CustomerSidebar = () => {
                 </NavLink>
               </li>
             ))}
+
+            {/* Conditionally render the "Pay Now" button */}
+            <li>
+              <NavLink
+                to="/customer-peyment-status"
+                className="flex items-center p-2 rounded-lg transition duration-300 transform hover:bg-[#3184A6] hover:scale-105 text-white"
+              >
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <FaCreditCard className="w-5 h-5 text-gray-800" />
+                </div>
+                <span className="ml-3 text-white flex items-center">
+                  Pay Now
+                  <span className="ml-2">
+                    {bill ? (
+                      <FaHourglassHalf className="text-red-500 w-5 h-5" /> // Pending icon if bill is false
+                    ) : (
+                      <FaCheckCircle className="text-green-500 w-5 h-5" /> // Check icon if bill is true
+                    )}
+                  </span>
+                </span>
+              </NavLink>
+            </li>
+
+            {/* Log out button */}
             <li>
               <button
                 onClick={handleLogout}

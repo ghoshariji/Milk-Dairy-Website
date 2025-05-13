@@ -19,6 +19,7 @@ import Loader from "../components/Loader/Loader";
 import API from "../api";
 import MilkRecordModal from "../components/SellerCusMilkRecordModal";
 import Authentication from "../utils/Authentication";
+import { FaTimes } from "react-icons/fa";
 
 const SellerDash = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -146,6 +147,28 @@ const SellerDash = () => {
     { day: "Sun", Products: 30, Orders: 25, Milkmans: 8 },
   ];
 
+  const [bill, setBill] = useState(false);
+  const fetchPaymentData = async () => {
+    try {
+      const response = await API.get("/api/milkman/payment/get-user");
+      console.log(response.data.billgenerated);
+      if (response.data.success) {
+        if (response.data.billgenerated) {
+          setShowBillBox(true); // Show the box if the bill is generated
+        }
+      } else {
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
+  const [showBillBox, setShowBillBox] = useState(false); // Track visibility of the bill box
+  const closeBillBox = () => {
+    setShowBillBox(false);
+  };
+  useEffect(() => {
+    fetchPaymentData();
+  }, []);
   const [item, setMilkMen] = useState({});
 
   useEffect(() => {
@@ -174,7 +197,34 @@ const SellerDash = () => {
 
       <div className="p-4 w-full lg:ml-64 mt-20 bg-white">
         {/* Weekly Trend Line Chart */}
+        {showBillBox && (
+          <div
+            className="fixed bottom-6 right-6 bg-black text-white p-5 rounded-lg shadow-lg z-50 w-72"
+            style={{ maxWidth: "300px" }}
+          >
+            {/* Cross Icon in Top-Right Corner */}
+            <button
+              onClick={closeBillBox}
+              className="absolute top-2 right-2 text-white hover:text-gray-400 text-xl"
+            >
+              <FaTimes />
+            </button>
 
+            <div className="w-full p-4 rounded-lg text-white text-center">
+              <h2 className="text-lg font-semibold">New Bill Generated</h2>
+              <p className="mt-2">
+                Your new bill has been generated. Please make the payment now.
+              </p>
+            </div>
+
+            <button
+              onClick={() => navigate("/customer-peyment-status")}
+              className="mt-4 px-6 py-2 bg-white text-black rounded-lg transition-all duration-300 hover:bg-gray-300 w-full"
+            >
+              Pay Now
+            </button>
+          </div>
+        )}
         {/* Graphs Row */}
 
         {/* Weekly & Today's Milk Record */}

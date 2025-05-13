@@ -8,6 +8,7 @@ import API from "../api";
 import MilkRecordModal from "../components/SellerCusMilkRecordModal";
 import Loader from "../components/Loader/Loader";
 import Authentication from "../utils/Authentication";
+import { FaTimes } from "react-icons/fa";
 
 const CustomerDash = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -130,6 +131,33 @@ const CustomerDash = () => {
 
     fetchMilkMen();
   }, []);
+
+  const [bill, setBill] = useState(false);
+  const fetchPaymentData = async () => {
+    try {
+      const response = await API.get("/api/milkman/payment/get-user");
+      console.log(response.data.billgenerated);
+      if (response.data.success) {
+        if (response.data.billgenerated) {
+          setShowBillBox(true); // Show the box if the bill is generated
+        }
+      } else {
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
+  const [showBillBox, setShowBillBox] = useState(false); // Track visibility of the bill box
+  const closeBillBox = () => {
+    setShowBillBox(false);
+  };
+  useEffect(() => {
+    fetchPaymentData();
+  }, []);
+
+  useEffect(() => {
+    fetchPaymentData();
+  }, []);
   return (
     <div className="flex">
       {loading && (
@@ -145,6 +173,35 @@ const CustomerDash = () => {
 
         {/* Graphs Row */}
 
+        {showBillBox && (
+          <div
+            className="fixed bottom-6 right-6 bg-black text-white p-5 rounded-lg shadow-lg z-50 w-72"
+            style={{ maxWidth: "300px" }}
+          >
+            {/* Cross Icon in Top-Right Corner */}
+            <button
+              onClick={closeBillBox}
+              className="absolute top-2 right-2 text-white hover:text-gray-400 text-xl"
+            >
+              <FaTimes />
+            </button>
+
+            <div className="w-full p-4 rounded-lg text-white text-center">
+              <h2 className="text-lg font-semibold">New Bill Generated</h2>
+              <p className="mt-2">
+                Your new bill has been generated. Please make the payment now.
+              </p>
+            </div>
+
+            <button
+              onClick={() => navigate("/customer-peyment-status")}
+              className="mt-4 px-6 py-2 bg-white text-black rounded-lg transition-all duration-300 hover:bg-gray-300 w-full"
+            >
+              Pay Now
+            </button>
+          </div>
+        )}
+
         {/* Weekly & Today's Milk Record */}
         {loading ? (
           <div className="text-center text-gray-400 mt-10">
@@ -153,6 +210,7 @@ const CustomerDash = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Weekly Milk Box */}
+
             <div className="bg-white p-5 rounded-2xl shadow-lg relative">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-[#40A1CB]">

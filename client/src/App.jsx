@@ -62,6 +62,8 @@ import UserMilkManSupport from "./Customer/UserMilkManSupport";
 import UserMilkManSellerSupport from "./Seller/UserMilkManSellerSupport";
 import UserSUpportMilkMan from "./MilkMan/UserSUpportMilkMan";
 import MilkManPayMentGenerate from "./MilkMan/MilkManPayMentGenerate";
+import CustomerPaymentGenerate from "./Customer/CustomerPaymentGenerate";
+import SellerBillGenerate from "./Seller/SellerBillGenerate";
 const App = () => {
   return (
     <Routes>
@@ -124,6 +126,7 @@ const App = () => {
       <Route path="/seller-change-milkman" element={<SellerChangeMilkMan />} />
       <Route path="/seller-help" element={<SellerHelp />} />
       <Route path="/seller-milkman-support" element={<UserMilkManSellerSupport />} />
+      <Route path="/seller-peyment-status" element={<SellerBillGenerate />} />
 
 
 
@@ -152,6 +155,7 @@ const App = () => {
       <Route path="/customer-cart" element={<CustomerCartPage />} />
       <Route path="/customer-checkout" element={<CustomerCheckoutPage />} />
       <Route path="/customer-success" element={<CustomerSuccessPage />} />
+      <Route path="/customer-peyment-status" element={<CustomerPaymentGenerate />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
