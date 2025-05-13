@@ -13,8 +13,8 @@ import {
   FaBell,
 } from "react-icons/fa"; // Example imports
 
-import logo from "../../pages/images/login.png";
-import smallLogo from "../../pages/images/login.png";
+import logo from "./logo_new.png";
+import smallLogo from "./logo_new.png";
 
 const CustomerSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

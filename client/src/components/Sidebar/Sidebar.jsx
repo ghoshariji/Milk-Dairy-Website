@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import dashboard from "../../assetss/icons/Dashboard.png";
-import logo from "../../pages/images/login.png";
-import smallLogo from "../../pages/images/login.png";
+import logo from "./logo_new.png";
+import smallLogo from "./logo_new.png";
 import API from "../../api";
 import {
   FaHome,
