@@ -1,6 +1,7 @@
 const Milkman = require("../modal/milkmanModal");
 const Payment = require("../modal/milkmanUserPayment");
 const MilkRecord = require("../modal/milkModal");
+const moment = require("moment");
 
 // Create a new payment
 exports.createPayment = async (req, res) => {
@@ -9,7 +10,9 @@ exports.createPayment = async (req, res) => {
 
   try {
     // Step 1: Fetch the milkman with related customers and sellers
-    const milkman = await Milkman.findById(milkmanId).populate("customer seller");
+    const milkman = await Milkman.findById(milkmanId).populate(
+      "customer seller"
+    );
     if (!milkman) {
       return res.status(404).json({ error: "Milkman not found" });
     }
@@ -39,7 +42,7 @@ exports.createPayment = async (req, res) => {
       let totalLitre = 0;
       let totalAmount = 0;
 
-      milkRecords.forEach(record => {
+      milkRecords.forEach((record) => {
         totalLitre += record.kg;
         totalAmount += record.kg * record.rate;
       });
@@ -57,7 +60,7 @@ exports.createPayment = async (req, res) => {
         userRate,
         fromDate: new Date(startDate),
         toDate: new Date(endDate),
-        createdAt: new Date()
+        createdAt: new Date(),
       });
 
       await newPayment.save();
@@ -65,30 +68,27 @@ exports.createPayment = async (req, res) => {
     }
 
     if (payments.length === 0) {
-      return res.status(404).json({ message: "No milk records found in this date range." });
+      return res
+        .status(404)
+        .json({ message: "No milk records found in this date range." });
     }
 
     return res.status(201).json({
       message: "Payments created successfully",
-      payments
+      payments,
     });
-
   } catch (error) {
     console.error("Error creating payments:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-
-
-
 // GET /api/payments
 exports.getAllPayments = async (req, res) => {
   const milkmanId = req.user.userId; // decoded by auth middleware
 
   try {
-    const payments = await Payment.find({ milkmanId })
-      .populate("userId")      // customer/seller
+    const payments = await Payment.find({ milkmanId }).populate("userId"); // customer/seller
 
     res.status(200).json(payments);
   } catch (error) {
@@ -97,26 +97,49 @@ exports.getAllPayments = async (req, res) => {
   }
 };
 
-
 // Get single payment by ID
 exports.getPaymentById = async (req, res) => {
   try {
-    const payment = await Payment.findById(req.params.id).populate("userId").populate("milkmanId");
-    if (!payment) return res.status(404).json({ message: "Payment not found" });
+    const userId = req.user.userId;
+    const startOfMonth = moment().startOf("month").toDate();
+    const endOfMonth = moment().endOf("month").toDate();
 
-    res.status(200).json(payment);
+    const payment = await Payment.findOne({
+      userId,
+      fromDate: { $gte: startOfMonth },
+      toDate: { $lte: endOfMonth },
+    });
+
+    if (!payment) {
+      return res.json({
+        success: true,
+        message: "No bill generated yet.",
+        payment: null,
+        billgenerated:false
+      });
+    }
+
+    res.json({ success: true, payment,billgenerated:true });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching payment", error });
+    console.error("Error fetching payment:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 // Update a payment
 exports.updatePayment = async (req, res) => {
   try {
-    const updatedPayment = await Payment.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedPayment) return res.status(404).json({ message: "Payment not found" });
+    const updatedPayment = await Payment.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedPayment)
+      return res.status(404).json({ message: "Payment not found" });
 
-    res.status(200).json({ message: "Payment updated", payment: updatedPayment });
+    res
+      .status(200)
+      .json({ message: "Payment updated", payment: updatedPayment });
   } catch (error) {
     res.status(500).json({ message: "Error updating payment", error });
   }
@@ -126,7 +149,8 @@ exports.updatePayment = async (req, res) => {
 exports.deletePayment = async (req, res) => {
   try {
     const deletedPayment = await Payment.findByIdAndDelete(req.params.id);
-    if (!deletedPayment) return res.status(404).json({ message: "Payment not found" });
+    if (!deletedPayment)
+      return res.status(404).json({ message: "Payment not found" });
 
     res.status(200).json({ message: "Payment deleted" });
   } catch (error) {

@@ -12,7 +12,11 @@ import {
   FaCog,
   FaPhoneAlt,
   FaSignOutAlt,
+  FaHourglassHalf,
+  FaCheckCircle,
+  FaCreditCard,
 } from "react-icons/fa"; // Import React Icons
+import API from "../../api";
 
 const SellerSideBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -82,7 +86,23 @@ const SellerSideBar = () => {
       icon: FaPhoneAlt,
     },
   ];
+  const [bill, setBill] = useState(false);
+  const fetchPaymentData = async () => {
+    try {
+      const response = await API.get("/api/milkman/payment/get-user");
+      console.log(response.data.billgenerated);
+      if (response.data.success) {
+        setBill(response.data.billgenerated);
+      } else {
+      }
+    } catch (error) {
+    } finally {
+    }
+  };
 
+  useEffect(() => {
+    fetchPaymentData();
+  }, []);
   return (
     <div>
       <nav className="fixed top-0 z-50 w-full dark:bg-black dark:border-gray-900 ">
@@ -157,6 +177,26 @@ const SellerSideBar = () => {
                 </NavLink>
               </li>
             ))}
+            <li>
+              <NavLink
+                to="/seller-peyment-status"
+                className="flex items-center p-2 rounded-lg transition duration-300 transform hover:bg-[#3184A6] hover:scale-105 text-white"
+              >
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <FaCreditCard className="w-5 h-5 text-gray-800" />
+                </div>
+                <span className="ml-3 text-white flex items-center">
+                  Pay Now
+                  <span className="ml-2">
+                    {bill ? (
+                      <FaHourglassHalf className="text-red-500 w-5 h-5" /> // Pending icon if bill is false
+                    ) : (
+                      <FaCheckCircle className="text-green-500 w-5 h-5" /> // Check icon if bill is true
+                    )}
+                  </span>
+                </span>
+              </NavLink>
+            </li>
             <li>
               <button
                 onClick={handleLogout} // Define this function to handle logout
