@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
-import register12 from "../../pages/images/login.png";
+import register12 from "./logo_new.png";
 import { motion } from "framer-motion";
 import API from "../../api";
 
@@ -162,7 +162,7 @@ const Register = () => {
           <img
             src={register12}
             alt="Register"
-            className="w-[50%] max-w-sm h-auto object-cover rounded-lg shadow-lg"
+            className="w-[50%] max-w-sm h-auto object-cover rounded-lg"
           />
         </div>
 

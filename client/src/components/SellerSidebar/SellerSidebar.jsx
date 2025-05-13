@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import dashboard from "../../assetss/icons/Dashboard.png";
-import contact from "../../assetss/icons/contact-list.png";
-import AddUser from "../../assetss/icons/add-user.png";
-import user from "../../assetss/icons/user.png";
-import logo from "../../pages/images/login.png";
-import smallLogo from "../../pages/images/login.png";
-import logoout from "../../assetss/icons/logout.png";
-import event from "../../assetss/icons/calendar.png";
-import test from "../../assetss/icons/faqs.png";
-import faq from "../../assetss/icons/review.png";
+import logo from "./logo_new.png";
+import smallLogo from "./logo_new.png";
 import {
   FaHome,
   FaBook,
